@@ -1,0 +1,10 @@
+
+(defrule
+    (up-compare-const is-pocket == 1)
+    (current-age == feudal-age)
+    (building-type-count market >= 1)
+    =>
+    (sell-commodity stone)
+    (sell-commodity stone)
+    (disable-self)
+)

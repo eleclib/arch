@@ -1,0 +1,12 @@
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 1)
+    (current-age == feudal-age)
+    (up-compare-goal ArcherRush == 1)
+    (up-can-train 0 c: archer-line)
+    (up-pending-objects c: archer-line < 1)
+    =>
+    (up-modify-goal WoodVillagers c:+ 1)
+    (up-modify-goal GoldVillagers c:+ 1)
+    (up-train 0 c: archer-line)
+)

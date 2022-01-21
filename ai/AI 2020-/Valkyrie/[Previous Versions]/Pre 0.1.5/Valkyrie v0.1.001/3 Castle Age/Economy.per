@@ -1,0 +1,42 @@
+
+(defrule
+    (current-age == castle-age)
+=>
+    (set-strategic-number sn-wood-gatherer-percentage 38)
+    (set-strategic-number sn-food-gatherer-percentage 42)
+    (set-strategic-number sn-gold-gatherer-percentage 12)
+    (set-strategic-number sn-stone-gatherer-percentage 8)
+    (enable-timer TIMER_ECONOMY_ADJUSTER ECONOMY_ADJ_CD)
+    (disable-self)
+)
+
+
+(defrule
+    (timer-triggered TIMER_ECONOMY_ADJUSTER)
+    (current-age == castle-age)
+    (wood-amount > 1000)
+    (up-compare-sn sn-wood-gatherer-percentage > 10)
+=>
+    (disable-timer TIMER_ECONOMY_ADJUSTER)
+
+    (set-strategic-number sn-wood-gatherer-percentage 18)
+    (set-strategic-number sn-food-gatherer-percentage 52)
+    (set-strategic-number sn-gold-gatherer-percentage 22)
+    (set-strategic-number sn-stone-gatherer-percentage 18)
+    (enable-timer TIMER_ECONOMY_ADJUSTER ECONOMY_ADJ_CD)
+)
+
+(defrule
+    (timer-triggered TIMER_ECONOMY_ADJUSTER)
+    (current-age == castle-age)
+    (food-amount > 1000)
+    (up-compare-sn sn-food-gatherer-percentage > 10)
+=>
+    (disable-timer TIMER_ECONOMY_ADJUSTER)
+
+    (set-strategic-number sn-wood-gatherer-percentage 48)
+    (set-strategic-number sn-food-gatherer-percentage 12)
+    (set-strategic-number sn-gold-gatherer-percentage 22)
+    (set-strategic-number sn-stone-gatherer-percentage 18)
+    (enable-timer TIMER_ECONOMY_ADJUSTER ECONOMY_ADJ_CD)
+)

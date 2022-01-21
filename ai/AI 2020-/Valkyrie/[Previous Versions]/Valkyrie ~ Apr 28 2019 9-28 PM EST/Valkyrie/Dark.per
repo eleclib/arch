@@ -1,0 +1,109 @@
+
+(defrule
+    (true)
+    =>
+    (set-strategic-number sn-enable-new-building-system 1)
+    (set-strategic-number sn-enable-training-queue 1)
+    (set-strategic-number sn-cap-civilian-builders 5)
+    (set-strategic-number sn-initial-exploration-required 0)
+    (set-strategic-number sn-number-explore-groups 1)
+    (set-strategic-number sn-cap-civilian-explorers 0)
+    (set-strategic-number sn-maximum-town-size 10)
+    (set-goal goal-using-escrow with-escrow)
+    (disable-self)
+)
+
+(defrule
+    (true)
+    =>
+    (set-strategic-number sn-maximum-wood-drop-distance 30)
+    (set-strategic-number sn-maximum-food-drop-distance 30)
+    (set-strategic-number sn-maximum-hunt-drop-distance 30)
+    (set-strategic-number sn-maximum-gold-drop-distance 30)
+    (set-strategic-number sn-maximum-stone-drop-distance 30)
+    (disable-self)
+)
+
+(defrule
+    (true)
+    =>
+    ;(set-strategic-number sn-wood-gatherer-percentage 0)
+    (set-strategic-number sn-food-gatherer-percentage 100)
+    ;(set-strategic-number sn-gold-gatherer-percentage 0)
+    ;(set-strategic-number sn-stone-gatherer-percentage 0)
+    (disable-self)
+)
+
+;(defrule
+;    (unit-type-count-total villager >= 10)
+;    =>
+;    (set-strategic-number sn-enable-training-queue 0)
+;)
+
+;(defrule
+;    (unit-type-count-total villager >= 11)
+;    =>
+;    (set-strategic-number sn-enable-training-queue 1)
+;)
+
+(defrule
+    (housing-headroom < 5)
+    (up-pending-objects c: house < 1)
+    (can-build house)
+    =>
+    (build house)
+)
+
+(defrule
+    (up-gaia-type-count c: forage-bush > 0)
+    (building-type-count-total mill < 1)
+    (can-build mill)
+    =>
+    (set-strategic-number sn-preferred-mill-placement 0)
+    (build mill)
+)
+
+(defrule
+    (up-gaia-type-count c: deer >= 8)
+    (building-type-count-total mill < 2)
+    (can-build mill)
+    =>
+    (set-strategic-number sn-preferred-mill-placement 1)
+    (build mill)
+)
+
+(defrule
+    (up-gaia-type-count c: wood >= 30)
+    (unit-type-count villager >= 14)
+    (building-type-count-total mill >= 1)
+    (building-type-count-total lumber-camp < 1)
+    (can-build lumber-camp)
+    =>
+    (build lumber-camp)
+)
+
+;(defrule
+;    (unit-type-count villager >= 22)
+;    (building-type-count-total mining-camp < 1)
+;    (can-build mining-camp)
+;    =>
+;    (build mining-camp)
+;)
+
+(defrule
+    (up-research-status c: feudal-age == research-pending)
+    (idle-farm-count < 1)
+    (up-pending-objects c: farm < 1)
+    (can-build farm)
+    =>
+    (build farm)
+)
+
+(defrule
+    (current-age == dark-age)
+    (goal goal-dark-strategy dark-unhinged)
+    (building-type-count-total barracks < 1)
+    (can-build barracks)
+    =>
+    (build barracks)
+)

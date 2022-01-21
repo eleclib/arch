@@ -1,0 +1,11 @@
+(defconst ExperimentNumber 425)
+
+(defrule
+	(true)
+	=>
+	(up-change-name "Experimental")
+	(up-modify-goal ExperimentNumber c:= 5)
+	(disable-self)
+	)
+
+(load "Experimental\Loader")

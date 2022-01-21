@@ -1,0 +1,29 @@
+
+; Scouts and Archers in Strategies File
+; Training in Strategies Folder
+
+(defrule
+    (current-age == feudal-age)
+    (military-population >= 40)
+=>
+    (set-strategic-number sn-maximum-town-size 255)
+)
+
+(defrule
+    (current-age == feudal-age)
+    (military-population <= 10)
+    (up-compare-sn sn-maximum-town-size == 255)
+=>
+    (up-modify-goal ScoutRush c:= 0)
+    (up-modify-goal ArcherRush c:= 0)
+    (up-modify-goal SkirmRush c:= 0)
+    (set-strategic-number sn-maximum-town-size 20)
+)
+
+;(defrule
+;   (true)
+;   =>
+;   (up-modify-goal ScoutRush c:= 0)
+;   (up-modify-goal ArcherRush c:= 0)
+;   (up-modify-goal SkirmRush c:= 0)
+;)

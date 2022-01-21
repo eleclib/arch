@@ -1,0 +1,18 @@
+
+
+
+(defrule
+
+(current-age == feudal-age)
+(up-object-type-count-total c: market > 0)
+(up-object-type-count-total c: blacksmith > 0)
+(up-can-build 0 c: house)
+(up-object-type-count-total c: house < FEUDAL_TOTAL_HOUSES)
+
+
+=>
+
+(up-build place-normal 0 c: house)
+
+)
+

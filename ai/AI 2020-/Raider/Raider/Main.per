@@ -1,0 +1,421 @@
+
+; Const Init ----------
+; All Constants are No-Save Unless Specified Explicitly by Name or Comment
+; No-Save means after the Rule passes through, the value becomes a garbage value
+
+; Constants
+
+(defconst ForageMill 0)
+(defconst DeerMill 1)
+(defconst ShoreFishMill 2)
+
+; Normal Goals
+
+(defconst CurrentHousingHeadroom 41)
+(defconst CapCivilianBuilders 42)
+(defconst WoodVillagers 43)
+(defconst FoodVillagers 44)
+(defconst GoldVillagers 45)
+(defconst StoneVillagers 46)
+(defconst TotalWoodSpent 47)
+(defconst TotalFoodSpent 48)
+(defconst TotalGoldSpent 49)
+(defconst TotalStoneSpent 50)
+(defconst TotalResourcesSpent 51)
+(defconst WoodPriority 52)
+(defconst FoodPriority 53)
+(defconst GoldPriority 54)
+(defconst StonePriority 55)
+(defconst CurrentBoarId 56)
+(defconst CurrentVillagerId 57)
+
+; No-Save Goals 
+
+(defconst MathGoalA 505)
+(defconst MathGoalB 506)
+(defconst MathGoalC 507)
+(defconst MathGoalD 508)
+(defconst MathGoalE 509)
+(defconst FactCheckGoalA 510)
+
+; Timers
+
+(defconst BoarClickTimer 1)
+(defconst BoarAssistTimer 2)
+(defconst DebugTimer 50)
+
+; Name Init ----------
+
+(defrule
+    (true)
+    =>
+    (up-change-name "Raider [v0 sv0 b37]") ;n
+    (disable-self)
+)
+
+; Rule Init ----------
+
+(defrule
+    (true)
+    =>
+    (up-modify-goal CurrentHousingHeadroom c:= 5)
+    (up-modify-escrow wood c:= 0)
+    (up-modify-escrow food c:= 0)
+    (disable-self)
+)
+
+; [Type]Villagers Needs to be updated consistently
+
+(defrule
+    (true)
+    =>
+    (up-modify-goal WoodVillagers c:= 0)
+    (up-modify-goal FoodVillagers c:= 1)
+    (up-modify-goal GoldVillagers c:= 0)
+    (up-modify-goal StoneVillagers c:= 0)
+    (disable-self)
+)
+
+; SN Init ----------
+
+(defrule
+    (true)
+    =>
+    (set-strategic-number sn-enable-training-queue 1)
+    (set-strategic-number sn-enable-new-building-system 1)
+    (disable-self)
+)
+
+; SN Personality ----------
+
+(defrule
+    (true)
+    =>
+    (set-strategic-number sn-wood-gatherer-percentage 0)
+    (set-strategic-number sn-food-gatherer-percentage 100)
+    (set-strategic-number sn-gold-gatherer-percentage 0)
+    (set-strategic-number sn-stone-gatherer-percentage 0)
+    (disable-self)
+)
+
+(defrule
+    (true)
+    =>
+    (set-strategic-number sn-maximum-hunt-drop-distance 7)
+    (set-strategic-number sn-maximum-wood-drop-distance 9)
+    (set-strategic-number sn-maximum-food-drop-distance 9)
+    (set-strategic-number sn-maximum-gold-drop-distance 5)
+    (set-strategic-number sn-maximum-stone-drop-distance 5)
+)
+
+(defrule
+    (true)
+    =>
+    (set-strategic-number sn-initial-exploration-required 0)
+    (set-strategic-number sn-cap-civilian-builders 3)
+    (set-strategic-number sn-number-explore-groups 1) ; Scout Cavalry / Eagle Warrior
+;   (set-strategic-number sn-camp-max-distance 0) ; Lumber / Mining Camp for Wood Detection
+    (disable-self)
+)
+
+(defrule
+    (true)
+    =>
+;   (set-strategic-number sn-cap-civilian-explorers 3)
+    (set-strategic-number sn-cap-civilian-explorers 0)
+    (disable-self)
+)
+
+;(defrule
+;   (game-time > 10)
+;   =>
+;   (set-strategic-number sn-cap-civilian-explorers 0)
+;   (disable-self)
+;)
+
+; Research ----------
+
+(defrule
+    (game-time > 1)
+    (up-can-research 1 c: ri-loom)
+    =>
+    (up-research 1 c: ri-loom)
+    (chat-local-to-self "Research Loom")
+)
+
+; Release Escrow ----------
+
+(defrule
+    (food-amount >= 500)
+    =>
+    (up-modify-escrow food c:= 0)
+)
+
+; Research Feudal Age ----------
+
+(defrule
+    (up-can-research 1 c: feudal-age)
+    =>
+    (up-research 1 c: feudal-age)
+    (chat-local-to-self "Research Feudal Age")
+)
+
+; Escrow Settings ----------
+
+(defrule
+    (up-object-type-count-total c: villager >= 21)
+    =>
+    (set-strategic-number sn-enable-training-queue 0)
+    (up-modify-escrow food c:= 500)
+    (disable-self)
+)
+
+; Buildings ----------
+
+(defrule
+    (game-time > 1)
+    (up-can-build 1 c: house)
+    (up-get-fact housing-headroom 0 FactCheckGoalA)
+    (up-compare-goal FactCheckGoalA g:< CurrentHousingHeadroom)
+    (population-headroom > 0) ; Cap Made by Houses against Game Pop Cap
+    (up-pending-objects c: house == 0)
+    =>
+    (up-build place-normal 1 c: house)
+    (chat-local-to-self "Build House")
+)
+
+(defrule
+    (game-time > 1)
+    (up-can-build 1 c: lumber-camp)
+    (up-gaia-type-count-total c: wood c:> 20)
+    (up-pending-objects c: lumber-camp < 1)
+    (up-object-type-count-total c: lumber-camp == 0)
+    =>
+    (up-build place-normal 1 c: lumber-camp)
+    (chat-local-to-self "Build Lumber Camp")
+)
+
+(defrule
+    (game-time > 1)
+    (up-can-build 1 c: mill)
+    (up-gaia-type-count-total c: forage-class c:> 0)
+    (up-pending-objects c: mill < 1)
+    (up-object-type-count-total c: mill == 0)
+    =>
+    (up-modify-sn sn-preferred-mill-placement c:= ForageMill)
+    (up-build place-normal 1 c: mill)
+    (chat-local-to-self "Build Forage Mill")
+)
+
+(defrule
+    (game-time > 1)
+    (up-can-build 1 c: mill)
+    (up-gaia-type-count-total c: deer-class c:>= 3)
+    (up-pending-objects c: mill < 1)
+    (up-object-type-count-total c: mill == 0)
+    =>
+    (up-modify-sn sn-preferred-mill-placement c:= DeerMill)
+    (up-build place-normal 1 c: mill)
+    (chat-local-to-self "Build Deer Mill")
+)
+
+; Builder Allocation
+
+(defrule
+    (up-pending-objects c: house > 0)
+    =>
+    (up-assign-builders c: house c: 2)
+)
+
+(defrule
+    (up-pending-objects c: house == 0)
+    =>
+    (up-assign-builders c: house c: 0)
+)
+
+(defrule
+    (up-pending-objects c: lumber-camp > 0)
+    =>
+    (up-assign-builders c: lumber-camp c: 1)
+)
+
+(defrule
+    (up-pending-objects c: lumber-camp == 0)
+    =>
+    (up-assign-builders c: lumber-camp c: 0)
+)
+
+(defrule
+    (up-pending-objects c: mill > 0)
+    =>
+    (up-assign-builders c: mill c: 1)
+)
+
+(defrule
+    (up-pending-objects c: mill == 0)
+    =>
+    (up-assign-builders c: mill c: 0)
+)
+
+; Units ----------
+
+(defrule
+    (game-time > 1)
+    (up-can-train 1 c: villager)
+    (up-object-type-count-total c: villager < 75)
+    =>
+    (up-train 1 c: villager)
+    (chat-local-to-self "Train Villager")
+)
+
+; Economy ----------
+
+; Civ Pop 9 Villagers
+
+(defrule
+    (up-get-fact civilian-population 0 FactCheckGoalA)
+    (up-compare-goal FactCheckGoalA c:>= 10)
+    =>
+    (up-modify-goal WoodVillagers c:= 3)
+    (up-modify-goal FoodVillagers c:= 7)
+    (disable-self)
+)
+
+; Food Priority
+
+(defrule
+    (true)
+;   (up-get-fact civilian-population 0 FactCheckGoalA)
+;   (up-compare-goal FactCheckGoalA c:>= 9)
+    =>
+    (up-modify-goal MathGoalA g:= WoodVillagers) ; Wood
+    (up-modify-goal MathGoalB g:= FoodVillagers) ; Food
+    (up-modify-goal MathGoalC g:= GoldVillagers) ; Gold
+    (up-modify-goal MathGoalD g:= StoneVillagers) ; Stone
+)
+
+(defrule
+    (true)
+;   (up-get-fact civilian-population 0 FactCheckGoalA)
+;   (up-compare-goal FactCheckGoalA c:>= 9)
+    =>
+    (up-modify-goal MathGoalA c:* 100)
+    (up-modify-goal MathGoalB c:* 100)
+    (up-modify-goal MathGoalC c:* 100)
+    (up-modify-goal MathGoalD c:* 100)
+)
+
+(defrule
+    (true)
+    =>
+    (up-modify-goal MathGoalA g:/ FactCheckGoalA)
+    (up-modify-goal MathGoalB g:/ FactCheckGoalA)
+    (up-modify-goal MathGoalC g:/ FactCheckGoalA)
+    (up-modify-goal MathGoalD g:/ FactCheckGoalA)
+)
+
+(defrule
+    (true)
+    =>
+    (up-modify-sn sn-wood-gatherer-percentage g:= MathGoalA)
+    (up-modify-sn sn-food-gatherer-percentage g:= MathGoalB)
+    (up-modify-sn sn-gold-gatherer-percentage g:= MathGoalC)
+    (up-modify-sn sn-stone-gatherer-percentage g:= MathGoalD)
+)
+
+; FactCheckGoalA --> Free
+; MathGoalA, MathGoalB, MathGoalC, MathGoalD --> Free
+
+; Boar Hunting ----------
+
+(defrule
+    (true)
+    =>
+    (up-full-reset-search)
+)
+
+(defrule
+    (not(up-set-target-by-id g: CurrentBoarId))
+    =>
+    (up-modify-goal CurrentBoarId c:= -1)
+)
+
+; Find Boar Type 1
+(defrule
+    (not(up-set-target-by-id g: CurrentBoarId))
+    (up-find-remote c: 48 c: 1)
+    =>
+    (up-full-reset-search)
+;    (up-find-local c: villager c: 1)
+    (up-find-remote c: 48 c: 1)
+    (up-set-target-object search-remote c: 0)
+    (up-get-object-data object-data-id CurrentBoarId)
+)
+
+; Find Boar Type 2
+(defrule
+    (not(up-set-target-by-id g: CurrentBoarId))
+    (up-find-remote c: 822 c: 1)
+    =>
+    (up-full-reset-search)
+;    (up-find-local c: villager c: 1)
+    (up-find-remote c: 822 c: 1)
+    (up-set-target-object search-remote c: 0)
+    (up-get-object-data object-data-id CurrentBoarId)
+)
+
+; Find Single Villager
+(defrule
+    (not(up-set-target-by-id g: CurrentVillagerId))
+    =>
+    (up-full-reset-search)
+    (set-strategic-number sn-focus-player-number my-player-number)
+    (up-find-remote c: villager-class c: 1)
+    (up-set-target-object search-remote c: 0)
+    (up-get-object-data object-data-id CurrentVillagerId)
+    (set-strategic-number sn-focus-player-number 0) ; Gaia
+)
+
+; Villager Count Met and Id Valid
+(defrule
+    (or
+        (up-timer-status BoarClickTimer == timer-disabled)
+        (up-timer-status BoarClickTimer == timer-triggered)
+    )
+    (up-object-type-count c: villager >= 10)
+    (up-compare-goal CurrentVillagerId >= 0)
+    (up-compare-goal CurrentBoarId >= 0)
+    =>
+    (up-full-reset-search)
+    (up-add-object-by-id search-local g: CurrentVillagerId)
+    (up-add-object-by-id search-remote g: CurrentBoarId)
+    (up-target-objects 0 action-default -1 -1)
+    (up-set-timer c: BoarClickTimer c: 10)
+    (up-set-timer c: BoarAssistTimer c: 10)
+)
+
+; Request Hunters By Timer
+(defrule
+    (up-timer-status BoarAssistTimer == timer-triggered)
+    (up-object-type-count-total c: villager >= 14)
+    (up-set-target-by-id g: CurrentBoarId)
+    =>
+;   (up-request-hunters c: 10)
+    (up-full-reset-search)
+    (up-find-local c: villager-class c: 10)
+    (up-add-object-by-id search-remote g: CurrentBoarId)
+    (up-target-objects 0 action-default -1 -1)
+)
+
+(defrule
+    (game-time > 2)
+    (or
+        (up-timer-status DebugTimer == timer-disabled)
+        (up-timer-status DebugTimer == timer-triggered)
+    )
+    =>
+    (up-chat-data-to-self "VillId: %d" g: CurrentVillagerId)
+    (up-chat-data-to-self "BoarId: %d" g: CurrentBoarId)
+    (up-set-timer c: DebugTimer c: 15)
+)
+

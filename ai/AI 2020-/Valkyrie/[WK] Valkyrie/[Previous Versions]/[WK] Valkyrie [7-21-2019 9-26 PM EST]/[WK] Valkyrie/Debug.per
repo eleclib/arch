@@ -1,0 +1,50 @@
+
+; (defrule
+;     (game-time > 5)
+;     (up-timer-status debug-list-timer-3 <= timer-triggered)
+;     =>
+;     (up-chat-data-to-self "Is Pocket: %d" g: is-pocket-pos)
+;     (up-chat-data-to-self "My Flank: %d" g: my-ally-flank)
+;     (up-chat-data-to-self "My Pocket: %d" g: my-ally-pocket)
+;     (up-chat-data-to-self "My Second Flank: %d" g: my-ally-second-flank)
+;     (up-chat-data-to-self "My Second Pocket: %d" g: my-ally-second-pocket)
+;     (up-chat-data-to-player every-ally "My Flank: %d" g: my-ally-flank)
+;     (up-chat-data-to-player every-ally "My Pocket: %d" g: my-ally-pocket)
+;     (up-chat-data-to-player every-ally "My Second Flank: %d" g: my-ally-second-flank)
+;     (up-chat-data-to-player every-ally "My Second Pocket: %d" g: my-ally-second-pocket)
+;     (up-set-timer c: debug-list-timer-3 c: 20)
+; )
+
+; (defrule
+;     (game-time > 5)
+;     (up-timer-status debug-list-timer-4 <= timer-triggered)
+;     =>
+;     (up-chat-data-to-self "Valk-Pos-Set: %d" g: valkyrie-positions-set)
+; ;    (up-chat-data-to-self "my-ally-number-1: %d" g: my-ally-number-1)
+; ;    (up-chat-data-to-self "my-ally-number-2: %d" g: my-ally-number-2)
+; ;    (up-chat-data-to-self "my-ally-number-3: %d" g: my-ally-number-3)
+; ;    (up-chat-data-to-self "Point-Distance-1: %d" g: point-distance-1)
+; ;    (up-chat-data-to-self "Point-Distance-2: %d" g: point-distance-2)
+; ;    (up-chat-data-to-self "Point-Distance-3: %d" g: point-distance-3)
+;     (up-set-timer c: debug-list-timer-4 c: 20)
+; )
+
+; (defrule ; Debug
+;     (game-time > 45)
+;     (up-timer-status debug-list-timer-1 <= timer-triggered)
+;     =>
+;     (up-chat-data-to-self "Target Player: %d" s: sn-target-player-number)
+;     (up-chat-data-to-self "Attack Threshold: %d" g: attack-amount-threshold)
+;     (up-chat-data-to-self "Max Town Size: %d" s: sn-maximum-town-size)
+;     (up-chat-data-to-self "Safe Town Size: %d" s: sn-safe-town-size)
+;     (up-set-timer c: debug-list-timer-1 c: 45)
+; )
+
+; (defrule ; Debug
+;     (game-time > 45)
+;     (up-timer-status debug-list-timer-2 <= timer-triggered)
+;     =>
+;     (up-chat-data-to-self "Resign Points: %d/5" g: resign-points)
+;     (up-chat-data-to-player every-ally "Resign Points: %d/5" g: resign-points)
+;     (up-set-timer c: debug-list-timer-2 c: 75)
+; )

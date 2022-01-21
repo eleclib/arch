@@ -1,0 +1,28 @@
+
+
+
+
+
+(defrule
+
+(not(goal GOAL_WE_ARE_STOCKPILING VALK_TRUE))
+(current-age == feudal-age)
+(unit-type-count villager >= 25)
+
+=>
+
+(set-strategic-number sn-wood-gatherer-percentage 44)
+(set-strategic-number sn-food-gatherer-percentage 49)
+(set-strategic-number sn-gold-gatherer-percentage 8)
+(set-strategic-number sn-stone-gatherer-percentage 18)
+(disable-self)
+
+)
+
+
+
+
+
+
+
+

@@ -1,0 +1,23 @@
+(defrule
+    (current-age == castle-age)
+    (up-compare-const is-pocket == 0)
+    (or    (players-unit-type-count target-player scorpion-line > 5)
+    (or    (players-unit-type-count target-player war-wagon-line > 5)
+           (players-building-type-count target-player castle > 1)))
+    (can-train battering-ram-line)
+    (military-population > 15)
+    (unit-type-count battering-ram-line < 5)
+    =>
+    (train battering-ram-line))
+
+(defrule
+    (current-age == imperial-age)
+    (building-type-count-total town-center >= 2)
+    (or    (players-unit-type-count target-player scorpion-line > 5)
+    (or    (players-unit-type-count target-player war-wagon-line > 5)
+           (players-building-type-count target-player castle > 2)))
+    (military-population > 10)
+    (unit-type-count-total battering-ram-line < 12)
+    (can-train battering-ram-line)
+    =>
+    (train battering-ram-line))

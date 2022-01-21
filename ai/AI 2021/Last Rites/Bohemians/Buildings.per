@@ -1,0 +1,81 @@
+
+
+(defrule
+    (current-age >= feudal-age)
+    (players-unit-type-count any-enemy skirmisher-line > 12)
+    (building-type-count-total archery-range < 3)
+    (can-build archery-range)
+    =>
+    (build archery-range)
+)
+
+(defrule
+    (current-age >= feudal-age)
+    (players-unit-type-count any-enemy knight-line > 0)
+    (building-type-count-total barracks < 2)
+    (can-build barracks)
+    =>
+    (up-set-placement-data my-player-number town-center c: -8)
+    (up-build place-control 0 c: barracks)
+)
+
+(defrule
+    (building-type-count-total siege-workshop < 2)
+    (can-build siege-workshop)
+    =>
+    (build siege-workshop)
+)
+
+; TCs
+
+(defrule
+    (building-type-count-total town-center < 4)
+    (can-build town-center)
+    =>
+    (up-modify-goal gl-vills-total c:+ 20)
+    (build town-center)
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+; Military Structures
+
+(defrule
+    (current-age == imperial-age)
+    (building-type-count-total castle < 1)
+    (can-build castle)
+    =>
+    (build castle)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (building-type-count-total monastery < 27)
+    (can-build monastery)
+    =>
+    (build monastery)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (building-type-count-total siege-workshop < 6)
+    (can-build siege-workshop)
+    =>
+    (build siege-workshop)
+)
+

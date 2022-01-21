@@ -1,0 +1,13 @@
+
+(defrule
+    (taunt-detected any-ally 249)
+    =>
+    (up-get-fact fact-wood-amount 0 goal-wood-amount)
+    (up-get-fact fact-food-amount 0 goal-food-amount)
+    (up-get-fact fact-gold-amount 0 goal-gold-amount)
+    (up-get-fact fact-stone-amount 0 goal-stone-amount)
+    (up-chat-data-to-player this-any-ally "%d Wood" g: goal-wood-amount)
+    (up-chat-data-to-player this-any-ally "%d Food" g: goal-food-amount)
+    (up-chat-data-to-player this-any-ally "%d Gold" g: goal-gold-amount)
+    (up-chat-data-to-player this-any-ally "%d Stone" g: goal-stone-amount)
+)

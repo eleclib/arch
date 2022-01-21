@@ -1,0 +1,32 @@
+
+(defrule
+    (current-age == dark-age)
+=>
+    (set-strategic-number sn-initial-exploration-required 0)
+    (set-strategic-number sn-enable-new-building-system 1)
+    (set-strategic-number sn-enable-training-queue 1)
+    (set-strategic-number sn-cap-civilian-builders 3)
+    (generate-random-number 32767)
+    (set-strategic-number sn-random-placement-factor random-number)
+    (set-strategic-number sn-intelligent-gathering 1)
+    (set-strategic-number sn-livestock-to-town-center 1)
+    (disable-self)
+)
+
+(defrule
+    (current-age == dark-age)
+=>
+    (set-strategic-number sn-cap-civilian-explorers 0)
+    (set-strategic-number sn-number-explore-groups 1)
+    (disable-self)
+)
+
+(defrule
+    (current-age == dark-age)
+=>
+    (set-strategic-number sn-maximum-wood-drop-distance 10)
+    (set-strategic-number sn-maximum-food-drop-distance 10)
+    (set-strategic-number sn-maximum-gold-drop-distance 10)
+    (set-strategic-number sn-maximum-stone-drop-distance 10)
+    (set-strategic-number sn-maximum-hunt-drop-distance 30)
+)

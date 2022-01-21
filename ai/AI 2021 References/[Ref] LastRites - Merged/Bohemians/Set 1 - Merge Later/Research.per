@@ -1,0 +1,106 @@
+
+; Castle Research
+
+(defrule
+    (can-research my-unique-research)
+    =>
+    (research my-unique-research)
+)
+
+; Monk Research
+
+; Skip if Hussite-Reforms is not completed
+
+(defrule
+    (up-compare-goal gl-research-hussite-jump c:> -1)
+    (up-research-status c: my-unique-research != research-complete)
+    =>
+    (up-jump-direct g: gl-research-hussite-jump)
+)
+
+; Monk Stuff
+
+(defrule
+    (can-research ri-redemption)
+    =>
+    (research ri-redemption)
+)
+
+(defrule
+    (can-research ri-atonement)
+    =>
+    (research ri-atonement)
+)
+
+(defrule
+    (can-research ri-herbal-medicine)
+    =>
+    (research ri-herbal-medicine)
+)
+
+(defrule
+    (can-research ri-heresy)
+    =>
+    (research ri-heresy)
+)
+
+(defrule
+    (can-research ri-sanctity)
+    =>
+    (research ri-sanctity)
+)
+
+(defrule
+    (can-research ri-fervor)
+    =>
+    (research ri-fervor)
+)
+
+(defrule
+    (can-research ri-faith)
+    =>
+    (research ri-faith)
+)
+
+(defrule
+    (can-research ri-illumination)
+    =>
+    (research ri-illumination)
+)
+
+(defrule
+    (can-research ri-block-printing)
+    =>
+    (research ri-block-printing)
+)
+
+(defrule
+    (can-research ri-theocracy)
+    =>
+    (research ri-theocracy)
+)
+
+; End of Monk Researches
+
+; Other Researches
+
+(defrule
+    (can-research ri-chemistry)
+    =>
+    (research ri-chemistry)
+)
+
+(defrule
+    (can-research ri-houfnice)
+    =>
+    (research ri-houfnice)
+)
+
+; End Other Researches
+
+(defrule
+    (true)
+    =>
+    (up-get-rule-id gl-research-hussite-jump)
+    (disable-self)
+)

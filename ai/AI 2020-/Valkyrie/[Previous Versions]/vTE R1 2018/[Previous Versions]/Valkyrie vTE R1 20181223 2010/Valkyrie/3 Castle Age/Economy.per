@@ -1,0 +1,79 @@
+
+(defrule
+   (current-age == castle-age)
+   =>
+   (set-strategic-number sn-wood-gatherer-percentage 32)
+   (set-strategic-number sn-food-gatherer-percentage 32)
+   (set-strategic-number sn-gold-gatherer-percentage 32)
+   (set-strategic-number sn-stone-gatherer-percentage 4)
+   (disable-self)
+)
+
+(defrule
+    (current-age == castle-age)
+    (or
+        (up-timer-status EconomyUpdateTimer == timer-disabled)
+        (up-timer-status EconomyUpdateTimer == timer-triggered)
+    )
+    (wood-amount > 300)
+    =>
+    (up-modify-sn sn-wood-gatherer-percentage c:- 2)
+    (up-modify-sn sn-food-gatherer-percentage c:+ 1)
+    (up-modify-sn sn-gold-gatherer-percentage c:+ 1)
+;   (up-modify-sn sn-stone-gatherer-percentage c:+ 0)
+    (up-set-timer c: EconomyUpdateTimer c: 30)
+)
+
+(defrule
+    (current-age == castle-age)
+    (or
+        (up-timer-status EconomyUpdateTimer == timer-disabled)
+        (up-timer-status EconomyUpdateTimer == timer-triggered)
+    )
+    (food-amount > 300)
+    =>
+    (up-modify-sn sn-wood-gatherer-percentage c:+ 1)
+    (up-modify-sn sn-food-gatherer-percentage c:- 2)
+    (up-modify-sn sn-gold-gatherer-percentage c:- 1)
+;   (up-modify-sn sn-stone-gatherer-percentage c:+ 0)
+    (up-set-timer c: EconomyUpdateTimer c: 30)
+)
+
+(defrule
+    (current-age == castle-age)
+    (or
+        (up-timer-status EconomyUpdateTimer == timer-disabled)
+        (up-timer-status EconomyUpdateTimer == timer-triggered)
+    )
+    (gold-amount > 300)
+    =>
+    (up-modify-sn sn-wood-gatherer-percentage c:+ 1)
+    (up-modify-sn sn-food-gatherer-percentage c:+ 1)
+    (up-modify-sn sn-gold-gatherer-percentage c:- 2)
+;   (up-modify-sn sn-stone-gatherer-percentage c:+ 0)
+    (up-set-timer c: EconomyUpdateTimer c: 30)
+)
+
+; Reset all to 25
+
+(defrule
+    (current-age == castle-age)
+    (or
+        (up-timer-status EconomyResetTimer == timer-disabled)
+        (up-timer-status EconomyResetTimer == timer-triggered)
+    )
+    =>
+    (up-modify-sn sn-wood-gatherer-percentage c:= 25)
+    (up-modify-sn sn-food-gatherer-percentage c:= 25)
+    (up-modify-sn sn-gold-gatherer-percentage c:= 25)
+    (up-modify-sn sn-stone-gatherer-percentage c:= 25)
+    (up-set-timer c: EconomyResetTimer c: 600)
+)
+
+(defrule
+    (player-in-game any-ally)
+    (current-age == castle-age)
+    (up-object-type-count-total c: trade-cart < 15)
+    =>
+    (up-train 0 c: trade-cart)
+)

@@ -1,0 +1,69 @@
+
+(defrule
+    (true)
+    =>
+    (set-strategic-number sn-percent-building-cancellation 10)
+    (disable-self)
+)
+
+
+
+
+(defrule
+    (building-type-count-total archery-range < 2)
+    (can-build archery-range)
+    =>
+    (build archery-range)
+)
+
+
+
+
+(defrule
+    (building-type-count-total siege-workshop < 1)
+    (can-build siege-workshop)
+    =>
+    (build siege-workshop)
+)
+
+
+(defrule
+    (building-type-count-total town-center < 4)
+    (can-build town-center)
+    =>
+    (build town-center)
+)
+
+
+
+
+
+
+
+(defrule
+    (current-age == imperial-age)
+    (building-type-count-total castle < 7)
+    (can-build castle)
+    =>
+    (up-set-placement-data my-player-number town-center c: 21)
+    (up-build place-control 0 c: castle)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (building-type-count-total monastery < 37)
+    (can-build monastery)
+    =>
+    (up-set-placement-data my-player-number town-center c: 8)
+    (up-build place-control 0 c: monastery)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (building-type-count-total siege-workshop < 14)
+    (can-build siege-workshop)
+    =>
+    (up-set-placement-data my-player-number town-center c: -12)
+    (up-build place-control 0 c: siege-workshop)
+)
+

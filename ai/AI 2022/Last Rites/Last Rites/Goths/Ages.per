@@ -1,0 +1,30 @@
+
+
+(defrule
+    (unit-type-count-total villager >= cn-total-villagers-dark)
+    (can-research feudal-age)
+    =>
+    (research feudal-age)
+)
+
+
+
+(defrule
+    (unit-type-count-total villager g:>= gl-vills-total)
+    (can-research castle-age)
+    =>
+    (research castle-age)
+)
+
+
+
+(defrule
+    (unit-type-count-total villager g:>= gl-vills-total)
+    (can-research imperial-age)
+    =>
+    (research imperial-age)
+)
+
+
+
+

@@ -1,0 +1,134 @@
+
+(defrule
+    ;(current-age == feudal-age)
+    (military-population < feudal-military-population-to-rush)
+    (goal goal-switch-off-retreat -1)
+    =>
+    (up-get-fact fact-military-population 0 goal-military-population-1)
+    (up-get-fact fact-military-population 0 goal-military-population-2)
+    (disable-self)
+)
+
+(defrule
+    ;(current-age == feudal-age)
+    (military-population < feudal-military-population-to-rush)
+    (goal goal-switch-off-retreat -1)
+    =>
+    (up-get-fact fact-military-population 0 goal-military-population-1)
+)
+
+; send units to home town center upon spawn
+(defrule
+    ;(current-age == feudal-age)
+    (goal goal-feudal-strategy feudal-archery-rush)
+    (up-compare-goal goal-military-population-1 g:> goal-military-population-2)
+    (military-population < feudal-military-population-to-rush)
+    (goal goal-switch-off-retreat -1)
+    =>
+    (up-modify-goal goal-military-population-2 g:= goal-military-population-1)
+    (up-full-reset-search)
+    (up-find-local c: town-center c: 1)
+    (up-set-target-object search-local c: 0)
+    (up-get-object-data object-data-point-x goal-home-town-center-x)
+    (up-get-object-data object-data-point-y goal-home-town-center-y)
+    (up-reset-search 1 1 0 0)
+    (up-find-local c: archer c: 30)
+    (up-find-local c: skirmisher c: 30)
+    (up-target-point goal-home-town-center-x action-move -1 -1)
+)
+
+(defrule
+    (current-age == feudal-age)
+    =>
+    (up-find-player enemy find-closest goal-found-player)
+    (up-modify-sn sn-focus-player-number g:= goal-found-player)
+    (up-modify-sn sn-target-player-number g:= goal-found-player)
+)
+
+; send units to lumber camps and mining camps
+(defrule
+    ;(current-age == feudal-age)
+    (military-population >= feudal-military-population-to-rush)
+    =>
+    (set-goal goal-switch-off-retreat 1)
+    (up-full-reset-search)
+    (up-filter-exclude -1 actionid-attack -1 -1)
+    (up-find-local c: archer c: 30)
+    (up-find-local c: skirmisher c: 30)
+    ;(up-remove-objects search-local object-data-action == actionid-move)
+    (up-reset-filters)
+    (up-find-remote c: lumber-camp c: 1)
+    (up-find-remote c: mining-camp c: 1)
+    (up-target-objects 0 action-move -1 -1)
+)
+
+(defrule
+    ;(current-age == feudal-age)
+    (military-population >= feudal-military-population-to-rush)
+    =>
+    (up-full-reset-search)
+    (up-find-local c: archer c: 30)
+    (up-find-local c: skirmisher c: 30)
+    (up-remove-objects search-local object-data-action == actionid-attack)
+    (up-get-search-state goal-local-total)
+    (up-modify-goal goal-iteration g:= goal-local-total)
+)
+
+; tell units to attack surrounding units
+(defrule
+    ;(current-age == feudal-age)
+    (military-population >= feudal-military-population-to-rush)
+    (up-compare-goal goal-local-total c:> 0)
+    =>
+    (up-set-target-object search-local g: goal-iteration)
+    (up-get-object-data object-data-point-x goal-target-local-object-x)
+    (up-get-object-data object-data-point-y goal-target-local-object-y)
+    (up-set-target-point goal-target-local-object-x)
+    (up-filter-distance c: -1 c: 10)
+    ;(up-find-remote c: infantry-class c: 1)
+    ;(up-find-remote c: archery-class c: 1)
+    ;(up-find-remote c: villager-class c: 1)
+    (up-find-remote c: -1 c: 1)
+    (up-target-objects 0 action-default -1 -1)
+) 
+
+(defrule
+    ;(current-age == feudal-age)
+    (military-population >= feudal-military-population-to-rush)
+    (up-compare-goal goal-iteration c:> 0)
+    =>
+    (up-modify-goal goal-iteration c:- 1)
+    (up-jump-rule -2)
+)
+
+; back away from town center
+(defrule
+    ;(current-age == feudal-age)
+    (military-population >= feudal-military-population-to-rush)
+    =>
+    (up-full-reset-search)
+    (up-find-remote c: town-center c: 1)
+    (up-get-search-state goal-local-total)
+)
+
+(defrule
+    ;(current-age == feudal-age)
+    (military-population >= feudal-military-population-to-rush)
+    (up-compare-goal goal-remote-total c:== 1)
+    =>
+    (up-set-target-object search-remote c: 0)
+    (up-get-object-data object-data-point-x goal-target-enemy-object-x)
+    (up-get-object-data object-data-point-y goal-target-enemy-object-y)
+    (up-set-target-point goal-target-enemy-object-x)
+)
+
+(defrule
+    ;(current-age == feudal-age)
+    (military-population >= feudal-military-population-to-rush)
+    (up-compare-goal goal-remote-total c:== 1)
+    =>
+    (up-filter-distance c: -1 c: 11)
+    (up-find-local c: archer c: 30)
+    (up-find-local c: skirmisher c: 30)
+    (up-target-point goal-home-town-center-x action-move -1 -1)
+)

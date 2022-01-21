@@ -1,0 +1,10 @@
+
+(defrule
+    (goal my-strategy strategy-monks)
+    (current-age >= castle-age)
+    (can-build monastery)
+    (building-type-count-total monastery < 7)
+    =>
+    (build monastery)
+)
+

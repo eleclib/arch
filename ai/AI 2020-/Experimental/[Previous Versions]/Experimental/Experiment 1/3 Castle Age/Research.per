@@ -1,0 +1,211 @@
+(defrule
+    (up-compare-goal ExperimentNumber c:== 1)
+    (current-age >= castle-age)
+    (up-can-research 0 c: ri-hand-cart)
+    (up-research-status c: ri-hand-cart == research-available)
+=>
+    (up-modify-goal WoodVillagers c:+ 2)
+    (up-modify-goal FoodVillagers c:+ 3)
+    (up-research 0 c: ri-hand-cart)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 1)
+    (current-age >= castle-age)
+    (up-can-research 0 c: ri-town-patrol)
+    (up-research-status c: ri-town-patrol == research-available)
+=>
+    (up-modify-goal FoodVillagers c:+ 3)
+    (up-modify-goal GoldVillagers c:+ 2)
+    (up-research 0 c: ri-town-patrol)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 1)
+    (current-age >= castle-age)
+    (up-can-research 0 c: ri-stone-shaft-mining)
+    (up-research-status c: ri-stone-shaft-mining == research-available)
+=>
+    (up-modify-goal WoodVillagers c:+ 2)
+    (up-modify-goal FoodVillagers c:+ 2)
+    (up-research 0 c: ri-stone-shaft-mining)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 1)
+    (current-age >= castle-age)
+    (up-can-research 0 c: ri-gold-shaft-mining)
+    (up-research-status c: ri-gold-shaft-mining == research-available)
+=>
+    (up-modify-goal WoodVillagers c:+ 2)
+    (up-modify-goal FoodVillagers c:+ 2)
+    (up-research 0 c: ri-gold-shaft-mining)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 1)
+    (current-age >= castle-age)
+    (up-can-research 0 c: ri-bow-saw)
+    (up-research-status c: ri-bow-saw == research-available)
+=>
+    (up-modify-goal WoodVillagers c:+ 1)
+    (up-modify-goal FoodVillagers c:+ 2)
+    (up-research 0 c: ri-bow-saw)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 1)
+    (current-age >= castle-age)
+    (up-can-research 0 c: ri-heavy-plow)
+    (up-research-status c: ri-heavy-plow == research-available)
+=>
+    (up-modify-goal WoodVillagers c:+ 2)
+    (up-modify-goal FoodVillagers c:+ 2)
+    (up-research 0 c: ri-heavy-plow)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 1)
+    (player-in-game any-ally)
+    (current-age >= imperial-age)
+    (up-can-research 0 c: ri-cartography)
+    (up-research-status c: ri-cartography == research-available)
+=>
+    (up-modify-goal FoodVillagers c:+ 1)
+    (up-modify-goal GoldVillagers c:+ 1)
+    (up-research 0 c: ri-cartography)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 1)
+    (player-in-game any-ally)
+    (current-age >= castle-age)
+    (up-can-research 0 c: ri-caravan)
+    (up-research-status c: ri-caravan == research-available)
+=>
+    (up-modify-goal FoodVillagers c:+ 2)
+    (up-modify-goal GoldVillagers c:+ 2)
+    (up-research 0 c: ri-caravan)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 1)
+    (current-age >= castle-age)
+    (up-can-research 0 c: ri-crossbow)
+    (up-research-status c: ri-crossbow == research-available)
+=>
+    (up-modify-goal FoodVillagers c:+ 2)
+    (up-modify-goal GoldVillagers c:+ 1)
+    (up-research 0 c: ri-crossbow)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 1)
+    (current-age >= castle-age)
+    (up-can-research 0 c: ri-elite-skirmisher)
+    (up-research-status c: ri-elite-skirmisher == research-available)
+=>
+    (up-modify-goal FoodVillagers c:+ 3)
+    (up-modify-goal GoldVillagers c:+ 2)
+    (up-research 0 c: ri-elite-skirmisher)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 1)
+    (current-age >= castle-age)
+    (up-can-research 0 c: ri-pikeman)
+    (up-research-status c: ri-pikeman == research-available)
+    =>
+    (up-modify-goal FoodVillagers c:+ 3)
+    (up-modify-goal GoldVillagers c:+ 1)
+    (research ri-pikeman)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 1)
+    (current-age >= castle-age)
+    (up-can-research 0 c: ri-leather-archer-armor)
+    (up-research-status c: ri-leather-archer-armor == research-available)
+=>
+    (up-modify-goal FoodVillagers c:+ 2)
+    (up-modify-goal GoldVillagers c:+ 2)
+    (up-research 0 c: ri-leather-archer-armor)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 1)
+    (current-age >= castle-age)
+    (up-can-research 0 c: ri-scale-barding)
+    (up-research-status c: ri-scale-barding == research-available)
+=>
+    (up-modify-goal FoodVillagers c:+ 2)
+    (up-research 0 c: ri-scale-barding)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 1)
+    (current-age >= castle-age)
+    (can-research ri-forging)
+    (up-research-status c: ri-forging == research-available)
+=>
+    (up-modify-goal FoodVillagers c:+ 2)
+    (research ri-forging)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 1)
+    (current-age >= castle-age)
+    (can-research ri-bodkin-arrow)
+    (up-research-status c: ri-bodkin-arrow == research-available)
+=>
+    (up-modify-goal FoodVillagers c:+ 2)
+    (up-modify-goal GoldVillagers c:+ 1)
+    (research ri-bodkin-arrow)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 1)
+    (current-age >= castle-age)
+    (can-research ri-iron-casting)
+    (up-research-status c: ri-iron-casting == research-available)
+=>
+    (up-modify-goal FoodVillagers c:+ 3)
+    (up-modify-goal GoldVillagers c:+ 2)
+    (research ri-iron-casting)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 1)
+    (current-age >= castle-age)
+    (can-research ri-chain-barding)
+    (up-research-status c: ri-chain-barding == research-available)
+=>
+    (up-modify-goal FoodVillagers c:+ 3)
+    (up-modify-goal GoldVillagers c:+ 2)
+    (research ri-chain-barding)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 1)
+    (current-age >= castle-age)
+    (can-research imperial-age)
+    (up-research-status c: imperial-age == research-available)
+=>
+    (up-modify-goal FoodVillagers c:+ 10)
+    (up-modify-goal GoldVillagers c:+ 8)
+    (research imperial-age)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 1)
+    (current-age == castle-age)
+    (or
+        (up-timer-status AgeEconomyTimer == timer-disabled)
+        (up-timer-status AgeEconomyTimer == timer-triggered)
+    )
+    (not(up-can-research 0 c: imperial-age))
+    =>
+    (up-modify-goal FoodVillagers c:+ 3)
+    (up-modify-goal GoldVillagers c:+ 1)
+    (up-set-timer c: AgeEconomyTimer c: 60)
+)

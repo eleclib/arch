@@ -1,0 +1,19 @@
+
+(defrule
+    (goal my-strategy strategy-monks-eagles)
+    (current-age >= castle-age)
+    (can-build barracks)
+    (building-type-count-total barracks < 7)
+    =>
+    (build barracks)
+)
+
+(defrule
+    (goal my-strategy strategy-monks-eagles)
+    (current-age >= castle-age)
+    (can-build monastery)
+    (building-type-count-total monastery < 7)
+    =>
+    (build monastery)
+)
+

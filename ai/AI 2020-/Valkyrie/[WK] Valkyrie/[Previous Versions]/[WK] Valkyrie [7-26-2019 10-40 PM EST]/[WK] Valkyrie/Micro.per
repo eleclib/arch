@@ -1,0 +1,353 @@
+
+(defrule ; Boar Hunting
+    (current-age == dark-age)
+    (unit-type-count villager >= 12)
+    (goal villager-sent-boar -1)
+    =>
+    (up-full-reset-search)
+    (set-strategic-number sn-focus-player-number 0)
+)
+
+(defrule ; Boar Hunting
+    (current-age == dark-age)
+    (unit-type-count villager >= 12)
+    (goal villager-sent-boar -1)
+    (or(up-find-remote c: javelina c: 1)
+    (up-find-remote c: wild-boar c: 1))
+    =>
+    (up-set-target-object search-remote c: 0)
+    (up-get-object-data object-data-id boar-id)
+    (up-get-object-data object-data-hitpoints boar-health)
+    (up-find-local c: villager-class c: 23)
+    (up-remove-objects search-local object-data-action == actionid-builder)
+    (up-remove-objects search-local object-data-hitpoints < 25)
+    (up-remove-objects search-local -1 > 0)
+    (up-target-objects 0 action-default -1 -1)
+    (set-goal villager-sent-boar 1)
+    (chat-local-to-self "Sending Villager to Boar Hunt")
+)
+
+(defrule ; Boar Hunting - Get TC Pos and Boar Pos
+    (current-age == dark-age)
+    (unit-type-count villager >= 12)
+    (goal villager-sent-boar 1)
+    (goal boar-gather-tasked -1)
+    =>
+    (up-find-local c: town-center c: 1)
+    (up-set-target-object search-local c: 0)
+    (up-get-object-data object-data-point-x tc-x)
+    (up-get-object-data object-data-point-y tc-y)
+    (up-set-target-point tc-x)
+    (up-full-reset-search)
+    (up-add-object-by-id search-remote g: boar-id)
+    (up-set-target-object search-remote c: 0)
+    (up-get-object-data object-data-distance boar-distance)
+)
+
+(defrule
+    (current-age == dark-age)
+    (unit-type-count villager >= 12)
+    (up-compare-goal boar-distance c:<= 7)
+    (goal villager-sent-boar 1)
+    (goal boar-gather-tasked-1 -1)
+    =>
+    (up-full-reset-search)
+    (up-get-object-data object-data-hitpoints boar-health)
+    (up-find-local c: villager-class c: 23)
+    (up-remove-objects search-local object-data-action == actionid-builder)
+    (up-remove-objects search-local -1 > 0)
+    (up-add-object-by-id search-remote g: boar-id)
+    (up-target-objects 1 action-default -1 -1)
+    (set-goal boar-gather-tasked-1 1)
+    (chat-local-to-self "Tasking Villagers to Boar")
+)
+
+(defrule
+    (current-age == dark-age)
+    (unit-type-count villager >= 12)
+    (up-compare-goal boar-distance c:<= 5)
+    (goal villager-sent-boar 1)
+    (goal boar-gather-tasked -1)
+    =>
+    (up-full-reset-search)
+    (up-get-object-data object-data-hitpoints boar-health)
+    (up-find-local c: villager-class c: 23)
+    (up-remove-objects search-local object-data-action == actionid-builder)
+    (up-remove-objects search-local -1 > 9)
+    (up-add-object-by-id search-remote g: boar-id)
+    (up-target-objects 1 action-default -1 -1)
+    (set-goal boar-gather-tasked 1)
+    (chat-local-to-self "Tasking Villagers to Boar")
+)
+
+(defrule ; Boar Hunting
+    (current-age == dark-age)
+    (unit-type-count villager >= 12)
+    (goal villager-sent-boar 1)
+    =>
+    (enable-timer boar-timer-check 40)
+)
+
+(defrule ; Boar Hunting
+    (goal villager-sent-boar 1)
+    =>
+    (up-full-reset-search)
+    (up-set-target-by-id g: boar-id)
+    (up-get-object-data object-data-carry boar-carry)
+)
+
+(defrule ; Boar Hunting
+    (goal villager-sent-boar 1)
+    (up-compare-goal boar-carry c:<= 130)
+    =>
+    (set-goal villager-sent-boar -1)
+    (set-goal boar-gather-tasked -1)
+    (chat-local-to-self "Resetting Boar Hunt")
+)
+
+(defrule ; Boar Hunting
+    (goal villager-sent-boar 1)
+    (timer-triggered boar-timer-check)
+    (up-compare-goal boar-health c:>= 75)
+    ;(up-compare-goal boar-carry c:>= 340)
+    =>
+    (set-goal villager-sent-boar -1)
+    (set-goal boar-gather-tasked -1)
+    (chat-local-to-self "Resetting Boar Hunt")
+    (disable-timer boar-timer-check)
+)
+
+; (defrule ; Boar Hunting
+;     (goal villager-sent-boar 1)
+;     (up-compare-goal boar-carry c:>= 50)
+;     (up-compare-goal boar-health c:< 75)
+;     =>
+;     (up-full-reset-search)
+;     (up-find-local c: villager-class c: 8)
+;     (up-add-object-by-id search-remote g: boar-id)
+;     (up-target-objects 0 action-default -1 -1)
+; )
+
+(defrule
+    (current-age == dark-age)
+    =>
+    (up-full-reset-search)
+    (up-find-local c: town-center c: 1)
+    (up-set-target-object search-local c: 0)
+    (up-get-object-data object-data-point-x tc-x)
+    (up-get-object-data object-data-point-y tc-y)
+    (set-strategic-number sn-focus-player-number 0)
+    (up-full-reset-search)
+    (up-find-remote c: livestock-class c: 1)
+    (up-set-target-object search-remote c: 0)
+    (up-get-object-data object-data-point-x sheep-x)
+    (up-get-object-data object-data-point-y sheep-y)
+)
+
+(defrule
+    (current-age == dark-age)
+    (up-point-distance tc-x sheep-x < 30)
+    =>
+    (up-full-reset-search)
+    (set-strategic-number sn-focus-player-number 0)
+)
+
+(defrule ; Sheep Scouting
+    (current-age == dark-age)
+    (up-find-remote c: livestock-class c: 1)
+    (up-point-distance tc-x sheep-x < 30)
+    =>
+    (up-find-local c: scout-cavalry-line c: 1)
+    (up-find-local c: eagle-warrior-line c: 1)
+    (up-target-objects 0 action-move -1 -1)
+    (set-goal scout-to-reset 1)
+    (up-full-reset-search)
+)
+
+(defrule
+    (up-point-distance tc-x sheep-x < 30)
+    (current-age == dark-age)
+    (goal scout-to-reset 1)
+    (not(up-find-remote c: livestock-class c: 1))
+    =>
+    (up-reset-scouts)
+    (set-goal scout-to-reset -1)
+)
+
+(defrule
+    (up-compare-const is-pocket == 0)
+    (up-pending-objects c: villager < 2)
+    (unit-type-count villager < 24)
+    (up-research-status c: ri-loom != research-pending)
+    (up-research-status c: feudal-age != research-pending)
+    =>
+    (up-drop-resources forage-bush c: 5)
+    (up-drop-resources livestock-class c: 5)
+    (up-drop-resources food c: 10)
+)
+
+(defrule
+    (up-compare-const is-pocket == 1)
+    (up-pending-objects c: villager < 2)
+    (unit-type-count villager < 29)
+    (up-research-status c: ri-loom != research-pending)
+    (up-research-status c: feudal-age != research-pending)
+    =>
+    (up-drop-resources forage-bush c: 5)
+    (up-drop-resources livestock-class c: 5)
+    (up-drop-resources food c: 10)
+)
+
+(defrule
+    (unit-type-count skirmisher > 0)
+    =>
+    (up-get-fact unit-type-count skirmisher skirmisher-count)
+)
+
+(defrule
+    (up-compare-goal skirmisher-count g:!= last-skirmisher-count)
+    (up-compare-sn sn-maximum-town-size c:<= 36)
+    (not(town-under-attack))
+    =>
+    (up-full-reset-search)
+    (up-find-local c: town-center c: 1)
+    (up-set-target-object search-local c: 0)
+    (up-get-object-data object-data-point-x tc-x)
+    (up-get-object-data object-data-point-y tc-y)
+    (up-find-local c: skirmisher-line c: 240)
+    (up-target-point tc-x action-move -1 -1)
+    (up-modify-goal last-skirmisher-count g:= skirmisher-count)
+)
+
+(defrule
+    (up-compare-goal skirmisher-count g:!= last-skirmisher-count)
+    (up-compare-sn sn-maximum-town-size c:<= 36)
+    (not(town-under-attack))
+    =>
+    (up-full-reset-search)
+    (up-find-local c: town-center c: 1)
+    (up-set-target-object search-local c: 0)
+    (up-get-object-data object-data-point-x tc-x)
+    (up-get-object-data object-data-point-y tc-y)
+    (up-find-local c: skirmisher-line c: 240)
+    (up-target-point tc-x action-move -1 -1)
+    (up-modify-goal last-skirmisher-count g:= skirmisher-count)
+)
+
+(defrule
+    (game-time > 360)
+    (current-age == dark-age)
+    (goal villager-sent-boar -1)
+    =>
+    (up-full-reset-search)
+)
+
+(defrule ; Deer Luring
+    (game-time > 360)
+    (current-age == dark-age)
+    (up-find-remote c: deer c: 1)
+    (goal villager-sent-boar -1)
+    =>
+    (up-find-local c: town-center c: 1)
+    (up-set-target-object search-local c: 0)
+    (up-get-object-data object-data-point-x tc-x)
+    (up-get-object-data object-data-point-y tc-y)
+    (up-full-reset-search)
+    (up-find-remote c: deer c: 1)
+    (up-set-target-object search-remote c: 0)
+    (up-get-object-data object-data-point-x deer-x)
+    (up-get-object-data object-data-point-y deer-y)
+    (up-get-object-data object-data-id deer-id)
+    (up-get-object-data object-data-hitpoints deer-health)
+    (up-get-object-data object-data-carry deer-carry)
+)
+
+(defrule
+    (goal deer-tasked 1)
+    (goal villager-sent-boar -1)
+    (up-compare-goal deer-health c:< 5)
+    (up-compare-goal deer-carry c:< 25)
+    =>
+    (set-goal deer-tasked -1)
+)
+
+(defrule
+    (game-time > 360)
+    (current-age == dark-age)
+    (up-find-remote c: deer c: 1)
+    (goal deer-tasked -1)
+    (goal villager-sent-boar -1)
+    (up-point-distance tc-x deer-x <= 30)
+    =>
+    (up-full-reset-search)
+    (up-lerp-tiles deer-x tc-x c: -1)
+    (up-find-local c: scout-cavalry-line c: 1)
+    (up-find-local c: eagle-warrior-line c: 1)
+    (up-target-point deer-x action-move -1 -1)
+    (set-goal deer-tasked 1)
+    ;(chat-local-to-self "Tasking Scout to Lure Deer")
+)
+
+(defrule
+    (game-time > 360)
+    (current-age == dark-age)
+    (up-find-remote c: deer c: 1)
+    (goal villager-sent-boar -1)
+    =>
+    (up-full-reset-search)
+    (up-find-local c: scout-cavalry-line c: 1)
+    (up-find-local c: eagle-warrior-line c: 1)
+    (up-set-target-object search-local c: 0)
+    (up-get-object-data object-data-point-x scout-x)
+    (up-get-object-data object-data-point-y scout-y)
+)
+
+(defrule
+    (game-time > 360)
+    (current-age == dark-age)
+    (up-find-remote c: deer c: 1)
+    (up-point-distance scout-x deer-x <= 30)
+    (goal villager-sent-boar -1)
+    (up-point-distance tc-x deer-x <= 30)
+    =>
+    (up-full-reset-search)
+    (up-lerp-tiles deer-x tc-x c: -1)
+    (up-find-local c: scout-cavalry-line c: 1)
+    (up-find-local c: eagle-warrior-line c: 1)
+    (up-target-point deer-x action-move -1 -1)
+    ;(chat-local-to-self "Tasking Scout to Lure Deer")
+    (up-full-reset-search)
+)
+
+(defrule
+    (game-time > 360)
+    (current-age == dark-age)
+    (up-find-remote c: deer c: 1)
+    (up-point-distance tc-x deer-x <= 7)
+    (goal villager-sent-boar -1)
+    =>
+    (up-find-local c: villager-class c: 23)
+    (up-remove-objects search-local object-data-action == actionid-builder)
+    (up-remove-objects search-local -1 > 7)
+    (up-target-objects 0 action-default -1 -1)
+)
+
+(defrule
+    (true)
+    =>
+    (up-full-reset-search)
+)
+
+(defrule
+    (goal attacking 0)
+    (not(town-under-attack))
+    =>
+    (up-find-local c: town-center c: 1)
+    (up-set-target-object search-local c: 0)
+    (up-get-object-data object-data-point-x tc-x)
+    (up-get-object-data object-data-point-y tc-y)
+    (up-full-reset-search)
+    (up-find-local c: skirmisher-line c: 240)
+    (up-target-point tc-x action-move -1 -1)
+)
+

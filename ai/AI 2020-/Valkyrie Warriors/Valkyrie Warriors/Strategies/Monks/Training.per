@@ -1,0 +1,9 @@
+#load-if-defined QUARANTINE
+(defrule
+    (goal my-strategy strategy-monks)
+    (current-age >= castle-age)
+    (can-train monk)
+    =>
+    (train monk)
+)
+#end-if

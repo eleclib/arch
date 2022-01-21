@@ -1,0 +1,21 @@
+
+(defrule
+    (current-age == feudal-age)
+    =>
+    (up-modify-goal ScoutRush c:= 1)
+    (disable-self)
+)
+
+(defrule
+    (current-age == feudal-age)
+    (or
+        (or
+            (civ-selected aztec)
+            (civ-selected mayan)
+        )
+        (up-object-type-count-total c: scout-cavalry >= 7)
+    )
+    =>
+    (up-modify-goal ArcherRush c:= 1)
+    (disable-self)
+)

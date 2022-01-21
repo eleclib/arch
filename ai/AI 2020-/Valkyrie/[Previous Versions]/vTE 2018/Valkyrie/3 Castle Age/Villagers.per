@@ -1,0 +1,11 @@
+
+(defrule
+    (current-age == castle-age)
+    (up-can-train 0 c: villager)
+    (up-pending-objects c: villager < 1)
+    (up-object-type-count-total c: villager < 67)
+    (not(can-research imperial-age))
+=>
+    (up-modify-goal FoodVillagers c:+ 1)
+    (up-train 0 c: villager)
+)

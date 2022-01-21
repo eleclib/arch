@@ -1,0 +1,133 @@
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 1)
+    (current-age == imperial-age)
+    (up-pending-objects c: my-unique-unit-line < 1)
+    (up-can-train 0 c: my-unique-unit-line)
+    =>
+    (up-modify-goal WoodVillagers c:+ 1)
+    (up-modify-goal FoodVillagers c:+ 1)
+    (up-modify-goal GoldVillagers c:+ 1)
+    (up-train 0 c: my-unique-unit-line)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 1)
+    (current-age == imperial-age)
+    (up-pending-objects c: eagle-warrior-line < 1)
+    (up-can-train 0 c: eagle-warrior-line)
+    =>
+    (up-modify-goal FoodVillagers c:+ 1)
+    (up-modify-goal GoldVillagers c:+ 1)
+    (up-train 0 c: eagle-warrior-line)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 1)
+    (current-age == imperial-age)
+    (up-pending-objects c: knight-line < 1)
+    (up-can-train 0 c: knight-line)
+    =>
+    (up-modify-goal FoodVillagers c:+ 1)
+    (up-modify-goal GoldVillagers c:+ 1)
+    (up-train 0 c: knight-line)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 1)
+    (current-age == imperial-age)
+    (up-pending-objects c: trebuchet < 1)
+    (up-can-train 0 c: trebuchet)
+    =>
+    (up-modify-goal WoodVillagers c:+ 2)
+    (up-modify-goal GoldVillagers c:+ 2)
+    (up-train 0 c: trebuchet)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 1)
+    (current-age == imperial-age)
+    (up-pending-objects c: battering-ram-line < 1)
+    (up-can-train 0 c: battering-ram-line)
+    =>
+    (up-modify-goal WoodVillagers c:+ 2)
+    (up-modify-goal GoldVillagers c:+ 1)
+    (up-train 0 c: battering-ram-line)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 1)
+    (current-age == imperial-age)
+    (up-pending-objects c: archer-line < 1)
+    (up-can-train 0 c: archer-line)
+    =>
+    (up-modify-goal WoodVillagers c:+ 1)
+    (up-modify-goal GoldVillagers c:+ 1)
+    (up-train 0 c: archer-line)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 1)
+    (current-age == imperial-age)
+    (up-pending-objects c: skirmisher-line < 1)
+    (up-can-train 0 c: skirmisher-line)
+    =>
+    (up-modify-goal WoodVillagers c:+ 1)
+    (up-modify-goal FoodVillagers c:+ 1)
+    (up-train 0 c: skirmisher-line)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 1)
+    (current-age == imperial-age)
+    (up-pending-objects c: spearman-line < 1)
+    (up-can-train 0 c: spearman-line)
+    =>
+    (up-modify-goal WoodVillagers c:+ 1)
+    (up-modify-goal FoodVillagers c:+ 1)
+    (up-train 0 c: spearman-line)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 1)
+    (current-age == imperial-age)
+    (up-pending-objects c: scout-cavalry-line < 1)
+    (up-can-train 0 c: scout-cavalry-line)
+    =>
+    (up-modify-goal FoodVillagers c:+ 1)
+    (up-train 0 c: scout-cavalry-line)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 1)
+    (current-age == imperial-age)
+    (military-population >= 90)
+=>
+    (set-strategic-number sn-maximum-town-size 255)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 1)
+    (current-age == imperial-age)
+    (military-population <= 25)
+=>
+    (set-strategic-number sn-maximum-town-size 30)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 1)
+    (current-age == imperial-age)
+    (up-compare-sn sn-maximum-town-size == 255)
+    (or
+        (up-timer-status GarrisonTimer == timer-disabled)
+        (up-timer-status GarrisonTimer == timer-triggered)
+    )
+    =>
+    (up-garrison battering-ram c: infantry-class)
+    (up-garrison battering-ram c: archery-class)
+    (up-garrison capped-ram c: infantry-class)
+    (up-garrison capped-ram c: archery-class)
+    (up-garrison siege-ram c: infantry-class)
+    (up-garrison siege-ram c: archery-class)
+    (up-set-timer c: GarrisonTimer c: 30)
+)

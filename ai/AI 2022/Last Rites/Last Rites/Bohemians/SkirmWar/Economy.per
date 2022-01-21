@@ -1,0 +1,117 @@
+
+(defrule
+    (true)
+    =>
+    (set-strategic-number sn-food-gatherer-percentage 92)
+    (set-strategic-number sn-stone-gatherer-percentage 8)
+    (disable-self)
+)
+
+
+(defrule
+    (building-type-count-total mill == 1)
+    =>
+    (up-modify-sn sn-wood-gatherer-percentage c:+ cn-bb2-dark-initial-wood-food-eco-adjustment)
+    (up-modify-sn sn-food-gatherer-percentage c:- cn-bb2-dark-initial-wood-food-eco-adjustment)
+    (disable-self)
+)
+
+
+(defrule
+    (up-research-status c: feudal-age >= research-pending)
+    =>
+    (up-modify-sn sn-wood-gatherer-percentage c:= 58)
+    (up-modify-sn sn-food-gatherer-percentage c:= 30)
+    (up-modify-sn sn-gold-gatherer-percentage c:= 6)
+    (up-modify-sn sn-stone-gatherer-percentage c:= 6)
+    ;(up-modify-goal gl-farms-total c:+ 3)
+    (up-retask-gatherers food c: 30)
+    (disable-self)
+)
+
+(defrule
+    (current-age == feudal-age)
+    =>
+    (up-modify-sn sn-wood-gatherer-percentage c:= 48)
+    (up-modify-sn sn-food-gatherer-percentage c:= 40)
+    (up-modify-sn sn-gold-gatherer-percentage c:= 6)
+    (up-modify-sn sn-stone-gatherer-percentage c:= 6)
+    (set-goal gl-vills-total cn-total-villagers-feudal)
+    (up-modify-goal gl-farms-total c:+ 2)
+    (up-modify-goal gl-house-headroom-total c:+ 3)
+    ;(up-modify-goal gl-house-pending-total c:+ 1)
+    (set-goal gl-permit-housing 0)
+    (disable-self)
+)
+
+(defrule
+    (current-age == feudal-age)
+    (building-type-count-total archery-range >= 2)
+    =>
+    (up-modify-goal gl-farms-total c:+ 12)
+    (set-goal gl-permit-housing 1)
+    (disable-self)
+)
+
+(defrule
+    (current-age == feudal-age)
+    (gold-amount > 325)
+    =>
+    (up-modify-goal gl-farms-total c:+ 10)
+    (up-modify-sn sn-gold-gatherer-percentage c:= 0)
+    (up-modify-sn sn-food-gatherer-percentage c:= 54)
+    (disable-self)
+)
+
+(defrule
+    (current-age == feudal-age)
+    (wood-amount > 475)
+    (current-age-time >= 380)
+    =>
+    ;(up-modify-sn sn-wood-gatherer-percentage)
+    (up-modify-goal gl-farms-total c:+ 16)
+    (disable-self)
+)
+
+(defrule
+    (up-research-status c: castle-age >= research-pending)
+    =>
+    (up-modify-sn sn-wood-gatherer-percentage c:= 48)
+    (up-modify-sn sn-food-gatherer-percentage c:= 36)
+    (up-modify-sn sn-gold-gatherer-percentage c:= 16)
+    (up-modify-sn sn-stone-gatherer-percentage c:= 0)
+    (disable-self)
+)
+
+(defrule
+    (current-age == castle-age)
+    =>
+    (up-modify-sn sn-wood-gatherer-percentage c:= 48)
+    (up-modify-sn sn-food-gatherer-percentage c:= 36)
+    (up-modify-sn sn-gold-gatherer-percentage c:= 16)
+    (up-modify-sn sn-stone-gatherer-percentage c:= 0)
+    (up-modify-goal gl-vills-total c:= cn-total-villagers-castle)
+    (up-modify-goal gl-farms-total c:+ 10)
+    (disable-self)
+)
+
+(defrule
+    (current-age == imperial-age)
+    =>
+    (up-modify-sn sn-wood-gatherer-percentage c:= 40)
+    (up-modify-sn sn-food-gatherer-percentage c:= 40)
+    (up-modify-sn sn-gold-gatherer-percentage c:= 10)
+    (up-modify-sn sn-stone-gatherer-percentage c:= 10)
+    (up-modify-goal gl-vills-total c:= cn-total-villagers-imperial)
+    (up-modify-goal gl-farms-total c:+ 20)
+    (disable-self)
+)
+
+(defrule
+    (current-age == dark-age)
+    =>
+    (up-drop-resources food c: 17)
+)
+
+
+

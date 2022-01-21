@@ -1,0 +1,33 @@
+
+(defrule
+    (current-age == castle-age)
+    (gold-amount < 100)
+    (up-gaia-type-count c: gold < 1)
+    (up-gaia-type-count c: stone < 1)
+=>
+    (set-goal DROWN VALK_TRUE)
+    (disable-self)
+)
+
+(defrule
+    (current-age == castle-age)
+    (goal DROWN VALK_TRUE)
+=>
+    (set-strategic-number sn-wood-gatherer-percentage 50)
+    (set-strategic-number sn-food-gatherer-percentage 50)
+    (set-strategic-number sn-gold-gatherer-percentage 0)
+    (set-strategic-number sn-stone-gatherer-percentage 0)
+    (disable-self)
+)
+
+(defrule
+    (current-age == castle-age)
+    (or
+        (up-timer-status TIMER_DROWN_TOWN_SIZE == timer-disabled)
+        (timer-triggered TIMER_DROWN_TOWN_SIZE)
+    )
+    =>
+    (disable-timer TIMER_DROWN_TOWN_SIZE)
+    (up-modify-sn sn-maximum-town-size c:+ 1)
+    (enable-timer TIMER_DROWN_TOWN_SIZE CASTLE_DROWN_TOWN_SIZE_TIME)
+)

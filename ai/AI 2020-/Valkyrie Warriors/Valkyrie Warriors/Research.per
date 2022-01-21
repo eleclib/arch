@@ -1,0 +1,624 @@
+; Priority (WK) ---
+(defrule
+    (up-compare-const is-pocket == 0)
+    (can-research ri-eagle-warrior)
+    =>
+    (research ri-eagle-warrior)
+)
+
+(defrule
+    (up-compare-const is-pocket == 1)
+    (unit-type-count eagle-warrior-line > 5)
+    (can-research ri-eagle-warrior)
+    =>
+    (research ri-eagle-warrior)
+)
+
+; Dark Age ---
+
+(defrule
+    (unit-type-count villager >= 10)
+    =>
+    (set-strategic-number sn-enable-training-queue 0)
+    (disable-self)
+)
+
+(defrule
+	(or	(civ-selected chinese)
+		(civ-selected mayan))
+    (can-research ri-loom)
+    =>
+    (research ri-loom)
+)
+
+(defrule
+    (can-research ri-loom)
+    (unit-type-count villager >= 10)
+    =>
+    (research ri-loom)
+)
+
+(defrule
+    (up-research-status c: ri-loom == research-complete)
+    =>
+    (set-strategic-number sn-enable-training-queue 1)
+    (disable-self)
+)
+
+(defrule
+    (not    (civ-selected malay))
+    (up-compare-const is-pocket == 0)
+    (unit-type-count villager >= 24)
+    (can-research feudal-age)
+    =>
+    (research feudal-age)
+)
+
+(defrule
+    (up-compare-const is-pocket == 0)
+    (unit-type-count villager >= 25)
+    (can-research feudal-age)
+    =>
+    (research feudal-age)
+)
+
+(defrule
+    (not    (civ-selected malay))
+    (up-compare-const is-pocket == 1)
+    (unit-type-count villager >= 28)
+    (can-research feudal-age)
+    =>
+    (research feudal-age)
+)
+
+(defrule
+    (up-compare-const is-pocket == 1)
+    (unit-type-count villager >= 29)
+    (can-research feudal-age)
+    =>
+    (research feudal-age)
+)
+
+; Feudal Age ---
+
+(defrule
+    (current-age == feudal-age)
+    (building-type-count-total farm > 8)
+    =>
+    (set-strategic-number sn-enable-training-queue 0)
+    (disable-self)
+)
+
+(defrule
+    (current-age == feudal-age)
+    (building-type-count-total blacksmith > 0)
+    =>
+    (set-strategic-number sn-enable-training-queue 1)
+    (disable-self)
+)
+
+
+(defrule
+    (or (and (current-age >= castle-age)
+             (up-compare-const is-pocket == 1))
+             (up-compare-const is-pocket == 0))
+    (can-research ri-wheel-barrow)
+    =>
+    (research ri-wheel-barrow)
+)
+
+(defrule
+    (or (and (up-research-status c: castle-age >= research-pending)
+             (up-compare-const is-pocket == 1))
+             (up-compare-const is-pocket == 0))
+    (can-research ri-double-bit-axe)
+    =>
+    (research ri-double-bit-axe)
+)
+
+(defrule
+    (or (and (up-research-status c: castle-age >= research-pending)
+             (up-compare-const is-pocket == 1))
+             (up-compare-const is-pocket == 0))
+    (can-research ri-horse-collar)
+    =>
+    (research ri-horse-collar)
+)
+
+(defrule
+    (or (and (current-age >= castle-age)
+             (up-compare-const is-pocket == 1))
+             (up-compare-const is-pocket == 0))
+    (can-research ri-gold-mining)
+    =>
+    (research ri-gold-mining)
+)
+
+(defrule
+    (current-age >= castle-age)
+    (dropsite-min-distance stone < 3)
+    (can-research ri-stone-mining)
+    =>
+    (research ri-stone-mining)
+)
+
+(defrule
+    (goal need-eagles-counter 0)
+    (goal need-knights-counter 0)
+    (research-completed ri-fletching)
+    (up-compare-const is-pocket == 0)
+    (can-research ri-padded-archer-armor)
+    =>
+    (research ri-padded-archer-armor)
+)
+
+(defrule
+    (up-compare-const is-pocket == 0)
+    (can-research ri-fletching)
+    =>
+    (research ri-fletching)
+)
+
+(defrule
+    (or    (and    (up-compare-const is-pocket == 1)
+                   (up-research-status c: castle-age >= research-pending))
+           (up-compare-const is-pocket == 0))
+     (current-age >= feudal-age)
+     (or    (unit-type-count cavalry-class > 8)
+            (unit-type-count infantry-class >= 2))
+    (can-research ri-forging)
+    =>
+    (research ri-forging)
+)
+
+(defrule
+    (or    (and    (up-compare-const is-pocket == 1)
+                   (up-research-status c: castle-age >= research-pending))
+           (up-compare-const is-pocket == 0))
+    (current-age >= feudal-age)
+    (unit-type-count infantry-class >= 2)
+    (can-research ri-scale-mail)
+    =>
+    (research ri-scale-mail)
+)
+
+(defrule
+    (current-age >= castle-age)
+    (unit-type-count cavalry-class > 2)
+    (can-research ri-scale-barding)
+    =>
+    (research ri-scale-barding)
+)
+
+(defrule
+    (food-amount >= 690)
+    (gold-amount >= 180)
+    =>
+    (set-strategic-number sn-enable-training-queue 0)
+    (disable-self)
+)
+
+(defrule
+    (can-research castle-age)
+    =>
+    (research castle-age)
+)
+
+; Castle Age ---
+
+(defrule
+    (can-research ri-hand-cart)
+    =>
+    (research ri-hand-cart)
+)
+
+(defrule
+    (can-research ri-bow-saw)
+    =>
+    (research ri-bow-saw)
+)
+
+(defrule
+    (can-research ri-heavy-plow)
+    =>
+    (research ri-heavy-plow)
+)
+
+(defrule
+    (can-research ri-gold-shaft-mining)
+    =>
+    (research ri-gold-shaft-mining)
+)
+
+(defrule
+    (can-research ri-stone-shaft-mining)
+    =>
+    (research ri-stone-shaft-mining)
+)
+
+
+(defrule
+    (up-compare-const is-pocket == 0)
+    (or    (players-unit-type-count target-player eagle-warrior-line > 1)
+           (or    (players-unit-type-count target-player heavy-eagle-warrior > 1)
+		   (goal need-eagles-counter 1)))
+    (unit-type-count militiaman-line > 2)
+    (can-research ri-man-at-arms)
+    =>
+    (research ri-man-at-arms)
+)
+
+(defrule
+    (up-compare-const is-pocket == 0)
+    (or    (players-unit-type-count target-player eagle-warrior-line > 3)
+           (players-unit-type-count target-player heavy-eagle-warrior > 3))
+    (unit-type-count militiaman-line > 4)
+    (can-research ri-long-swordsman)
+    =>
+    (research ri-long-swordsman)
+)
+
+(defrule
+    (goal need-eagles-counter 0)
+    (goal need-knights-counter 0)
+    (unit-type-count skirmisher-line > 5)
+    (up-compare-const is-pocket == 0)
+    (can-research ri-elite-skirmisher)
+    =>
+    (research ri-elite-skirmisher)
+)
+
+(defrule
+    (goal need-eagles-counter 0)
+    (goal need-knights-counter 0)
+    (unit-type-count archery-class > 5)
+    (up-compare-const is-pocket == 0)
+    (can-research ri-bodkin-arrow)
+    =>
+    (research ri-bodkin-arrow)
+)
+
+(defrule
+    (goal need-eagles-counter 0)
+    (goal need-knights-counter 0)
+    (up-compare-const is-pocket == 0)
+    (can-research ri-leather-archer-armor)
+    =>
+    (research ri-leather-archer-armor)
+)
+
+(defrule
+    (current-age >= castle-age)
+    (or	(unit-type-count cavalry-class > 8)
+    (unit-type-count infantry-class > 8))
+    (can-research ri-iron-casting)
+    =>
+    (research ri-iron-casting)
+)
+
+(defrule
+    (current-age >= castle-age)
+    (unit-type-count cavalry-class > 8)
+    (can-research ri-chain-barding)
+    =>
+    (research ri-chain-barding)
+)
+
+(defrule
+    (current-age >= castle-age)
+    (unit-type-count cavalry-class > 8)
+    (can-research ri-plate-barding)
+    =>
+    (research ri-plate-barding)
+)
+
+(defrule
+    (current-age >= castle-age)
+    (unit-type-count infantry-class > 8)
+    (can-research ri-chain-mail)
+    =>
+    (research ri-chain-mail)
+)
+
+(defrule
+    (can-research imperial-age)
+    =>
+    (research imperial-age)
+)
+
+; Imperial Age ---
+
+(defrule
+    (can-research ri-two-man-saw)
+    =>
+    (research ri-two-man-saw)
+)
+
+(defrule
+    (can-research ri-crop-rotation)
+    =>
+    (research ri-crop-rotation)
+)
+
+(defrule
+    (up-research-status c: imperial-age >= research-pending)
+    (can-research ri-eagle-warrior)
+    =>
+    (research ri-eagle-warrior)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (or	(unit-type-count cavalry-class > 8)
+    (unit-type-count infantry-class > 8))
+    (can-research ri-blast-furnace)
+    =>
+    (research ri-blast-furnace)
+)
+
+
+(defrule
+    (current-age == imperial-age)
+    (unit-type-count infantry-class > 8)
+    (can-research ri-plate-mail)
+    =>
+    (research ri-plate-mail)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (unit-type-count cavalry-class >= 10)
+    (can-research ri-bloodlines)
+    =>
+    (research ri-bloodlines)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (unit-type-count cavalry-class >= 10)
+    (can-research ri-husbandry)
+    =>
+    (research ri-husbandry)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (unit-type-count camel-line >= 5)
+    (can-research ri-heavy-camel)
+    =>
+    (research ri-heavy-camel)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (can-research ri-cavalier)
+    =>
+    (research ri-cavalier)
+)
+
+(defrule
+    (can-research ri-capped-ram)
+    =>
+    (research ri-capped-ram)
+)
+
+(defrule
+    (can-research ri-siege-ram)
+    =>
+    (research ri-siege-ram)
+)
+
+(defrule
+    (up-research-status c: imperial-age >= research-pending)
+    (unit-type-count infantry-class > 30)
+    (can-research ri-arson)
+    =>
+    (research ri-arson)
+)
+
+
+(defrule
+    (up-research-status c: imperial-age >= research-pending)
+    (unit-type-count infantry-class > 20)
+    (can-research ri-squires)
+    =>
+    (research ri-squires)
+)
+
+(defrule
+    (unit-type-count spearman-line > 5)
+    (can-research ri-pikeman)
+    =>
+    (research ri-pikeman)
+)
+
+(defrule
+    (unit-type-count spearman-line > 5)
+    (can-research ri-halberdier)
+    =>
+    (research ri-halberdier)
+)
+
+
+(defrule
+    (up-research-status c: imperial-age >= research-pending)
+    (unit-type-count infantry-class > 20)
+    (can-research ri-tracking)
+    =>
+    (research ri-tracking)
+)
+
+(defrule
+    (up-research-status c: ri-elite-eagle-warrior >= research-pending)
+    (military-population > 30)
+    (can-research ri-garland-wars)
+    =>
+    (research ri-garland-wars)
+)
+
+(defrule
+    (up-research-status c: ri-elite-eagle-warrior >= research-pending)
+    (military-population > 30)
+    (can-research ri-couriers)
+    =>
+    (research ri-couriers)
+)
+
+(defrule
+    (up-research-status c: ri-elite-eagle-warrior >= research-pending)
+    (military-population > 30)
+    (can-research ri-el-dorado)
+    =>
+    (research ri-el-dorado)
+)
+
+(defrule
+    (population > 175)
+    (can-research ri-conscription)
+    =>
+    (research ri-conscription)
+)
+
+(defrule
+    (population > 175)
+    (unit-type-count trade-cart > 3)
+    (can-research ri-cartography)
+    =>
+    (research ri-cartography)
+)
+
+(defrule
+    (population > 175)
+    (unit-type-count trade-cart > 3)
+    (can-research ri-caravan)
+    =>
+    (research ri-caravan)
+)
+
+(defrule
+    (or	(research-completed ri-cavalier)
+        (or    (research-completed ri-heavy-camel)
+	       (research-completed ri-elite-eagle-warrior)))
+    (unit-type-count skirmisher-line > 5)
+    (can-research ri-elite-skirmisher)
+    =>
+    (research ri-elite-skirmisher)
+)
+
+(defrule
+    (or	(research-completed ri-cavalier)
+        (or    (research-completed ri-heavy-camel)
+	       (research-completed ri-elite-eagle-warrior)))
+    (unit-type-count skirmisher-line > 5)
+    (research-completed ri-elite-skirmisher)
+    (can-research ri-bodkin-arrow)
+    =>
+    (research ri-bodkin-arrow)
+)
+
+(defrule
+    (or	(research-completed ri-cavalier)
+        (or    (research-completed ri-heavy-camel)
+	       (research-completed ri-elite-eagle-warrior)))
+    (or	(and  (unit-type-count skirmisher-line > 5)
+    	      (research-completed ri-elite-skirmisher))
+	(unit-type-count hand-cannoneer > 5))
+    (can-research ri-leather-archer-armor)
+    =>
+    (research ri-leather-archer-armor)
+)
+
+(defrule
+    (or	(research-completed ri-cavalier)
+        (or    (research-completed ri-heavy-camel)
+	       (research-completed ri-elite-eagle-warrior)))
+    (unit-type-count skirmisher-line > 5)
+    (research-completed ri-elite-skirmisher)
+    (can-research ri-fletching)
+    =>
+    (research ri-fletching)
+)
+
+(defrule
+    (or	(research-completed ri-cavalier)
+        (or    (research-completed ri-heavy-camel)
+	       (research-completed ri-elite-eagle-warrior)))
+    (or	(and  (unit-type-count skirmisher-line > 5)
+    	      (research-completed ri-elite-skirmisher))
+	(unit-type-count hand-cannoneer > 5))
+    (can-research ri-padded-archer-armor)
+    =>
+    (research ri-padded-archer-armor)
+)
+
+(defrule
+    (or	(research-completed ri-cavalier)
+        (or    (research-completed ri-heavy-camel)
+	       (research-completed ri-elite-eagle-warrior)))
+    (unit-type-count skirmisher-line > 5)
+    (research-completed ri-elite-skirmisher)
+    (can-research ri-thumb-ring)
+    =>
+    (research ri-thumb-ring)
+)
+
+(defrule
+    (or	(research-completed ri-cavalier)
+        (or    (research-completed ri-heavy-camel)
+	       (research-completed ri-elite-eagle-warrior)))
+    (unit-type-count skirmisher-line > 5)
+    (research-completed ri-elite-skirmisher)
+    (can-research ri-bracer)
+    =>
+    (research ri-bracer)
+)
+
+(defrule
+    (or	(research-completed ri-cavalier)
+        (or    (research-completed ri-heavy-camel)
+	       (research-completed ri-elite-eagle-warrior)))
+    (or	(and  (unit-type-count skirmisher-line > 5)
+    	      (research-completed ri-elite-skirmisher))
+	(unit-type-count hand-cannoneer > 5))
+    (can-research ri-ring-archer-armor)
+    =>
+    (research ri-ring-archer-armor)
+)
+
+(defrule
+    (or	(research-completed ri-cavalier)
+        (or    (research-completed ri-heavy-camel)
+	       (research-completed ri-elite-eagle-warrior)))
+    (unit-type-count skirmisher-line > 5)
+    (research-completed ri-elite-skirmisher)
+    (can-research ri-ballistics)
+    =>
+    (research ri-ballistics)
+)
+
+(defrule
+    (or	(research-completed ri-cavalier)
+        (or    (research-completed ri-heavy-camel)
+	       (research-completed ri-elite-eagle-warrior)))
+    (unit-type-count skirmisher-line > 5)
+    (research-completed ri-elite-skirmisher)
+    (can-research ri-chemistry)
+    =>
+    (research ri-chemistry)
+)
+
+(defrule;indian
+    (research-completed ri-cavalier)
+    (unit-type-count hand-cannoneer > 5)
+    (can-research ri-shatagni)
+    =>
+    (research ri-shatagni)
+)
+
+(defrule;portugues
+    (research-completed ri-cavalier)
+    (unit-type-count hand-cannoneer > 5)
+    (can-research ri-arquebus)
+    =>
+    (research ri-arquebus)
+)

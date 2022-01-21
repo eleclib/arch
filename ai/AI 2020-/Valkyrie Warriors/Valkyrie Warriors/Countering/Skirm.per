@@ -1,0 +1,118 @@
+(defrule
+	(up-compare-goal need-skirms-goal != 0)
+=>	(set-goal need-skirms-goal 0))
+
+#load-if-not-defined TURKISH-CIV
+(defrule
+	(current-age == imperial-age)
+	(or	(players-unit-type-count any-enemy archer-line > 20)
+		(or	(players-unit-type-count any-enemy longbowman-line > 20)
+			(or	(players-unit-type-count any-enemy chu-ko-nu-line > 20)
+				(or	(players-unit-type-count any-enemy genoese-crossbowman > 20)
+					(players-unit-type-count any-enemy plumed-archer-line > 20)))))
+=>	(set-goal need-skirms-goal 1))
+
+(defrule
+	(up-compare-goal need-skirms-goal != 1)
+	(current-age == imperial-age)
+	(or	(players-unit-type-count any-enemy mangudai-line > 20)
+		(or	(players-unit-type-count any-enemy mameluke-line > 20)
+			(or	(players-unit-type-count any-enemy janissary-line > 20)
+				(or	(players-unit-type-count any-enemy rattan-archer > 20)
+					(players-unit-type-count any-enemy hand-cannoneer > 20)))))
+=>	(set-goal need-skirms-goal 1))
+
+#end-if
+
+(defrule
+	(up-research-status c: imperial-age >= research-pending)
+	(building-type-count town-center >= 2)
+	(goal need-skirms-goal 1)
+	(can-build archery-range)
+	(building-type-count-total archery-range < 4)
+=>	(up-set-placement-data my-player-number -1 c: 4)
+	(set-strategic-number sn-placement-zone-size 12)
+	(up-build place-control 0 c:  archery-range))
+
+(defrule
+	(building-type-count archery-range > 3)
+	(building-type-count town-center >= 3)
+	(goal need-skirms-goal 1)
+	(can-build university)
+	(building-type-count-total university <= 0)
+=>	(up-set-placement-data my-player-number -1 c: -4)
+	(set-strategic-number sn-placement-zone-size 16)
+	(up-build place-control 0 c:  university))
+
+#load-if-not-defined AZTEC-CIV
+#load-if-not-defined BRITON-CIV
+#load-if-not-defined BULGARIANS-CIV
+#load-if-not-defined BURMESE-CIV
+#load-if-not-defined CELTIC-CIV
+#load-if-not-defined CUMANS-CIV
+#load-if-not-defined CHINESE-CIV
+#load-if-not-defined ETHIOPIANS-CIV
+#load-if-not-defined HUN-CIV
+#load-if-not-defined INCAN-CIV
+#load-if-not-defined MAGYAR-CIV
+#load-if-not-defined MALAY-CIV
+#load-if-not-defined MAYAN-CIV
+#load-if-not-defined MONGOL-CIV
+#load-if-not-defined SLAVIC-CIV
+#load-if-not-defined VIETNAMESE-CIV
+#load-if-not-defined VIKING-CIV
+
+(defrule
+    (or	(research-completed ri-cavalier)
+        (research-completed ri-heavy-camel))
+    (can-research ri-chemistry)
+    =>
+    (research ri-chemistry)
+)
+
+(defrule
+    (or	(research-completed ri-cavalier)
+        (research-completed ri-heavy-camel))
+    (building-type-count-total university <= 0)
+    (can-build university)
+    =>
+    (up-set-placement-data my-player-number -1 c: -4)
+    (set-strategic-number sn-placement-zone-size 16)
+    (up-build place-control 0 c:  university)
+)
+
+(defrule
+	(up-research-status c: imperial-age >= research-pending)
+	(or	(building-type-count barracks > 3)
+		(building-type-count stable > 3))
+	(can-build archery-range)
+	(building-type-count-total archery-range < 4)
+=>	(up-set-placement-data my-player-number -1 c: 4)
+	(set-strategic-number sn-placement-zone-size 12)
+	(up-build place-control 0 c:  archery-range))
+
+#end-if #end-if #end-if #end-if #end-if #end-if #end-if #end-if #end-if #end-if #end-if #end-if #end-if #end-if #end-if #end-if #end-if
+
+
+(defrule
+	(goal need-skirms-goal 1)
+	(or	(research-completed ri-plate-barding)
+		(or	(research-completed ri-plate-mail)
+			(research-completed ri-blast-furnace)))
+	(or	(unit-type-count cavalry-class >= 25)
+		(or	(unit-type-count eagle-warrior-line >= 25)
+			(gold-amount < 120)))
+	(unit-type-count-total skirmisher-line < 40)
+	(can-train skirmisher-line)
+=>	(train skirmisher-line))
+
+
+
+(defrule
+	(goal need-skirms-goal 0)
+	(or	(unit-type-count cavalry-class >= 25)
+		(unit-type-count eagle-warrior-line >= 25))
+	(military-population > 30)
+	(unit-type-count-total hand-cannoneer < 25)
+	(can-train hand-cannoneer)
+=>	(train hand-cannoneer))

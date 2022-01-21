@@ -1,0 +1,13 @@
+
+(defrule
+    (unit-type-count-total villager >= 10)
+    (can-research ri-loom)
+    =>
+    (research ri-loom)
+)
+
+(defrule
+    (can-research feudal-age)
+    =>
+    (research feudal-age)
+)

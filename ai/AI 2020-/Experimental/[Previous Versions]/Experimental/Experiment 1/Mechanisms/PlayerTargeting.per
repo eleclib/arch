@@ -1,0 +1,18 @@
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 1)
+    (or
+        (up-timer-status PlayerTargetingTimer == timer-disabled)
+        (up-timer-status PlayerTargetingTimer == timer-triggered)
+    )
+    =>
+    (up-find-player enemy find-closest TargetedPlayer)
+    (up-modify-sn sn-focus-player-number g:= TargetedPlayer)
+    (up-modify-sn sn-target-player-number g:= TargetedPlayer)
+
+    ;Debug
+;   (up-chat-data-to-self "FocusPlayerNumber: %d" s: sn-focus-player-number)
+;   (up-chat-data-to-self "TargetPlayerNumber: %d" s: sn-target-player-number)
+
+    (up-set-timer c: PlayerTargetingTimer c: 300)
+)

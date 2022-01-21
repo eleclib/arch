@@ -1,0 +1,39 @@
+
+
+
+(defrule
+    (goal gl-permit-housing 1)
+    (up-get-fact housing-headroom 0 gl-up-get-fact)
+    (up-compare-goal gl-up-get-fact g:< gl-house-headroom-total)
+    (up-pending-objects c: house g:< gl-house-pending-total)
+    (can-build house)
+    =>
+    (up-set-placement-data my-player-number town-center c: 13)
+    (up-build place-control 0 c: house)
+)
+
+
+
+
+(defrule
+    (current-age == feudal-age)
+    =>
+    (up-modify-goal gl-house-headroom-total c:+ 4)
+    (disable-self)
+)
+
+
+(defrule
+    (current-age == castle-age)
+    =>
+    (up-modify-goal gl-house-headroom-total c:+ 6)
+    (disable-self)
+)
+
+
+(defrule
+    (current-age == feudal-age)
+    =>
+    (up-modify-goal gl-house-headroom-total c:+ 9)
+    (disable-self)
+)

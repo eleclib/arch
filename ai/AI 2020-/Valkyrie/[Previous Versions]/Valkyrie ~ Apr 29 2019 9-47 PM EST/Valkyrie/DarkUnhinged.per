@@ -1,0 +1,35 @@
+
+(defrule
+    (goal goal-dark-strategy dark-unhinged)
+    =>
+    (set-strategic-number sn-enable-boar-hunting 1)
+    (disable-self)
+)
+
+(defrule
+    (goal goal-dark-strategy dark-unhinged)
+    (unit-type-count villager >= 8)
+    =>
+    (up-modify-sn sn-wood-gatherer-percentage c:+ 20)
+    (up-modify-sn sn-food-gatherer-percentage c:- 20)
+    (disable-self)
+)
+
+(defrule
+    (goal goal-dark-strategy dark-unhinged)
+    (unit-type-count villager >= 21)
+    =>
+    (up-modify-sn sn-wood-gatherer-percentage c:+ 20)
+    (up-modify-sn sn-food-gatherer-percentage c:- 20)
+    (disable-self)
+)
+
+(defrule
+    (current-age == dark-age)
+    (goal goal-dark-strategy dark-unhinged)
+    (unit-type-count-total villager < 29)
+    (can-train villager)
+    =>
+    (train villager)
+)
+

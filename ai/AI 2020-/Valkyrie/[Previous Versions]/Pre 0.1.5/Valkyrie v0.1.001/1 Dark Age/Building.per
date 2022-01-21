@@ -1,0 +1,68 @@
+
+
+(defrule
+    (not
+        (civ-selected chinese)
+    )
+    (current-age == dark-age)
+    (up-can-build 0 c: house)
+    (up-pending-objects c: house < 1)
+    (housing-headroom < 2)
+=>
+    (up-build place-normal 0 c: house)
+
+)
+
+
+
+
+
+
+(defrule
+    (civ-selected chinese)
+    (current-age == dark-age)
+    (up-can-build 0 c: house)
+    (up-pending-objects c: house < 1)
+    (housing-headroom < 2)
+=>
+    (up-build place-normal 0 c: house)
+)
+
+
+
+
+
+(defrule
+    (current-age == dark-age)
+    (or
+        (civ-selected hun)
+        (up-object-type-count c: house >= 2)
+    )
+    (up-object-type-count-total c: mill < 1)
+    ;;;;(up-gaia-type-count c: food >= 6)
+    (up-pending-objects c: mill < 1)
+=>
+    (up-build place-normal 0 c: mill)
+)
+
+
+
+
+(defrule
+    (current-age == dark-age)
+    (up-object-type-count-total c: mill >= 1)
+    (up-object-type-count-total c: lumber-camp < 1)
+    (up-pending-objects c: lumber-camp < 1)
+=>
+    (up-build place-normal 0 c: lumber-camp)
+)
+
+
+
+(defrule
+    (current-age == dark-age)
+    (up-object-type-count-total c: lumber-camp >= 1)
+    (idle-farm-count == 0)
+=>
+    (up-build place-normal 0 c: farm)
+)

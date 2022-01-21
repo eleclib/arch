@@ -1,0 +1,19 @@
+
+
+(defrule
+    (goal gl-attacking 1)
+    (up-timer-status tm-attacking-timer <= timer-triggered)
+    =>
+    (up-full-reset-search)
+    (up-find-local c: -1 c: 240)
+    (up-remove-objects search-local object-data-class == building-class)
+    (up-remove-objects search-local object-data-class == villager-class)
+    (up-remove-objects search-local object-data-class == scout-cavalry-class)
+    (up-find-remote c: town-center c: 1)
+    (up-set-target-object search-remote c: 0)
+    (up-get-point position-object gl-temp)
+    (up-set-target-point gl-temp)
+    (up-remove-objects search-local object-data-distance < 30)
+    (up-target-objects 0 action-move -1 -1)
+    (enable-timer tm-attacking-timer 10)
+)

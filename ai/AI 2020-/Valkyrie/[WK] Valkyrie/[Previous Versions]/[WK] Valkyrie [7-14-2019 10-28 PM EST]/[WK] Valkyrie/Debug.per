@@ -1,0 +1,34 @@
+
+(defrule
+    (game-time > 5)
+    =>
+    (up-chat-data-to-self "My Flank: %d" g: my-ally-flank)
+    (up-chat-data-to-self "My Pocket: %d" g: my-ally-pocket)
+    (up-chat-data-to-self "My Second Flank: %d" g: my-ally-second-flank)
+    (up-chat-data-to-self "My Second Pocket: %d" g: my-ally-second-pocket)
+    (up-chat-data-to-player every-ally "My Flank: %d" g: my-ally-flank)
+    (up-chat-data-to-player every-ally "My Pocket: %d" g: my-ally-pocket)
+    (up-chat-data-to-player every-ally "My Second Flank: %d" g: my-ally-second-flank)
+    (up-chat-data-to-player every-ally "My Second Pocket: %d" g: my-ally-second-pocket)
+    (disable-self)
+)
+
+(defrule ; Debug
+    (game-time > 45)
+    (up-timer-status debug-list-timer-1 <= timer-triggered)
+    =>
+    (up-chat-data-to-self "Target Player: %d" s: sn-target-player-number)
+    (up-chat-data-to-self "Attack Threshold: %d" g: attack-amount-threshold)
+    (up-chat-data-to-self "Max Town Size: %d" s: sn-maximum-town-size)
+    (up-chat-data-to-self "Safe Town Size: %d" s: sn-safe-town-size)
+    (up-set-timer c: debug-list-timer-1 c: 45)
+)
+
+(defrule ; Debug
+    (game-time > 45)
+    (up-timer-status debug-list-timer-2 <= timer-triggered)
+    =>
+    (up-chat-data-to-self "Resign Points: %d/5" g: resign-points)
+    (up-chat-data-to-player every-ally "Resign Points: %d/5" g: resign-points)
+    (up-set-timer c: debug-list-timer-2 c: 75)
+)

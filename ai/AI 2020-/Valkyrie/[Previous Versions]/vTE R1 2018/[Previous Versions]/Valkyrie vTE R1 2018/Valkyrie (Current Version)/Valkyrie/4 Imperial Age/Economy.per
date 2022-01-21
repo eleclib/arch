@@ -1,0 +1,8 @@
+
+(defrule
+    (player-in-game any-ally)
+    (current-age == imperial-age)
+    (up-object-type-count-total c: trade-cart < 25)
+    =>
+    (up-train 0 c: trade-cart)
+)

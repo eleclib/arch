@@ -1,0 +1,17 @@
+
+(defrule
+    (current-age == feudal-age)
+    (up-enemy-units-in-town > 0)
+    (players-unit-type-count any-enemy scout-cavalry-line > 0)
+    =>
+    (train spearman-line)
+)
+
+
+(defrule
+    (current-age == feudal-age)
+    (up-enemy-units-in-town > 0)
+    (players-unit-type-count any-enemy knight-line > 0)
+    =>
+    (train spearman-line)
+)

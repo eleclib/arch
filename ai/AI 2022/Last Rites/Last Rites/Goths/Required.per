@@ -1,0 +1,62 @@
+
+
+(defrule
+    (true)
+    =>
+    (set-strategic-number sn-enable-new-building-system 1)
+    (set-strategic-number sn-cap-civilian-builders 200)
+    (set-strategic-number sn-initial-exploration-required 0)
+    (set-strategic-number sn-home-exploration-time 900)
+    (set-strategic-number sn-enable-training-queue 1)
+    (set-strategic-number sn-enable-research-queue 1)
+    (set-strategic-number sn-maximum-wood-drop-distance 30)
+    (set-strategic-number sn-maximum-food-drop-distance 30)
+    (set-strategic-number sn-maximum-gold-drop-distance 30)
+    (set-strategic-number sn-maximum-stone-drop-distance 30)
+    (set-strategic-number sn-maximum-hunt-drop-distance 30)
+    (set-strategic-number sn-lumber-camp-max-distance 20)
+    (set-strategic-number sn-mining-camp-max-distance 20)
+    (set-strategic-number sn-enable-boar-hunting 0)
+    (set-strategic-number sn-minimum-boar-hunt-group-size 8)
+    (set-strategic-number sn-minimum-boar-lure-group-size 0)
+    (set-strategic-number sn-maximum-town-size 9)
+    (set-strategic-number sn-blot-exploration-map 0)
+    ;(set-strategic-number sn-intelligent-gathering 1)
+    (set-strategic-number sn-percent-civilian-explorers 0)
+    (set-strategic-number sn-number-explore-groups 1)
+    (set-strategic-number sn-mill-max-distance 24)
+    (set-strategic-number sn-coop-share-information 1)
+    (set-strategic-number sn-defer-dropsite-update 1)
+    (disable-self)
+)
+
+(defrule
+    (true)
+    =>
+    ;(set-strategic-number sn-defend-overlap-distance 8)
+    ;(set-strategic-number sn-defense-distance 8)
+    ;(set-strategic-number sn-sentry-distance 17)
+    ;(set-strategic-number sn-sentry-distance-variation 4)
+    ;(set-strategic-number sn-disable-attack-groups 0)
+    (disable-self)
+)
+
+(defrule
+    (true)
+    =>
+    ;(set-goal gl-farms-total 0)
+    (set-goal gl-house-headroom-total 4)
+    (set-goal gl-house-pending-total 1)
+    (set-goal gl-farms-idle-total 1)
+    (set-goal gl-permit-housing 1)
+    (disable-self)
+)
+
+
+
+(defrule
+    (can-research ri-loom)
+    =>
+    (research ri-loom)
+)
+

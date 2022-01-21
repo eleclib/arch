@@ -1,0 +1,27 @@
+
+; Military Structures
+
+(defrule
+    (current-age == imperial-age)
+    (building-type-count-total castle < 1)
+    (can-build castle)
+    =>
+    (build castle)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (building-type-count-total monastery < 27)
+    (can-build monastery)
+    =>
+    (build monastery)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (building-type-count-total siege-workshop < 6)
+    (can-build siege-workshop)
+    =>
+    (build siege-workshop)
+)
+

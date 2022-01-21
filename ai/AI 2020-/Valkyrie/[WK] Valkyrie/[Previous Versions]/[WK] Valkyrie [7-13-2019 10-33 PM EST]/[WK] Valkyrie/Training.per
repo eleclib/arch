@@ -1,0 +1,144 @@
+
+(defrule
+    (up-compare-const is-pocket == 0)
+    (current-age == dark-age)
+    (up-can-train to-escrow c: villager)
+    (unit-type-count-total villager < 23)
+    =>
+    (up-train to-escrow c: villager)
+)
+
+(defrule
+    (up-compare-const is-pocket == 0)
+    (current-age == feudal-age)
+    (up-can-train to-escrow c: villager)
+    (unit-type-count-total villager < 70)
+    =>
+    (up-train to-escrow c: villager)
+)
+
+(defrule
+    (up-compare-const is-pocket == 1)
+    (current-age == dark-age)
+    (up-can-train to-escrow c: villager)
+    (unit-type-count-total villager < 29)
+    =>
+    (up-train to-escrow c: villager)
+)
+
+(defrule
+    (up-compare-const is-pocket == 1)
+    (current-age == feudal-age)
+    (up-can-train to-escrow c: villager)
+    (unit-type-count-total villager < 31)
+    =>
+    (up-train to-escrow c: villager)
+)
+
+(defrule
+    (current-age == castle-age)
+    (up-can-train to-escrow c: villager)
+    (unit-type-count-total villager < 120)
+    =>
+    (up-train to-escrow c: villager)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (up-can-train to-escrow c: villager)
+    (unit-type-count-total villager < 120)
+    =>
+    (up-train to-escrow c: villager)
+)
+
+(defrule
+    (game-time < 1260)
+    (up-can-train to-escrow c: skirmisher)
+    =>
+    (up-train to-escrow c: skirmisher)
+)
+
+(defrule
+    ;(game-time < 1260)
+    (current-age == castle-age)
+    (game-time < 2400)
+    (up-can-train to-escrow c: skirmisher)
+    =>
+    (up-train to-escrow c: skirmisher)
+)
+
+(defrule
+    (current-age == castle-age)
+    (game-time < 2400)
+    (up-can-train to-escrow c: eagle-warrior)
+    =>
+    (up-train to-escrow c: eagle-warrior)
+)
+
+(defrule
+    (current-age == castle-age)
+    (game-time < 2400)
+    (up-can-train to-escrow c: knight)
+    =>
+    (up-train to-escrow c: knight)
+)
+
+(defrule
+    (current-age == castle-age)
+    (game-time < 2400)
+    (up-can-train to-escrow c: battering-ram)
+    =>
+    (up-train to-escrow c: battering-ram)
+)
+
+(defrule
+    (current-age == castle-age)
+    (game-time < 2400)
+    (up-can-train to-escrow c: mangonel)
+    =>
+    (up-train to-escrow c: mangonel)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (up-can-train to-escrow c: skirmisher)
+    =>
+    (up-train to-escrow c: skirmisher)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (up-can-train to-escrow c: eagle-warrior)
+    =>
+    (up-train to-escrow c: eagle-warrior)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (up-can-train to-escrow c: knight)
+    =>
+    (up-train to-escrow c: knight)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (up-can-train to-escrow c: battering-ram)
+    =>
+    (up-train to-escrow c: battering-ram)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (up-can-train to-escrow c: mangonel)
+    =>
+    (up-train to-escrow c: mangonel)
+)
+
+(defrule
+    (player-in-game any-ally)
+    (current-age >= castle-age)
+    (can-train trade-cart)
+    (unit-type-count-total trade-cart <= 40)
+    =>
+    (train trade-cart)
+)

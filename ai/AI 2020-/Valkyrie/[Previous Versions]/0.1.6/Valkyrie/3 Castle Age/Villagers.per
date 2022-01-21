@@ -1,0 +1,9 @@
+
+(defrule
+    (current-age == castle-age)
+    (up-can-train 0 c: villager)
+    (up-pending-objects c: villager < 1)
+    (not(can-research imperial-age))
+=>
+    (up-train 0 c: villager)
+)

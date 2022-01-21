@@ -1,0 +1,609 @@
+
+(defconst forage-bush 59)
+(defconst fact-population-cap 1)
+(defconst fact-population 30)
+
+(defconst current_pop 1)
+(defconst cap_pop 2)
+
+(defconst train_units 3)
+
+(defrule
+    (true)
+    =>
+    (set-strategic-number sn-enable-new-building-system 1)
+    (set-strategic-number sn-enable-patrol-attack 1)
+    (set-strategic-number sn-initial-exploration-required 0)
+    (set-strategic-number sn-cap-civilian-explorers 0)
+    (set-strategic-number sn-number-explore-groups 1)
+    (set-strategic-number sn-cap-civilian-builders 200)
+    (disable-self)
+)
+
+(defrule
+    (true)
+    =>
+    (set-strategic-number sn-maximum-wood-drop-distance 30)
+    (set-strategic-number sn-maximum-food-drop-distance 30)
+    (set-strategic-number sn-maximum-hunt-drop-distance 30)
+    (set-strategic-number sn-maximum-fish-boat-drop-distance 30)
+    (set-strategic-number sn-maximum-gold-drop-distance 30)
+    (set-strategic-number sn-maximum-stone-drop-distance 30)
+    (disable-self)
+)
+
+(defrule
+    (true)
+    =>
+    (set-strategic-number sn-food-gatherer-percentage 100)
+    (disable-self)
+)
+
+(defrule
+    (unit-type-count villager >= 17)
+    =>
+    (set-strategic-number sn-wood-gatherer-percentage 38)
+    (set-strategic-number sn-food-gatherer-percentage 62)
+    (disable-self)
+)
+
+(defrule
+    (current-age == feudal-age)
+    =>
+    (set-strategic-number sn-wood-gatherer-percentage 42)
+    (set-strategic-number sn-food-gatherer-percentage 48)
+    (set-strategic-number sn-gold-gatherer-percentage 10)
+    (disable-self)
+)
+
+(defrule
+    (true)
+    =>
+    (set-goal train_units 1)
+    (disable-self)
+)
+
+(defrule
+    (current-age == dark-age)
+    =>
+    (set-goal train_units 1)
+    (disable-self)
+)
+
+(defrule
+    (current-age == feudal-age)
+    =>
+    (set-goal train_units 1)
+    (disable-self)
+)
+
+(defrule
+    (current-age == castle-age)
+    =>
+    (set-goal train_units 1)
+    (disable-self)
+)
+
+(defrule
+    (current-age == imperial-age)
+    =>
+    (set-goal train_units 1)
+    (disable-self)
+)
+
+;(defrule
+    ;(true)
+    ;=>
+    ;(set-escrow-percentage wood 65)
+    ;(set-escrow-percentage food 65)
+    ;(set-escrow-percentage gold 65)
+    ;(set-escrow-percentage stone 65)
+    ;(disable-self)
+;)
+
+;(defrule
+;    (current-age == feudal-age)
+;    =>
+;    (set-escrow-percentage wood 70)
+;    (set-escrow-percentage food 70)
+;    (set-escrow-percentage gold 70)
+;    (set-escrow-percentage stone 70)
+;    (disable-self)
+;)
+
+(defrule
+    (true)
+    =>
+    (research ri-loom)
+)
+
+(defrule
+    (true)
+    =>
+    (research feudal-age)
+)
+
+(defrule
+    ;(can-research-with-escrow castle-age)
+    (can-research castle-age)
+    =>
+    ;(release-escrow food)
+    ;(release-escrow gold)
+    (research castle-age)
+)
+
+(defrule
+    ;(can-research-with-escrow imperial-age)
+    (can-research imperial-age)
+    =>
+    ;(release-escrow food)
+    ;(release-escrow gold)
+    (research imperial-age)
+)
+
+(defrule
+    (current-age == dark-age)
+    (unit-type-count villager < 30)
+    ;(can-train-with-escrow villager)
+    (can-train villager)
+    =>
+    ;(release-escrow food)
+    (train villager)
+)
+
+(defrule
+    (current-age == feudal-age)
+    (unit-type-count villager < 50)
+    ;(can-train-with-escrow villager)
+    (can-train villager)
+    =>
+    ;(release-escrow food)
+    (train villager)
+)
+
+(defrule
+    (current-age == castle-age)
+    (unit-type-count villager < 75)
+    ;(can-train-with-escrow villager)
+    (can-train villager)
+    =>
+    ;(release-escrow food)
+    (train villager)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (unit-type-count villager < 100)
+    ;(can-train-with-escrow villager)
+    (can-train villager)
+    =>
+    ;(release-escrow food)
+    (train villager)
+)
+
+(defrule
+    (true)
+    =>
+    (research ri-elite-skirmisher)
+    (research ri-pikeman)
+    (research ri-halberdier)
+    (research ri-cavalier)
+    (research ri-paladin)
+    (research ri-light-cavalry)
+    (research ri-hussar)
+    (research my-unique-research)
+    (research my-unique-unit-upgrade)
+    (research ri-onager)
+    (research ri-siege-onager)
+    (research ri-heavy-scorpion)
+    (research ri-husbandry)
+    (research ri-bloodlines)
+)
+
+(defrule
+    (true)
+    =>
+    (research ri-chemistry)
+    (research ri-ballistics)
+    (research ri-capped-ram)
+    (research ri-siege-ram)
+)
+
+(defrule
+    (true)
+    =>
+    (research ri-padded-archer-armor)
+    (research ri-leather-archer-armor)
+    (research ri-ring-archer-armor)
+    (research ri-fletching)
+    (research ri-bodkin-arrow)
+    (research ri-bracer)
+    (research ri-forging)
+    (research ri-iron-casting)
+    (research ri-blast-furnace)
+    (research ri-scale-barding)
+    (research ri-chain-barding)
+    (research ri-plate-barding)
+)
+
+(defrule
+    (true)
+    =>
+    (research ri-scale-mail)
+    (research ri-chain-mail)
+    (research ri-plate-mail)
+    (research ri-scale-mail)
+    (research ri-stone-mining)
+    (research ri-stone-shaft-mining)
+    (research ri-gold-mining)
+    (research ri-gold-shaft-mining)
+    (research ri-double-bit-axe)
+    (research ri-bow-saw)
+    (research ri-two-man-saw)
+    (research ri-horse-collar)
+    (research ri-heavy-plow)
+    (research ri-crop-rotation)
+)
+
+(defrule
+    (true)
+    =>
+    (research ri-wheel-barrow)
+    (research ri-hand-cart)
+)
+
+
+(defrule
+    (goal train_units 1)
+    =>
+    (train spearman)
+)
+
+(defrule
+    (goal train_units 1)
+    =>
+    (train skirmisher)
+)
+
+(defrule
+    (goal train_units 1)
+    =>
+    (train scout-cavalry)
+)
+
+(defrule
+    (goal train_units 1)
+    (player-in-game any-ally)
+    (unit-type-count trade-cart < 20)
+    =>
+    (train trade-cart)
+)
+
+(defrule
+    (goal train_units 1)
+    =>
+    (train knight)
+    (train eagle-warrior)
+)
+
+(defrule
+    (goal train_units 1)
+    =>
+    (train scorpion)
+)
+
+(defrule
+    (goal train_units 1)
+    =>
+    (train mangonel)
+)
+
+(defrule
+    (goal train_units 1)
+    =>
+    (train battering-ram)
+)
+
+(defrule
+    (goal train_units 1)
+    =>
+    (train my-unique-unit)
+)
+
+(defrule
+    (building-type-count-total town-center < 3)
+    (can-build town-center)
+    =>
+    (build town-center)
+)
+
+(defrule
+    (housing-headroom < 5)
+    (up-pending-objects c: house < 3)
+    (can-build house)
+    =>
+    (build house)
+)
+
+(defrule
+    (or
+        (up-gaia-type-count c: food > 2)
+        (up-gaia-type-count c: forage-bush > 0)
+    )
+    (building-type-count mill < 1)
+    (up-pending-objects c: mill < 1)
+    (can-build mill)
+    =>
+    (build mill)
+)
+
+(defrule
+    (up-gaia-type-count c: wood > 25)
+    (building-type-count mill > 0)
+    (building-type-count lumber-camp < 1)
+    (up-pending-objects c: lumber-camp < 1)
+    (can-build lumber-camp)
+    =>
+    (build lumber-camp)
+)
+
+(defrule
+    (current-age == dark-age)
+    (building-type-count lumber-camp > 0)
+    (idle-farm-count < 1)
+    (up-pending-objects c: farm < 1)
+    (can-build farm)
+    =>
+    (build farm)
+)
+
+(defrule
+    (current-age == feudal-age)
+    (or
+        (building-type-count barracks > 0)
+        (building-type-count farm < 20)
+    )
+    (idle-farm-count < 1)
+    (up-pending-objects c: farm < 1)
+    (can-build farm)
+    =>
+    (build farm)
+)
+
+(defrule
+    (current-age == castle-age)
+    (or
+        (building-type-count siege-workshop > 0)
+        (building-type-count farm < 40)
+    )
+    (idle-farm-count < 1)
+    (up-pending-objects c: farm < 1)
+    (can-build farm)
+    =>
+    (build farm)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (idle-farm-count < 1)
+    (up-pending-objects c: farm < 1)
+    (can-build farm)
+    =>
+    (build farm)
+)
+(defrule
+    (building-type-count mill > 0)
+    (building-type-count lumber-camp > 0)
+    (building-type-count barracks < 1)
+    (up-pending-objects c: barracks < 1)
+    ;(can-build-with-escrow barracks)
+    (can-build barracks)
+    =>
+    ;(release-escrow wood)
+    (build barracks)
+)
+
+(defrule
+    (building-type-count barracks > 0)
+    (building-type-count archery-range < 1)
+    (up-pending-objects c: archery-range < 1)
+    ;(can-build-with-escrow archery-range)
+    (can-build archery-range)
+    =>
+    ;(release-escrow wood)
+    (build archery-range)
+)
+
+(defrule
+    (building-type-count barracks > 0)
+    (building-type-count stable < 1)
+    (up-pending-objects c: stable < 1)
+    ;(can-build-with-escrow stable)
+    (can-build stable)
+    =>
+    ;(release-escrow wood)
+    (build stable)
+)
+
+(defrule
+    (or
+        (building-type-count archery-range > 0)
+        (or
+            (building-type-count stable > 0)
+            (building-type-count watch-tower > 0)
+        )
+    )
+    (building-type-count blacksmith < 1)
+    (up-pending-objects c: blacksmith < 1)
+    ;(can-build-with-escrow blacksmith)
+    (can-build blacksmith)
+    =>
+    ;(release-escrow wood)
+    (build blacksmith)
+)
+
+(defrule
+    (building-type-count market < 1)
+    (up-pending-objects c: market < 1)
+    ;(can-build-with-escrow market)
+    (can-build market)
+    =>
+    ;(release-escrow wood)
+    (build market)
+)
+
+(defrule
+    (resource-found gold)
+    (building-type-count mining-camp < 2)
+    (up-pending-objects c: mining-camp < 1)
+    (can-build mining-camp)
+    =>
+    (build mining-camp)
+)
+
+(defrule
+    (resource-found stone)
+    (building-type-count mining-camp < 2)
+    (up-pending-objects c: mining-camp < 1)
+    (can-build mining-camp)
+    =>
+    (build mining-camp)
+)
+
+(defrule
+    (dropsite-min-distance gold >= 5)
+    (dropsite-min-distance gold != -1)
+    (dropsite-min-distance gold != 255)
+    (up-pending-objects c: mining-camp < 1)
+    ;(can-build-with-escrow mining-camp)
+    (can-build mining-camp)
+    =>
+    (up-modify-sn sn-mining-camp-max-distance c:+ 5)
+    ;(release-escrow wood)
+    (build mining-camp)
+)
+
+(defrule
+    (dropsite-min-distance stone >= 5)
+    (dropsite-min-distance stone != -1)
+    (dropsite-min-distance stone != 255)
+    (up-pending-objects c: mining-camp < 1)
+    ;(can-build-with-escrow mining-camp)
+    (can-build mining-camp)
+    =>
+    (up-modify-sn sn-mining-camp-max-distance c:+ 5)
+    ;(release-escrow wood)
+    (build mining-camp)
+)
+
+(defrule
+    (dropsite-min-distance wood >= 5)
+    (dropsite-min-distance wood != -1)
+    (dropsite-min-distance wood != 255)
+    (up-pending-objects c: lumber-camp < 1)
+    ;(can-build-with-escrow lumber-camp)
+    (can-build lumber-camp)
+    =>
+    (up-modify-sn sn-lumber-camp-max-distance c:+ 2)
+    ;(release-escrow wood)
+    (build lumber-camp)
+)
+
+(defrule
+    (can-build castle)
+    =>
+    (build castle)
+)
+
+(defrule
+    (current-age == castle-age)
+    (building-type-count barracks < 5)
+    (up-pending-objects c: barracks < 1)
+    ;(can-build-with-escrow barracks)
+    (can-build barracks)
+    =>
+    ;(release-escrow wood)
+    (build barracks)
+)
+
+(defrule
+    (current-age == castle-age)
+    (building-type-count archery-range < 5)
+    (up-pending-objects c: archery-range < 1)
+    ;(can-build-with-escrow archery-range)
+    (can-build archery-range)
+    =>
+    ;(release-escrow wood)
+    (build archery-range)
+)
+
+(defrule
+    (current-age == castle-age)
+    (building-type-count stable < 5)
+    (up-pending-objects c: stable < 1)
+    ;(can-build-with-escrow stable)
+    (can-build stable)
+    =>
+    ;(release-escrow wood)
+    (build stable)
+)
+
+(defrule
+    (building-type-count siege-workshop < 5)
+    (up-pending-objects c: siege-workshop < 1)
+    ;(can-build-with-escrow siege-workshop)
+    (can-build siege-workshop)
+    =>
+    ;(release-escrow wood)
+    (build siege-workshop)
+)
+
+(defrule
+    (building-type-count monastery < 5)
+    (up-pending-objects c: monastery < 1)
+    ;(can-build-with-escrow monastery)
+    (can-build monastery)
+    =>
+    ;(release-escrow wood)
+    (build monastery)
+)
+
+(defrule
+    (building-type-count university < 1)
+    (up-pending-objects c: university < 1)
+    (can-build university)
+    ;(can-build-with-escrow university)
+    =>
+    ;(release-escrow wood)
+    (build university)
+)
+
+(defrule
+    (true)
+    =>
+    (up-get-fact fact-population-cap 0 cap_pop)
+    (up-get-fact fact-population 0 current_pop)
+)
+
+(defrule
+    (or
+        (military-population > 30)
+        (up-compare-goal current_pop g:>= cap_pop)
+    )
+    (up-enemy-buildings-in-town < 1)
+    =>
+    (up-modify-sn sn-maximum-town-size c:+ 5)
+)
+
+(defrule
+    (military-population < 15)
+    =>
+    (set-strategic-number sn-maximum-town-size 25)
+)
+
+(defrule
+    (current-age-time > 900)
+    =>
+    (set-goal train_units 0)
+)
+    

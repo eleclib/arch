@@ -1,0 +1,49 @@
+
+(defrule
+    (current-age == castle-age)
+    =>
+    (set-strategic-number sn-maximum-town-size 24)
+    (disable-self)
+)
+
+(defrule
+    (current-age == castle-age)
+    (idle-farm-count < 1)
+    (up-pending-objects c: farm < 1)
+    (can-build farm)
+    =>
+    (build farm)
+)
+
+(defrule
+    (current-age == castle-age)
+    (dropsite-min-distance stone > 5)
+    (dropsite-min-distance stone != -1)
+    (dropsite-min-distance stone != 255)
+    (can-build mining-camp)
+    =>
+    (up-modify-sn sn-mining-camp-max-distance c:+ 10)
+    (build mining-camp)
+)
+
+(defrule
+    (current-age == castle-age)
+    (dropsite-min-distance gold > 5)
+    (dropsite-min-distance gold != -1)
+    (dropsite-min-distance gold != 255)
+    (can-build mining-camp)
+    =>
+    (up-modify-sn sn-mining-camp-max-distance c:+ 10)
+    (build mining-camp)
+)
+
+(defrule
+    (current-age == castle-age)
+    (dropsite-min-distance wood > 5)
+    ;(dropsite-min-distance wood != -1)
+    ;(dropsite-min-distance wood != 255)
+    (can-build lumber-camp)
+    =>
+    (up-modify-sn sn-lumber-camp-max-distance c:+ 4)
+    (build lumber-camp)
+)

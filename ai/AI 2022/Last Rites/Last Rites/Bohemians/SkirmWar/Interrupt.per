@@ -1,0 +1,136 @@
+
+(defrule
+    (current-age >= feudal-age)
+    (unit-type-count-total skirmisher-line < 8)
+    (unit-type-count skirmisher-line >= 4)
+    (up-group-size c: 0 == 0)
+    =>
+    (up-gather-inside c: archery-range c: 0)
+    (up-full-reset-search)
+    (up-find-local c: skirmisher-line c: 7)
+    (up-find-player enemy find-closest gl-player)
+    (up-modify-sn sn-focus-player-number g:= gl-player)
+    (up-find-remote c: town-center c: 1)
+    (up-get-point position-object gl-pos)
+
+    (generate-random-number 2)
+    (up-jump-rule 1)
+)
+
+
+(defrule
+    (true)
+    =>
+    (up-jump-rule 3)
+)
+
+
+(defrule
+    (random-number == 1)
+    =>
+    ; use map center
+    (up-cross-tiles gl-pos gl-map-center c: -30) ; sub
+    (up-bound-point gl-pos gl-pos)
+
+)
+
+
+(defrule
+    (random-number == 2)
+    =>
+    ; use map center
+    (up-cross-tiles gl-pos gl-map-center c: 30) ; add
+    (up-bound-point gl-pos gl-pos)
+)
+
+(defrule
+    (true)
+    =>
+    (up-reset-group c: 0)
+    (up-create-group 0 0 c: 0)
+    (up-modify-group-flag 1 c: 0)
+    (up-target-point gl-pos action-move -1 -1)
+)
+
+
+
+
+(defrule
+    (current-age >= feudal-age)
+    (up-group-size c: 0 > 0)
+    =>
+    (up-set-group search-local c: 0)
+    (up-get-search-state gl-search-state)
+
+    (up-jump-rule 1)
+)
+
+(defrule
+    (true)
+    =>
+    (up-jump-rule 7)
+)
+
+(defrule
+    (true)
+    =>
+    (set-goal gl-counter 0)
+    (set-goal gl-iterator gl-search-state-1)
+    (up-modify-goal gl-iterator c:- 1)
+    (up-jump-rule 1)
+)
+
+        (defrule
+            (up-compare-goal gl-iterator < 0)
+            =>
+            (up-jump-rule 3)
+        )
+
+                (defrule
+                    (true)
+                    =>
+                    (up-set-target-object search-local g: gl-iterator)
+                    (up-get-object-data object-data-idling gl-up-get-object-data)
+                )
+
+                (defrule
+                    (true)
+                    =>
+                    (up-modify-goal gl-counter g:+ gl-up-get-object-data)
+                )
+
+                (defrule
+                    (true)
+                    =>
+                    (up-modify-goal gl-iterator c:- 1)
+                    (up-jump-rule -4)
+                )
+
+
+
+
+(defrule
+    (up-group-size c: 0 > 0)
+    (up-compare-goal gl-counter g:== gl-search-state-1)
+    =>
+    (up-full-reset-search)
+    (up-set-group search-local c: 0)
+
+    (up-find-player enemy find-closest gl-player)
+    (up-modify-sn sn-focus-player-number g:= gl-player)
+    (up-find-remote c: town-center c: 1)
+    (up-get-point position-object gl-pos)
+
+    (up-copy-point gl-temp gl-map-center)
+    (up-lerp-tiles gl-temp gl-pos c: -23)
+    (up-bound-point gl-temp gl-temp)
+    (up-target-point gl-temp action-move -1 stance-aggressive)
+
+    
+    (up-full-reset-search)
+    (up-set-group search-local c: 0)
+    (up-modify-group-flag 0 c: 0)
+    (up-reset-group c: 0)
+)
+
+

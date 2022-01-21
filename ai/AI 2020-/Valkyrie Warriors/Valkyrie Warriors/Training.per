@@ -1,0 +1,248 @@
+
+(defrule
+    (up-compare-const is-pocket == 0)
+    (current-age == dark-age)
+    (up-can-train to-escrow c: villager)
+    (unit-type-count-total villager < 24)
+    =>
+    (up-train to-escrow c: villager)
+)
+
+(defrule
+    (civ-selected malay)
+    (up-compare-const is-pocket == 0)
+    (current-age == dark-age)
+    (up-can-train to-escrow c: villager)
+    (unit-type-count-total villager < 25)
+    =>
+    (up-train to-escrow c: villager)
+)
+
+(defrule
+    (up-compare-const is-pocket == 1)
+    (current-age == dark-age)
+    (up-can-train to-escrow c: villager)
+    (unit-type-count-total villager < 28)
+    =>
+    (up-train to-escrow c: villager)
+)
+
+(defrule
+    (civ-selected malay)
+    (up-compare-const is-pocket == 1)
+    (current-age == dark-age)
+    (up-can-train to-escrow c: villager)
+    (unit-type-count-total villager < 29)
+    =>
+    (up-train to-escrow c: villager)
+)
+
+(defrule
+	(research-available castle-age)
+	(food-amount > 740)
+	(gold-amount > 180)
+	(or	(unit-type-count male-gold-miner > 0)
+		(unit-type-count female-gold-miner > 0))
+=>	(up-jump-rule 3))
+
+(defrule
+    (up-compare-goal escrow-goal != 2)
+    (up-compare-goal escrow-goal != 5)
+    (up-compare-const is-pocket == 0)
+    (current-age == feudal-age)
+    (up-can-train to-escrow c: villager)
+    (unit-type-count-total villager < 70)
+    =>
+    (up-train to-escrow c: villager)
+)
+
+(defrule
+    (up-compare-const is-pocket == 0)
+    (current-age == feudal-age)
+    (can-train villager)
+    (unit-type-count-total villager < 70)
+    =>
+    (train villager)
+)
+
+(defrule
+    (up-compare-const is-pocket == 1)
+    (current-age == feudal-age)
+    (up-can-train to-escrow c: villager)
+    (unit-type-count-total villager < 30)
+    =>
+    (up-train to-escrow c: villager)
+)
+
+(defrule
+	(research-available imperial-age)
+	(food-amount > 780)
+	(gold-amount > 800)
+	(civilian-population > 90)
+=>	(up-jump-rule 2))
+
+(defrule
+    (goal escrow-goal 0)
+    (current-age == castle-age)
+    (up-can-train to-escrow c: villager)
+    (unit-type-count-total villager < 120)
+    (civilian-population < 130)
+    =>
+    (up-train to-escrow c: villager)
+)
+
+(defrule
+    (current-age == castle-age)
+    (can-train villager)
+    (unit-type-count-total villager < 120)
+    (civilian-population < 130)
+    =>
+    (train villager)
+)
+
+(defrule
+    (up-compare-goal escrow-goal != 8)
+    (current-age == imperial-age)
+    (up-can-train to-escrow c: villager)
+    (unit-type-count-total villager < 120)
+    (civilian-population < 130)
+    =>
+    (up-train to-escrow c: villager)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (can-train villager)
+    (unit-type-count-total villager < 120)
+    (civilian-population < 130)
+    =>
+    (train villager)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (civilian-population > 145)
+    (population > 190)
+    (food-amount > 800)
+    (gold-amount > 800)
+    (wood-amount > 600)
+=>  (chat-local-to-self "delete villager")
+    (delete-unit villager))
+
+
+(defrule
+    (goal need-eagles-counter 0)
+    (goal need-knights-counter 0)
+    (or    (players-unit-type-count target-player scout-cavalry-line <= 2)
+           (unit-type-count-total spearman-line > 0))
+    (current-age < castle-age)
+    (or	(game-time < 1200)
+    	(and	(military-population < 20)
+    		(players-military-population any-enemy > 5)))
+    (up-compare-const is-pocket == 0)
+    (can-train skirmisher-line)
+    =>
+    (train skirmisher))
+
+ (defrule
+    (or    (and    (players-unit-type-count target-player scout-cavalry-line <= 2)
+           (and    (players-unit-type-count target-player knight-line <= 0)
+                   (players-unit-type-count target-player camel-line <= 0)))
+           (or     (unit-type-count-total infantry-class > 5)
+                   (unit-type-count-total cavalry-class > 5)))
+    (current-age == castle-age)
+    (up-compare-const is-pocket == 0)
+    (up-research-status c: ri-elite-skirmisher >= research-pending)
+    (can-train skirmisher)
+    (military-population < 30)
+    =>
+    (train skirmisher))
+
+ (defrule
+    (or	(current-age == castle-age)
+	(and	(current-age == imperial-age)
+		(and	(unit-type-count knight-line < 15)
+			(not (civ-selected saracen)))))
+    (can-train knight-line)
+    (military-population < 40)
+    =>
+    (train knight-line))
+
+ (defrule
+    (or	(current-age == castle-age)
+	(and	(current-age == imperial-age)
+		(unit-type-count camel-line < 15)))
+    (or	(players-unit-type-count any-enemy knight-line > 5)
+        (civ-selected indian))
+    (can-train camel-line)
+    (military-population < 40)
+    =>
+    (train camel-line))
+
+ (defrule
+    (up-research-status c: imperial-age >= research-pending)
+	(or	(unit-type-count camel-line < 15)
+		(up-research-status c: ri-heavy-camel >= research-pending))
+    (or	(civ-selected saracen)
+        (civ-selected indian))
+    (can-train camel-line)
+    =>
+    (train camel-line))
+
+ (defrule
+    (up-research-status c: ri-cavalier >= research-pending)
+    (can-train knight-line)
+    =>
+    (train knight-line))
+
+ (defrule
+   (up-research-status c: ri-heavy-camel >= research-pending)
+    (can-train camel-line)
+    =>
+    (train camel-line))
+
+ (defrule
+    (current-age == castle-age)
+    (up-compare-const is-pocket == 1)
+    (can-train eagle-warrior-line)
+    (military-population < 8)
+    =>
+    (train eagle-warrior-line))
+
+ (defrule
+    (or	(and	(current-age >= castle-age)
+		(up-compare-const is-pocket == 0))
+	(and	(up-research-status c: imperial-age >= research-pending)
+		(up-compare-const is-pocket == 1)))
+    (up-research-status c: ri-eagle-warrior >= research-pending)
+    (can-train eagle-warrior-line)
+    (military-population < 20)
+    =>
+    (train eagle-warrior-line))
+
+ (defrule
+    (up-research-status c: ri-elite-eagle-warrior >= research-pending)
+    (can-train eagle-warrior-line)
+    =>
+    (train eagle-warrior-line))
+
+(defrule
+    (building-type-count-total town-center > 1)
+    (or	(and (current-age == castle-age)
+	     (and (unit-type-count-total battering-ram-line < 3)
+                  (up-compare-const is-pocket == 0)))
+         (current-age > castle-age))
+    (military-population > 20)
+    (can-train battering-ram)
+    (unit-type-count battering-ram-line < 10)
+    =>
+    (train battering-ram))
+
+(defrule
+    (building-type-count-total town-center > 2)
+    (player-in-game any-ally)
+    (current-age >= castle-age)
+    (can-train trade-cart)
+    (unit-type-count-total trade-cart <= 40)
+    =>
+    (train trade-cart))

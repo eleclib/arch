@@ -1,0 +1,166 @@
+
+(defrule 
+    (up-compare-goal ExperimentNumber c:== 1)
+    (current-age == imperial-age)
+    (up-can-research 0 c: my-unique-unit-upgrade)
+    (up-research-status c: my-unique-unit-upgrade == research-available)
+=>
+    (up-research 0 c: my-unique-unit-upgrade)
+    ; Only Affects Stone
+    (up-modify-goal WoodVillagers c:+ 10)
+    (up-modify-goal FoodVillagers c:+ 10)
+    (up-modify-goal GoldVillagers c:+ 10)
+)
+
+(defrule 
+    (up-compare-goal ExperimentNumber c:== 1)
+    (current-age == imperial-age)
+    (up-can-research 0 c: my-unique-research)
+    (up-research-status c: my-unique-research == research-available)
+    =>
+    (up-modify-goal WoodVillagers c:+ 5)
+    (up-modify-goal FoodVillagers c:+ 5)
+    (up-modify-goal GoldVillagers c:+ 5)
+    (up-research 0 c: my-unique-research)
+)
+
+(defrule 
+    (up-compare-goal ExperimentNumber c:== 1)
+    (current-age == imperial-age)
+    (up-can-research 0 c: ri-chemistry)
+    (up-research-status c: ri-chemistry == research-available)
+=>
+    (up-modify-goal FoodVillagers c:+ 3)
+    (up-modify-goal GoldVillagers c:+ 2)
+    (up-research 0 c: ri-chemistry)
+)
+
+(defrule 
+    (up-compare-goal ExperimentNumber c:== 1)
+    (current-age == imperial-age)
+    (up-can-research 0 c: ri-bombard-tower)
+    (up-research-status c: ri-bombard-tower == research-available)
+=>
+    (up-modify-goal WoodVillagers c:+ 8)
+    (up-modify-goal FoodVillagers c:+ 4)
+    (up-research 0 c: ri-bombard-tower)
+)
+
+(defrule 
+    (up-compare-goal ExperimentNumber c:== 1)
+    (current-age == imperial-age)
+    (up-can-research 0 c: ri-cavalier)
+    (up-research-status c: ri-cavalier == research-available)
+=>
+    (up-modify-goal FoodVillagers c:+ 3)
+    (up-modify-goal GoldVillagers c:+ 3)
+    (up-research 0 c: ri-cavalier)
+)
+
+(defrule 
+    (up-compare-goal ExperimentNumber c:== 1)
+    (current-age == imperial-age)
+    (up-can-research 0 c: ri-paladin)
+    (up-research-status c: ri-paladin == research-available)
+=>
+    (up-modify-goal FoodVillagers c:+ 13)
+    (up-modify-goal GoldVillagers c:+ 8)
+    (up-research 0 c: ri-paladin)
+)
+
+(defrule 
+    (up-compare-goal ExperimentNumber c:== 1)
+    (current-age == imperial-age)
+    (up-can-research 0 c: ri-arbalest)
+    (up-research-status c: ri-arbalest == research-available)
+=>
+    (up-modify-goal FoodVillagers c:+ 4)
+    (up-modify-goal GoldVillagers c:+ 3)
+    (up-research 0 c: ri-arbalest)
+)
+
+(defrule 
+    (up-compare-goal ExperimentNumber c:== 1)
+    (current-age == imperial-age)
+    (can-research ri-halberdier)
+    (up-research-status c: ri-halberdier == research-available)
+    =>
+    (up-modify-goal FoodVillagers c:+ 3)
+    (up-modify-goal GoldVillagers c:+ 6)
+    (research ri-halberdier)
+)
+
+(defrule 
+    (up-compare-goal ExperimentNumber c:== 1)
+    (current-age == imperial-age)
+    (up-can-research 0 c: ri-ring-archer-armor)
+    (up-research-status c: ri-ring-archer-armor == research-available)
+=>
+    (up-modify-goal FoodVillagers c:+ 3)
+    (up-modify-goal GoldVillagers c:+ 3)
+    (up-research 0 c: ri-ring-archer-armor)
+)
+
+(defrule 
+    (up-compare-goal ExperimentNumber c:== 1)
+    (current-age == imperial-age)
+    (up-can-research 0 c: ri-bracer)
+    (up-research-status c: ri-bracer == research-available)
+=>
+    (up-modify-goal FoodVillagers c:+ 3)
+    (up-modify-goal GoldVillagers c:+ 2)
+    (up-research 0 c: ri-bracer)
+)
+
+(defrule 
+    (up-compare-goal ExperimentNumber c:== 1)
+    (current-age == imperial-age)
+    (up-can-research 0 c: ri-blast-furnace)
+    (up-research-status c: ri-blast-furnace == research-available)
+=>
+    (up-modify-goal FoodVillagers c:+ 3)
+    (up-modify-goal GoldVillagers c:+ 3)
+    (up-research 0 c: ri-blast-furnace)
+)
+
+(defrule 
+    (up-compare-goal ExperimentNumber c:== 1)
+    (current-age == imperial-age)
+    (up-can-research 0 c: ri-plate-barding)
+    (up-research-status c: ri-plate-barding == research-available)
+=>
+    (up-modify-goal FoodVillagers c:+ 4)
+    (up-modify-goal GoldVillagers c:+ 2)
+    (up-research 0 c: ri-plate-barding)
+)
+
+(defrule 
+    (up-compare-goal ExperimentNumber c:== 1)
+    (current-age == imperial-age)
+    (up-can-research 0 c: ri-capped-ram)
+    (up-research-status c: ri-capped-ram == research-available)
+=>
+    (up-modify-goal FoodVillagers c:+ 3)
+    (up-research 0 c: ri-capped-ram)
+)
+
+(defrule 
+    (up-compare-goal ExperimentNumber c:== 1)
+    (current-age == imperial-age)
+    (up-can-research 0 c: ri-siege-ram)
+    (up-research-status c: ri-siege-ram == research-available)
+=>
+    (up-modify-goal FoodVillagers c:+ 10)
+    (up-research 0 c: ri-siege-ram)
+)
+
+(defrule 
+    (up-compare-goal ExperimentNumber c:== 1)
+    (current-age == imperial-age)
+    (up-can-research 0 c: ri-elite-eagle-warrior)
+    (up-research-status c: ri-elite-eagle-warrior == research-available)
+    =>
+    (up-modify-goal FoodVillagers c:+ 8)
+    (up-modify-goal GoldVillagers c:+ 5)
+    (up-research 0 c: ri-elite-eagle-warrior)
+)

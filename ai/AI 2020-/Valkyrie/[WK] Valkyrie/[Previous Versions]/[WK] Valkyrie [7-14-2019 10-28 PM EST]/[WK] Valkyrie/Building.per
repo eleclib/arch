@@ -1,0 +1,326 @@
+
+(defrule
+    (true)
+    =>
+    (up-set-placement-data my-player-number villager-class c: 0)
+    (up-build place-control 0 c: house)
+    (disable-self)
+)
+
+(defrule
+    (building-type-count house >= 1)
+    (housing-headroom < 4)
+    (can-build house)
+    (up-pending-objects c: house < 1)
+    =>
+    (build house)
+)
+
+(defrule
+    (up-pending-objects c: house == 1)
+    (building-type-count house == 0)
+    =>
+    (up-assign-builders c: house c: 2)
+)
+
+(defrule
+    (up-pending-objects c: house == 0)
+    =>
+    (up-assign-builders c: house c: -1)
+)
+
+(defrule 
+    (can-build mill)
+    (building-type-count mill < 1)
+    (or(building-type-count house >= 2)
+    (civ-selected hun))
+    (up-gaia-type-count c: forage-bush > 0)
+    (up-object-type-count c: livestock-class < 3)
+    (up-pending-objects c: mill < 1)
+    =>
+    (set-strategic-number sn-preferred-mill-placement 0)
+    (build mill)
+)
+
+(defrule 
+    (up-compare-const is-pocket == 1)
+    (can-build mill)
+    (building-type-count mill < 2)
+    (or(building-type-count house >= 2)
+    (civ-selected hun))
+    (up-gaia-type-count c: forage-bush > 0)
+    (up-object-type-count c: livestock-class < 3)
+    (up-pending-objects c: mill < 1)
+    =>
+    (set-strategic-number sn-preferred-mill-placement 1)
+    (build mill)
+)
+
+(defrule
+    (building-type-count lumber-camp < 1)
+    (building-type-count-total mill >= 1)
+    (up-pending-objects c: lumber-camp < 1)
+    (up-can-build to-escrow c: lumber-camp)
+    =>
+    (up-build place-normal to-escrow c: lumber-camp)
+)
+
+(defrule
+    (building-type-count lumber-camp < 2)
+    (unit-type-count villager >= 28)
+    (up-pending-objects c: lumber-camp < 1)
+    (can-build lumber-camp)
+    =>
+    (build lumber-camp)
+)
+
+(defrule
+    (current-age <= feudal-age)
+    (can-build barracks)
+    (building-type-count barracks < 1)
+    (building-type-count-total lumber-camp >= 1)
+    (up-pending-objects c: barracks < 1)
+    =>
+    (build barracks)
+)
+
+(defrule
+    (current-age == dark-age)
+    (can-build farm)
+    (idle-farm-count < 1)
+    (building-type-count-total farm < 3)
+    (building-type-count mill >= 1)
+    (up-object-type-count c: livestock-class < 2)
+    =>
+    (build farm)
+)
+
+(defrule ; Farm Fact Check And Math
+    (can-build farm)
+    =>
+    (up-get-fact civilian-population 0 math1)
+    (up-modify-goal math2 s:= sn-food-gatherer-percentage)
+    (up-modify-goal math1 c:%* math2)
+)
+
+(defrule ; Farm Building
+    (current-age == feudal-age)
+    (can-build farm)
+    (or(wood-amount >= 410)
+    (and(building-type-count-total archery-range >= 2)
+    (building-type-count-total blacksmith >= 1)))
+    (up-object-type-count-total c: farm g:< math1)
+    =>
+    (build farm)
+)
+
+(defrule ; Farm Building
+    (current-age == castle-age)
+    (can-build farm)
+    (or(wood-amount >= 410)
+    (and(building-type-count-total siege-workshop >= 2)
+    (building-type-count-total monastery >= 1)))
+    (up-object-type-count-total c: farm g:< math1)
+    =>
+    (build farm)
+)
+
+(defrule ; Farm Building
+    (current-age == imperial-age)
+    (can-build farm)
+    (wood-amount >= 410)
+    (up-object-type-count-total c: farm g:< math1)
+    =>
+    (build farm)
+)
+
+(defrule
+    (up-compare-const is-pocket == 0)
+    (current-age == feudal-age)
+    (can-build archery-range)
+    (up-pending-objects c: archery-range < 2)
+    (building-type-count archery-range < 2)
+    =>
+    (build archery-range)
+)
+
+(defrule
+    (up-compare-const is-pocket == 1)
+    (current-age == feudal-age)
+    (can-build stable)
+    (up-pending-objects c: stable < 2)
+    (building-type-count stable < 2)
+    (building-type-count-total market >= 1)
+    =>
+    (build stable)
+)
+
+(defrule
+    (up-pending-objects c: archery-range > 0)
+    =>
+    (up-assign-builders c: archery-range c: 4)
+)
+
+(defrule
+    (up-pending-objects c: archery-range == 0)
+    =>
+    (up-assign-builders c: archery-range c: -1)
+)
+
+(defrule
+    (current-age == feudal-age)
+    (can-build blacksmith)
+    (or(building-type-count-total archery-range >= 2)
+    (building-type-count-total stable >= 2))
+    (building-type-count blacksmith < 1)
+    (up-pending-objects c: blacksmith < 1)
+
+    =>
+    (build blacksmith)
+)
+
+(defrule
+    (up-compare-const is-pocket == 0)
+    (can-build watch-tower)
+    (building-type-count watch-tower < 1)
+    (up-pending-objects c: watch-tower < 1)
+    =>
+    (up-set-placement-data my-player-number lumber-camp c: 3)
+    (up-build place-control 0 c: watch-tower)
+)
+
+(defrule
+    (current-age == feudal-age)
+    (can-build mining-camp)
+    (or(building-type-count-total archery-range >= 2)
+    (building-type-count-total stable >= 2))
+    (building-type-count blacksmith >= 1)
+    (building-type-count mining-camp < 1)
+    (dropsite-min-distance gold != -1)
+    (dropsite-min-distance gold != 255)
+    (dropsite-min-distance gold > 5)
+    (up-pending-objects c: mining-camp < 1)
+    =>
+    (build mining-camp)
+)
+
+(defrule
+    (current-age == feudal-age)
+    (can-build mining-camp)
+    (or(building-type-count-total archery-range >= 2)
+    (building-type-count-total stable >= 2))
+    (building-type-count blacksmith >= 1)
+    (building-type-count mining-camp < 2)
+    (dropsite-min-distance stone != -1)
+    (dropsite-min-distance stone != 255)
+    (dropsite-min-distance stone > 5)
+    (up-pending-objects c: mining-camp < 1)
+    =>
+    (build mining-camp)
+)
+
+(defrule
+    (current-age == castle-age)
+    (can-build mining-camp)
+    (dropsite-min-distance gold != -1)
+    (dropsite-min-distance gold != 255)
+    (dropsite-min-distance gold > 5)
+    (up-pending-objects c: mining-camp < 1)
+    =>
+    (up-modify-sn sn-camp-max-distance c:+ 12)
+    (build mining-camp)
+)
+
+(defrule
+    (current-age == castle-age)
+    (can-build mining-camp)
+    (dropsite-min-distance stone != -1)
+    (dropsite-min-distance stone != 255)
+    (dropsite-min-distance stone > 5)
+    (up-pending-objects c: mining-camp < 1)
+    =>
+    (up-modify-sn sn-camp-max-distance c:+ 12)
+    (build mining-camp)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (can-build mining-camp)
+    (dropsite-min-distance gold != -1)
+    (dropsite-min-distance gold != 255)
+    (dropsite-min-distance gold > 5)
+    (up-pending-objects c: mining-camp < 1)
+    =>
+    (up-modify-sn sn-camp-max-distance c:+ 12)
+    (build mining-camp)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (can-build mining-camp)
+    (dropsite-min-distance stone != -1)
+    (dropsite-min-distance stone != 255)
+    (dropsite-min-distance stone > 5)
+    (up-pending-objects c: mining-camp < 1)
+    =>
+    (up-modify-sn sn-camp-max-distance c:+ 12)
+    (build mining-camp)
+)
+
+(defrule
+    (can-build town-center)
+    (building-type-count-total town-center < 5)
+    (up-pending-objects c: town-center < 3)
+    =>
+    (build town-center-foundation)
+)
+
+(defrule
+    (current-age == castle-age)
+    (can-build stable)
+    (building-type-count-total stable < 2)
+    (up-pending-objects c: stable < 2)
+    =>
+    (build stable)
+)
+
+(defrule
+    (up-compare-const is-pocket == 0)
+    (current-age == feudal-age)
+    (can-build market)
+    (building-type-count-total market < 1)
+    (building-type-count-total archery-range >= 2)
+    (building-type-count-total blacksmith >= 1)
+    (up-pending-objects c: market < 1)
+    =>
+    (build market)
+)
+
+(defrule
+    (up-compare-const is-pocket == 1)
+    (current-age == feudal-age)
+    (can-build market)
+    (building-type-count-total market < 1)
+    (up-pending-objects c: market < 1)
+    =>
+    (build market)
+)
+
+(defrule
+    (current-age == castle-age)
+    (can-build siege-workshop)
+    (building-type-count-total siege-workshop < 2)
+    (up-pending-objects c: siege-workshop < 2)
+    =>
+    (build siege-workshop)
+)
+
+(defrule
+    (current-age == castle-age)
+    (can-build monastery)
+    (building-type-count-total monastery < 1)
+    (up-pending-objects c: monastery < 1)
+    =>
+    (build monastery)
+)
+

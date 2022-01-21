@@ -1,0 +1,432 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+; palisade
+; fix for edge of map cases, save some wood
+(defrule
+    (current-age <= feudal-age)
+    (building-type-count lumber-camp == 1)
+    (unit-type-count villager >= 17)
+    (up-timer-status tm-full-wall-placement1 <= timer-triggered)
+    ;(can-build palisade-wall) ; hmmm, costs of up-build-line?
+    =>
+    (up-full-reset-search)
+    (up-find-local c: lumber-camp c: 1)
+    (up-set-target-object search-local c: 0)
+    (up-get-point position-object gl-temp)
+
+
+
+
+    (up-copy-point gl-walls1 gl-temp)
+    (up-modify-goal gl-walls1-x c:- cn-wall-lc-to-corner-length)
+    (up-modify-goal gl-walls1-y c:+ cn-wall-lc-to-corner-length)
+    (up-bound-point gl-walls1 gl-walls1)
+
+    (up-copy-point gl-walls2 gl-temp)
+    (up-modify-goal gl-walls2-x c:- cn-wall-lc-to-corner-length)
+    (up-modify-goal gl-walls2-y c:- cn-wall-lc-to-corner-length)
+    (up-bound-point gl-walls2 gl-walls2)
+
+    (up-copy-point gl-walls3 gl-temp)
+    (up-modify-goal gl-walls3-x c:+ cn-wall-lc-to-corner-length)
+    (up-modify-goal gl-walls3-y c:- cn-wall-lc-to-corner-length)
+    (up-bound-point gl-walls3 gl-walls3)
+
+    (up-copy-point gl-walls4 gl-temp)
+    (up-modify-goal gl-walls4-x c:+ cn-wall-lc-to-corner-length)
+    (up-modify-goal gl-walls4-y c:+ cn-wall-lc-to-corner-length)
+    (up-bound-point gl-walls4 gl-walls4)
+
+
+
+
+
+
+
+)
+
+
+
+
+
+
+
+(defrule
+    (current-age <= feudal-age)
+    (building-type-count lumber-camp == 1)
+    (unit-type-count villager >= 17)
+    (up-timer-status tm-full-wall-placement1 <= timer-triggered)
+    ;(can-build palisade-wall) ; hmmm, costs of up-build-line?
+    =>
+
+
+
+    (up-modify-goal gl-temp-x g:= gl-walls1-x)
+    (up-modify-goal gl-temp-y g:= gl-walls1-y)
+    (up-modify-goal gl-temp-y g:+ gl-walls2-y)
+    (up-modify-goal gl-temp-y c:/ 2)
+    (up-build-line gl-temp gl-temp c: palisade-gate-descending-foundation)
+
+    (up-modify-goal gl-temp-y g:= gl-walls2-y)
+    (up-modify-goal gl-temp-x g:= gl-walls2-x)
+    (up-modify-goal gl-temp-x g:+ gl-walls3-x)
+    (up-modify-goal gl-temp-x c:/ 2)
+    (up-build-line gl-temp gl-temp c: palisade-gate-ascending-foundation)
+
+    (up-modify-goal gl-temp-x g:= gl-walls3-x)
+    (up-modify-goal gl-temp-y g:= gl-walls3-y)
+    (up-modify-goal gl-temp-y g:+ gl-walls4-y)
+    (up-modify-goal gl-temp-y c:/ 2)
+    (up-build-line gl-temp gl-temp c: palisade-gate-descending-foundation)
+
+    (up-modify-goal gl-temp-y g:= gl-walls4-y)
+    (up-modify-goal gl-temp-x g:= gl-walls4-x)
+    (up-modify-goal gl-temp-x g:+ gl-walls1-x)
+    (up-modify-goal gl-temp-x c:/ 2)
+    (up-build-line gl-temp gl-temp c: palisade-gate-ascending-foundation)
+
+
+
+
+    (up-build-line gl-walls1 gl-walls2 c: palisade-wall)
+    (up-build-line gl-walls2 gl-walls3 c: palisade-wall)
+    (up-build-line gl-walls3 gl-walls4 c: palisade-wall)
+    (up-build-line gl-walls4 gl-walls1 c: palisade-wall)
+
+    (enable-timer tm-full-wall-placement1 25)
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+; palisade
+; fix for edge of map cases, save some wood
+(defrule
+    (current-age <= castle-age)
+    (building-type-count lumber-camp == 2)
+    (unit-type-count villager >= 24)
+    (up-timer-status tm-full-wall-placement1 <= timer-triggered)
+    ;(can-build palisade-wall) ; hmmm, costs of up-build-line?
+    =>
+    (up-full-reset-search)
+    (up-find-local c: lumber-camp c: 2)
+    (up-set-target-object search-local c: 1)
+    (up-get-point position-object gl-temp)
+
+
+
+
+    (up-copy-point gl-walls1 gl-temp)
+    (up-modify-goal gl-walls1-x c:- cn-wall-lc-to-corner-length)
+    (up-modify-goal gl-walls1-y c:+ cn-wall-lc-to-corner-length)
+    (up-bound-point gl-walls1 gl-walls1)
+
+    (up-copy-point gl-walls2 gl-temp)
+    (up-modify-goal gl-walls2-x c:- cn-wall-lc-to-corner-length)
+    (up-modify-goal gl-walls2-y c:- cn-wall-lc-to-corner-length)
+    (up-bound-point gl-walls2 gl-walls2)
+
+    (up-copy-point gl-walls3 gl-temp)
+    (up-modify-goal gl-walls3-x c:+ cn-wall-lc-to-corner-length)
+    (up-modify-goal gl-walls3-y c:- cn-wall-lc-to-corner-length)
+    (up-bound-point gl-walls3 gl-walls3)
+
+    (up-copy-point gl-walls4 gl-temp)
+    (up-modify-goal gl-walls4-x c:+ cn-wall-lc-to-corner-length)
+    (up-modify-goal gl-walls4-y c:+ cn-wall-lc-to-corner-length)
+    (up-bound-point gl-walls4 gl-walls4)
+
+
+
+
+
+
+
+)
+
+
+
+
+
+
+
+(defrule
+    (current-age <= castle-age)
+    (building-type-count lumber-camp == 2)
+    (unit-type-count villager >= 24)
+    (up-timer-status tm-full-wall-placement1 <= timer-triggered)
+    ;(can-build palisade-wall) ; hmmm, costs of up-build-line?
+    =>
+
+
+
+    (up-modify-goal gl-temp-x g:= gl-walls1-x)
+    (up-modify-goal gl-temp-y g:= gl-walls1-y)
+    (up-modify-goal gl-temp-y g:+ gl-walls2-y)
+    (up-modify-goal gl-temp-y c:/ 2)
+    (up-build-line gl-temp gl-temp c: palisade-gate-descending-foundation)
+
+    (up-modify-goal gl-temp-y g:= gl-walls2-y)
+    (up-modify-goal gl-temp-x g:= gl-walls2-x)
+    (up-modify-goal gl-temp-x g:+ gl-walls3-x)
+    (up-modify-goal gl-temp-x c:/ 2)
+    (up-build-line gl-temp gl-temp c: palisade-gate-ascending-foundation)
+
+    (up-modify-goal gl-temp-x g:= gl-walls3-x)
+    (up-modify-goal gl-temp-y g:= gl-walls3-y)
+    (up-modify-goal gl-temp-y g:+ gl-walls4-y)
+    (up-modify-goal gl-temp-y c:/ 2)
+    (up-build-line gl-temp gl-temp c: palisade-gate-descending-foundation)
+
+    (up-modify-goal gl-temp-y g:= gl-walls4-y)
+    (up-modify-goal gl-temp-x g:= gl-walls4-x)
+    (up-modify-goal gl-temp-x g:+ gl-walls1-x)
+    (up-modify-goal gl-temp-x c:/ 2)
+    (up-build-line gl-temp gl-temp c: palisade-gate-ascending-foundation)
+
+
+
+
+    (up-build-line gl-walls1 gl-walls2 c: palisade-wall)
+    (up-build-line gl-walls2 gl-walls3 c: palisade-wall)
+    (up-build-line gl-walls3 gl-walls4 c: palisade-wall)
+    (up-build-line gl-walls4 gl-walls1 c: palisade-wall)
+
+    (enable-timer tm-full-wall-placement1 25)
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+; stone
+; fix for edge of map cases, save some wood
+(defrule
+    (current-age > dark-age)
+    (current-age <= castle-age)
+    (building-type-count watch-tower > 4)
+    (up-timer-status tm-full-wall-placement2 <= timer-triggered)
+    ;(can-build palisade-wall) ; hmmm, costs of up-build-line?
+    =>
+    ; gl-my-pos
+    (up-copy-point gl-walls1 gl-my-pos)
+    (up-modify-goal gl-walls1-x c:+ 1)
+    (up-modify-goal gl-walls1-y c:- 1)
+    (up-modify-goal gl-walls1-x c:- cn-wall-tc-to-corner-length)
+    (up-modify-goal gl-walls1-y c:+ cn-wall-tc-to-corner-length)
+    ;(up-bound-point gl-walls1 gl-walls1)
+
+    (up-copy-point gl-walls2 gl-my-pos)
+    (up-modify-goal gl-walls2-x c:+ 1)
+    (up-modify-goal gl-walls2-y c:+ 1)
+    (up-modify-goal gl-walls2-x c:- cn-wall-tc-to-corner-length)
+    (up-modify-goal gl-walls2-y c:- cn-wall-tc-to-corner-length)
+    ;(up-bound-point gl-walls2 gl-walls2)
+
+    (up-copy-point gl-walls3 gl-my-pos)
+    (up-modify-goal gl-walls3-x c:- 1)
+    (up-modify-goal gl-walls3-y c:+ 1)
+    (up-modify-goal gl-walls3-x c:+ cn-wall-tc-to-corner-length)
+    (up-modify-goal gl-walls3-y c:- cn-wall-tc-to-corner-length)
+    ;(up-bound-point gl-walls3 gl-walls3)
+
+    (up-copy-point gl-walls4 gl-my-pos)
+    (up-modify-goal gl-walls4-x c:- 1)
+    (up-modify-goal gl-walls4-y c:- 1)
+    (up-modify-goal gl-walls4-x c:+ cn-wall-tc-to-corner-length)
+    (up-modify-goal gl-walls4-y c:+ cn-wall-tc-to-corner-length)
+    ;(up-bound-point gl-walls4 gl-walls4)
+
+
+
+
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+(defrule
+    (current-age > dark-age)
+    (current-age <= castle-age)
+    (building-type-count watch-tower > 4)
+    (up-timer-status tm-full-wall-placement2 <= timer-triggered)
+    ;(can-build palisade-wall) ; hmmm, costs of up-build-line?
+    =>
+
+
+    (up-modify-goal gl-temp-x g:= gl-walls1-x)
+    (up-modify-goal gl-temp-y g:= gl-walls1-y)
+    (up-modify-goal gl-temp-y g:+ gl-walls2-y)
+    (up-modify-goal gl-temp-y c:/ 2)
+    (up-build-line gl-temp gl-temp c: stone-gate-descending-foundation)
+
+    (up-modify-goal gl-temp-y g:= gl-walls2-y)
+    (up-modify-goal gl-temp-x g:= gl-walls2-x)
+    (up-modify-goal gl-temp-x g:+ gl-walls3-x)
+    (up-modify-goal gl-temp-x c:/ 2)
+    (up-build-line gl-temp gl-temp c: stone-gate-ascending-foundation)
+
+    (up-modify-goal gl-temp-x g:= gl-walls3-x)
+    (up-modify-goal gl-temp-y g:= gl-walls3-y)
+    (up-modify-goal gl-temp-y g:+ gl-walls4-y)
+    (up-modify-goal gl-temp-y c:/ 2)
+    (up-build-line gl-temp gl-temp c: stone-gate-descending-foundation)
+
+    (up-modify-goal gl-temp-y g:= gl-walls4-y)
+    (up-modify-goal gl-temp-x g:= gl-walls4-x)
+    (up-modify-goal gl-temp-x g:+ gl-walls1-x)
+    (up-modify-goal gl-temp-x c:/ 2)
+    (up-build-line gl-temp gl-temp c: stone-gate-ascending-foundation)
+
+
+
+
+    (up-build-line gl-walls1 gl-walls2 c: stone-wall)
+    (up-build-line gl-walls2 gl-walls3 c: stone-wall)
+    (up-build-line gl-walls3 gl-walls4 c: stone-wall)
+    (up-build-line gl-walls4 gl-walls1 c: stone-wall)
+
+    (enable-timer tm-full-wall-placement2 25)
+
+
+
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+; vills to wall foundations
+
+(defrule
+    (current-age <= feudal-age)
+    (unit-type-count-total villager >= cn-build-walls-at-vills-count)
+    =>
+    (up-full-reset-search)
+    (up-find-local c: villager-class c: cn-wall-builders-max)
+    (up-remove-objects search-local object-data-action == actionid-build)
+    (up-remove-objects search-local object-data-action == actionid-attack)
+    ;(up-remove-objects search-local object-data-action == actionid-move)
+    (up-filter-status c: status-pending c: list-active)
+    (set-strategic-number sn-focus-player-number my-player-number)
+    (up-find-status-remote c: palisade-wall c: 40)
+    (up-target-objects 0 action-default -1 -1)
+)
+
+
+(defrule
+    (current-age > dark-age)
+    (current-age <= imperial-age)
+    =>
+    (up-full-reset-search)
+    (up-find-local c: villager-class c: cn-wall-builders-max)
+    (up-remove-objects search-local object-data-action == actionid-build)
+    (up-remove-objects search-local object-data-action == actionid-attack)
+    ;(up-remove-objects search-local object-data-action == actionid-move)
+    (up-filter-status c: status-pending c: list-active)
+    (set-strategic-number sn-focus-player-number my-player-number)
+    (up-find-status-remote c: stone-wall c: cn-wall-builders-max)
+    (up-target-objects 0 action-default -1 -1)
+)
+
+
+
+
+
+
+
+
+
+
+; -------- broken in DE ----------
+;(defrule
+;    (true)
+;    =>
+;    (up-modify-goal gl-temp c:= cn-wall-builders-max)
+;    (up-assign-builders c: palisade-wall g: gl-temp)
+;    (up-assign-builders c: stone-wall g: gl-temp)
+
+;    (up-chat-data-to-all "palisade-wall" c: palisade-wall)
+;    (up-chat-data-to-all "stone-wall" c: stone-wall)
+;    (disable-self)
+;)
+
+
+
+
+
+
+
+

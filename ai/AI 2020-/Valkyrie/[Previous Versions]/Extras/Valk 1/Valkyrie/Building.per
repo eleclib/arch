@@ -1,0 +1,195 @@
+
+(defrule ; Dark Age Start - Build Houses Next To Villagers
+    (can-build house)
+    (building-type-count house < 1)
+    (up-pending-objects c: house < 1)
+    =>
+    (up-set-placement-data my-player-number villager-class c: 0)
+    (up-build place-control 0 c: house)
+)
+
+(defrule ; Dark Age - Housing Assistance
+    (up-pending-objects c: house > 0)
+    ;(building-type-count house < 1)
+    =>
+    (up-assign-builders c: house c: 2)
+)
+
+(defrule ; Dark Age - Housing Assistance
+    (up-pending-objects c: house == 0)
+    (building-type-count house >= 1)
+    =>
+    (up-assign-builders c: house c: -1)
+)
+
+(defrule ; Dark Age - Build Mill
+    (can-build mill)
+    (or
+        (building-type-count house >= 1)
+        (civ-selected hun)
+    )
+    (building-type-count-total mill < 1)
+    (up-gaia-type-count c: forage-bush > 0)
+    (up-object-type-count-total c: livestock-class < 2)
+    =>
+    (build mill)
+)
+
+(defrule ; Dark Age - More Houses
+    (current-age == dark-age)
+    (can-build house)
+    (building-type-count house >= 1)
+    (up-pending-objects c: house < 1)
+    (housing-headroom < 5)
+    =>
+    (up-set-placement-data my-player-number house c: 2)
+    (up-build place-control 0 c: house)
+)
+
+(defrule ; Dark Age - Lumber Camp
+    (can-build lumber-camp)
+    (building-type-count-total lumber-camp < 1)
+    (building-type-count mill == 1)
+    (up-gaia-type-count c: wood >= 25)
+    =>
+    (build lumber-camp)
+)
+
+(defrule ; Dark To Feudal Transition - Barracks
+    (can-build barracks)
+    (or
+        (up-research-status c: feudal-age == research-pending)
+        (current-age == feudal-age)
+    )
+    (building-type-count-total barracks < 1)
+    =>
+    (build barracks)
+)
+
+(defrule ; Feudal Age - More Houses
+    (current-age == feudal-age)
+    (can-build house)
+    (building-type-count house >= 1)
+    (up-pending-objects c: house < 1)
+    (housing-headroom < 10)
+    =>
+    (up-set-placement-data my-player-number house c: 2)
+    (up-build place-control 0 c: house)
+)
+
+(defrule ; Pending Feudal Age - Second Lumber Camp
+    (can-build lumber-camp)
+    (up-research-status c: feudal-age == research-pending)
+    (building-type-count lumber-camp < 2)
+    (up-pending-objects c: lumber-camp < 1)
+    =>
+    (build lumber-camp)
+)
+
+(defrule ; Feudal Age - Archery Range
+    (can-build archery-range)
+    (building-type-count-total archery-range < 3)
+    =>
+    (build archery-range)
+)
+
+(defrule ; Feudal Age - Farm Building
+    (true)
+    =>
+    (up-get-fact civilian-population 0 data1)
+    (up-modify-goal data1 s:%* sn-food-gatherer-percentage) 
+    (up-get-fact building-type-count farm data2)
+)
+
+(defrule ; Feudal Age - Farm Building
+    (current-age == dark-age)
+    (can-build farm)
+    (building-type-count-total lumber-camp >= 1)
+    (wood-amount > 350)
+    (up-compare-goal data2 g:< data1)
+    =>
+    (build farm)
+)
+
+(defrule ; Feudal Age - Farm Building
+    (current-age > dark-age)
+    (can-build farm)
+    ;(wood-amount > 350)
+    (building-type-count archery-range >= 2)
+    (up-compare-goal data2 g:< data1)
+    =>
+    (build farm)
+)
+
+(defrule ; Feudal Age - Blacksmith
+    (can-build blacksmith)
+    (building-type-count-total blacksmith < 1)
+    (building-type-count-total archery-range >= 2)
+    =>
+    (build blacksmith)
+)
+
+(defrule ; Feudal Age
+    (can-build mining-camp)
+    (building-type-count-total mining-camp < 2)
+    (building-type-count-total archery-range >= 2)
+    (building-type-count-total blacksmith >= 1)
+    ;(unit-type-count skirmisher >= 18)
+    =>
+    (build mining-camp)
+)
+
+;(defrule ; Feudal Age - Back Mill
+;    (can-build mill)
+;    (up-research-status c: feudal-age == research-pending)
+;    (building-type-count mill < 2)
+;    (up-pending-objects c: mill < 1)
+;    =>
+;    (up-set-placement-data my-player-number home-town-center c: -20)
+;    (up-build place-control 0 c: mill)
+;)
+
+(defrule ; Watch Tower
+    (can-build watch-tower)
+    (building-type-count-total watch-tower < 1)
+    =>
+    (up-set-placement-data my-player-number town-center c: 14)
+    (up-build place-control 0 c: watch-tower)
+)
+
+(defrule ; Castle Age - Stable
+    (current-age == castle-age)
+    (up-can-build to-escrow c: stable)
+    (building-type-count stable < 1)
+    (up-pending-objects c: stable < 1)
+    =>
+    (up-build place-normal to-escrow c: stable)
+)
+
+(defrule ; Castle Age - Siege Workshop
+    (up-can-build to-escrow c: siege-workshop)
+    (building-type-count siege-workshop < 1)
+    (up-pending-objects c: siege-workshop < 1)
+    =>
+    (up-build place-normal to-escrow c: siege-workshop)
+)
+
+(defrule ; Castle Age - Farm Building
+    (current-age > dark-age)
+    (can-build farm)
+    (building-type-count-total siege-workshop >= 1)
+    (up-compare-goal data2 g:< data1)
+    =>
+    (build farm)
+)
+
+
+(defrule ; Castle Age - More Houses
+    (current-age == castle-age)
+    (can-build house)
+    (up-pending-objects c: house < 1)
+    (housing-headroom < 10)
+    =>
+    (up-set-placement-data my-player-number house c: 2)
+    (up-build place-control 0 c: house)
+)

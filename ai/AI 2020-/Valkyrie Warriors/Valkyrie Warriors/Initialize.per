@@ -1,0 +1,239 @@
+
+(defrule
+    (true)
+    =>
+    (set-strategic-number sn-enable-new-building-system 1)
+    (set-strategic-number sn-enable-training-queue 1)
+    (set-strategic-number sn-cap-civilian-explorers 0)
+    (set-strategic-number sn-initial-exploration-required 0)
+    (set-strategic-number sn-number-explore-groups 1)
+    (set-strategic-number sn-cap-civilian-builders 20)
+    (set-strategic-number sn-home-exploration-time 480)
+    (set-strategic-number sn-allow-adjacent-dropsites 1)
+    (set-strategic-number sn-maximum-town-size 16)
+    (set-strategic-number sn-safe-town-size 16)
+    (set-strategic-number sn-minimum-boar-hunt-group-size 0)
+    (set-strategic-number sn-livestock-to-town-center 1)
+    (set-strategic-number sn-town-center-placement mining-camp)
+    (set-strategic-number sn-attack-winning-player 0)
+    (disable-self)
+)
+
+(defrule
+    (true)
+    =>
+    (set-strategic-number sn-intelligent-gathering 1)
+    (set-strategic-number sn-enable-patrol-attack 1)
+    (set-strategic-number sn-wall-targeting-mode 0)
+    (set-strategic-number sn-retask-gather-amount 0)
+    (set-strategic-number sn-max-retask-gather-amount 0)
+    (set-strategic-number sn-disable-builder-assistance 1)
+    (set-strategic-number sn-forage-defend-priority 1)
+    (set-strategic-number sn-gold-defend-priority 1)
+    (set-strategic-number sn-stone-defend-priority 1)
+    (set-strategic-number sn-livestock-defend-priority 1)
+    (set-strategic-number sn-use-by-type-max-gathering 0)
+    (set-strategic-number sn-preferred-trade-distance 255)
+    (set-strategic-number sn-camp-max-distance 22)
+    (set-strategic-number sn-mill-max-distance 30)
+    (disable-self)
+)
+
+(defrule
+    (true)
+    =>
+    (set-strategic-number sn-maximum-wood-drop-distance 20)
+    (set-strategic-number sn-maximum-food-drop-distance 20)
+    (set-strategic-number sn-maximum-hunt-drop-distance 20)
+    (set-strategic-number sn-maximum-fish-boat-drop-distance 20)
+    (set-strategic-number sn-maximum-gold-drop-distance 20)
+    (set-strategic-number sn-maximum-stone-drop-distance 20)
+    (set-strategic-number sn-task-ungrouped-soldiers 0)
+    (set-strategic-number sn-gather-idle-soldiers-at-center 0)
+    (set-strategic-number sn-local-targeting-mode 1)
+    (set-strategic-number sn-do-not-scale-for-difficulty-level 1)
+    (disable-self)
+)
+
+
+(defrule
+	(current-age == castle-age)
+	(building-type-count town-center > 1)
+	(strategic-number sn-camp-max-distance < 40)
+=>	(set-strategic-number sn-camp-max-distance 40)
+	(set-strategic-number sn-maximum-stone-drop-distance 40)
+	(set-strategic-number sn-maximum-gold-drop-distance 40)
+	(set-strategic-number sn-stone-dropsite-distance 40)
+	(set-strategic-number sn-gold-dropsite-distance 40))
+(defrule
+	(current-age >= castle-age)
+	(game-time > 2400)
+	(building-type-count town-center > 2)
+	(strategic-number sn-camp-max-distance < 50)
+=>	(set-strategic-number sn-camp-max-distance 50)
+	(set-strategic-number sn-maximum-stone-drop-distance 50)
+	(set-strategic-number sn-maximum-gold-drop-distance 50)
+	(set-strategic-number sn-stone-dropsite-distance 50)
+	(set-strategic-number sn-gold-dropsite-distance 50))
+(defrule
+	(game-time > 3000)
+	(strategic-number sn-camp-max-distance < 60)
+=>	(set-strategic-number sn-camp-max-distance 60)
+	(set-strategic-number sn-maximum-stone-drop-distance 60)
+	(set-strategic-number sn-maximum-gold-drop-distance 60)
+	(set-strategic-number sn-stone-dropsite-distance 60)
+	(set-strategic-number sn-gold-dropsite-distance 60))
+
+
+(defrule
+	(game-time > 4200)
+	(strategic-number sn-camp-max-distance < 80)
+=>	(set-strategic-number sn-camp-max-distance 80)
+	(set-strategic-number sn-maximum-stone-drop-distance 80)
+	(set-strategic-number sn-maximum-gold-drop-distance 80)
+	(set-strategic-number sn-stone-dropsite-distance 80)
+	(set-strategic-number sn-gold-dropsite-distance 80))
+
+(defrule
+	(game-time > 5400)
+	(strategic-number sn-camp-max-distance < 120)
+=>	(set-strategic-number sn-camp-max-distance 120)
+	(set-strategic-number sn-maximum-stone-drop-distance 120)
+	(set-strategic-number sn-maximum-gold-drop-distance 120)
+	(set-strategic-number sn-stone-dropsite-distance 120)
+	(set-strategic-number sn-gold-dropsite-distance 120))
+
+(defrule
+	(true)
+=>	(set-strategic-number sn-safe-town-size 36)
+	(set-strategic-number sn-blot-exploration-map 0)
+	(set-strategic-number sn-blot-size 15)
+	(set-difficulty-parameter ability-to-maintain-distance 0)
+	(set-difficulty-parameter ability-to-dodge-missiles 0)
+	(set-strategic-number sn-percent-enemy-sighted-response 100)
+	(set-strategic-number sn-sentry-distance-variation 0)
+	(set-strategic-number sn-attack-intelligence 1)
+	(set-strategic-number sn-minimum-attack-group-size 20)
+	(set-strategic-number sn-maximum-attack-group-size 30)
+	(set-strategic-number sn-disable-villager-garrison 2)
+	(disable-self))
+
+(defrule
+	(or	(up-projectile-detected projectile-watch-tower c:> 15000)
+		(up-projectile-target projectile-watch-tower != villager-class))
+=>	(set-strategic-number sn-allow-civilian-offense 0)
+	(set-strategic-number sn-number-civilian-militia 0))
+
+(defrule
+	(civilian-population > 22)
+	(up-projectile-detected projectile-watch-tower c:< 8000)
+	(up-projectile-target projectile-watch-tower == villager-class)
+=>	(set-strategic-number sn-allow-civilian-offense 2)
+	(set-strategic-number sn-number-civilian-militia 10)
+	(up-jump-rule 1))
+
+
+; ========================================================
+; ===============DEFENDING WITH VILLAGERS=================
+; ========================================================
+
+(defrule
+	(up-compare-sn sn-number-civilian-militia > 0)
+=>	(set-strategic-number sn-number-civilian-militia 0)
+	(set-strategic-number sn-allow-civilian-offense 0)
+	(set-strategic-number sn-allow-civilian-defense 0))
+
+(defrule
+	(current-age < castle-age)
+	(up-compare-goal threat-time-goal <= 2000)
+	(or	(up-compare-goal threat-source-goal == infantry-class)
+		(up-compare-goal threat-source-goal == archery-class))
+	(up-compare-goal threat-target-goal == villager-class)
+	(up-compare-goal military-advantage < 0)
+	(or	(up-unit-type-in-town c: skirmisher-line > 0)
+		(up-unit-type-in-town c: militiaman-line > 0))
+	(up-unit-type-in-town c: skirmisher-line < 14)
+	(up-unit-type-in-town c: militiaman-line < 5)
+	(up-unit-type-in-town c: archer-line < 3)
+=>	(set-strategic-number sn-number-civilian-militia 12)
+	(set-strategic-number sn-allow-civilian-offense 2)
+	(set-strategic-number sn-allow-civilian-defense 3))
+
+(defrule
+	(current-age >= castle-age)
+=>	(set-strategic-number sn-number-civilian-militia 0)
+	(set-strategic-number sn-allow-civilian-offense 0)
+	(set-strategic-number sn-allow-civilian-defense 0)
+	(disable-self))
+
+(defrule
+    (true)
+    =>
+    (set-goal to-escrow with-escrow)
+    (set-goal attack-amount-threshold 12)
+    (set-goal attacking 0)
+    (disable-self)
+)
+
+(defrule
+    (true)
+    =>
+    (up-get-point position-map-size map-size)
+    (disable-self)
+)
+
+(defrule
+    (true)
+    =>
+    (set-goal valkyrie-goal-1 4096)
+    (set-goal valkyrie-goal-2 -8192)
+    (set-goal valkyrie-goal-3 -2048)
+    (disable-self)
+)
+
+(defrule
+    (up-compare-const is-pocket == 1)
+    =>
+    (set-strategic-number sn-enable-boar-hunting 1)
+    (disable-self)
+)
+
+(defrule
+    (up-compare-const is-pocket == 0)
+    =>
+    (set-strategic-number sn-enable-boar-hunting 2)
+    (disable-self)
+)
+
+(defrule
+	(true)
+=>	(set-goal split-rule-goal 0)
+	(up-get-threat-data threat-time-goal threat-player-goal threat-source-goal threat-target-goal))
+
+;----explo
+
+
+(defrule
+	(up-research-status c: feudal-age >= research-pending)
+	(up-compare-const is-pocket == 0)
+	(or	(players-building-count target-player < 6)
+		(up-player-distance target-player > 75))
+	(up-timer-status explo-timer != timer-running)
+=>	(set-strategic-number sn-total-number-explorers 1)
+	(set-strategic-number sn-number-explore-groups 1)
+	(up-send-scout group-type-land-explore position-flank)
+	(chat-to-player my-player-number "exploring the flank")
+	(enable-timer explo-timer 50))
+
+(defrule
+	(game-time > 720)
+	(up-compare-const is-pocket == 1)
+	(or	(players-building-count target-player < 6)
+		(up-player-distance target-player > 75))
+	(up-timer-status explo-timer != timer-running)
+=>	(set-strategic-number sn-total-number-explorers 1)
+	(set-strategic-number sn-number-explore-groups 1)
+	(up-send-scout group-type-land-explore position-flank)
+	(chat-to-player my-player-number "exploring the flank")
+	(enable-timer explo-timer 50))
+

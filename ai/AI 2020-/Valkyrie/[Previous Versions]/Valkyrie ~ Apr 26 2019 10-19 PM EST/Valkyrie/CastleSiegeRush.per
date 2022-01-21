@@ -1,0 +1,48 @@
+
+(defrule
+    (goal goal-castle-strategy castle-push)
+    (current-age == castle-age)
+    =>
+    (set-strategic-number sn-wood-gatherer-percentage 45)
+    (set-strategic-number sn-food-gatherer-percentage 29)
+    (set-strategic-number sn-gold-gatherer-percentage 18)
+    (set-strategic-number sn-stone-gatherer-percentage 8)
+    (disable-self)
+)
+
+(defrule
+    (current-age == castle-age)
+    (goal goal-castle-strategy castle-push)
+    (unit-type-count-total villager < 90)
+    (can-train villager)
+    =>
+    (train villager)
+)
+
+(defrule
+    (current-age == castle-age)
+    (goal goal-castle-strategy castle-push)
+    (building-type-count-total siege-workshop < 1)
+    (can-build siege-workshop)
+    =>
+    (build siege-workshop)
+)
+
+(defrule
+    (current-age == castle-age)
+    (goal goal-castle-strategy castle-push)
+    (building-type-count-total stable < 2)
+    (can-build stable)
+    =>
+    (build stable)
+)
+
+(defrule
+    (current-age == castle-age)
+    (goal goal-castle-strategy castle-push)
+    (current-age-time < 720)
+    (can-train battering-ram)
+    =>
+    (train battering-ram)
+)
+

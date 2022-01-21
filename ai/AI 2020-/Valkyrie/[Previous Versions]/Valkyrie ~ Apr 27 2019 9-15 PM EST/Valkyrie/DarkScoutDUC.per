@@ -1,0 +1,37 @@
+
+(defrule
+    (current-age == dark-age)
+    =>
+    (up-modify-goal goal-focus-player s:= sn-focus-player-number)
+    (set-strategic-number sn-focus-player-number 0)
+    (up-full-reset-search)
+    (up-find-remote c: livestock-class c: 1)
+    (up-get-search-state goal-local-total)
+)
+
+(defrule
+    (current-age == dark-age)
+    (up-compare-goal goal-remote-total c:> 0)
+    =>
+    (up-find-local c: scout-cavalry c: 1)
+    (up-find-local c: eagle-warrior c: 1)
+    (up-target-objects 0 action-move -1 -1)
+    (set-goal goal-scout-reset 1)
+    (up-modify-sn sn-focus-player-number g:= goal-focus-player)
+)
+
+(defrule
+    (current-age == dark-age)
+    =>
+    (up-full-reset-search)
+    (up-find-remote c: livestock-class c: 1)
+    (up-get-search-state goal-local-total)
+)
+
+(defrule
+    (goal goal-scout-reset 1)
+    (up-compare-goal goal-remote-total c:== 0)
+    =>
+    (set-goal goal-scout-reset 0)
+    (up-reset-scouts)
+)

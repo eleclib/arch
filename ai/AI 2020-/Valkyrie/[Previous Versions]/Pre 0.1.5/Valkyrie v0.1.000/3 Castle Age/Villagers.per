@@ -1,0 +1,14 @@
+
+
+
+(defrule
+
+(current-age == castle-age)
+(up-can-train 0 c: villager)
+(up-object-type-count-total c: villager < CASTLE_VILLAGERS)
+
+=>
+
+(up-train 0 c: villager)
+
+)

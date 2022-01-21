@@ -1,0 +1,18 @@
+
+; Scouts and Archers in Strategies File
+
+(defrule
+    (current-age == feudal-age)
+    (military-population >= 7)
+=>
+    (set-strategic-number sn-maximum-town-size 255)
+    (up-modify-goal ScoutRush c:= 0)
+)
+
+(defrule
+    (current-age == feudal-age)
+    (military-population <= 4)
+=>
+    (set-strategic-number sn-maximum-town-size 20)
+    (up-modify-goal ArcherRush c:= 0)
+)

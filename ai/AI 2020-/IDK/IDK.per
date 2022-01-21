@@ -1,0 +1,251 @@
+; IDK Prototype Version 1
+
+; Rule 1 - Init
+(defrule
+    (true)
+    =>
+    (set-strategic-number sn-enable-new-building-system 1)
+    (set-strategic-number sn-initial-exploration-required 0)
+    (set-strategic-number sn-cap-civilian-explorers 0)
+    (set-strategic-number sn-number-explore-groups 1)
+    (set-strategic-number sn-enable-patrol-attack 1)
+    (set-strategic-number sn-maximum-wood-drop-distance 10)
+    (set-strategic-number sn-maximum-food-drop-distance 10)
+    (set-strategic-number sn-maximum-hunt-drop-distance 30)
+    (set-strategic-number sn-maximum-gold-drop-distance 10)
+    (set-strategic-number sn-maximum-stone-drop-distance 10)
+    (set-strategic-number sn-food-gatherer-percentage 100)
+    (disable-self)
+)
+
+; Rule 2 - Villagers
+(defrule
+    (unit-type-count-total villager < 100)
+    =>
+    (research ri-loom)
+    (research feudal-age)
+    (research castle-age)
+    (research imperial-age)
+    (train villager)
+)
+
+; Rule 3 - Housing
+(defrule
+    (housing-headroom < 5)
+    (up-pending-objects c: house < 1)
+    =>
+    (build house)
+)
+
+; Rule 4 - Farms
+(defrule
+    (idle-farm-count < 1)
+    (building-type-count-total lumber-camp > 0)
+    (up-pending-objects c: farm < 1)
+    =>
+    (build farm)
+)
+
+; Rule 5 - Mill
+(defrule
+    (current-age == dark-age)
+    (up-gaia-type-count c: food > 4)
+    (building-type-count mill < 1)
+    (up-pending-objects c: mill < 1)
+    =>
+    (set-strategic-number sn-enable-boar-hunting 2)
+    (set-strategic-number sn-wood-gatherer-percentage 25)
+    (set-strategic-number sn-food-gatherer-percentage 75)
+    (build mill)
+)
+
+; Rule 6 - Lumber Camp
+(defrule
+    (dropsite-min-distance wood > 5)
+    (dropsite-min-distance wood != -1)
+    (dropsite-min-distance wood != 255)
+    (building-type-count-total mill > 0)
+    (up-pending-objects c: lumber-camp < 1)
+    =>
+    (up-modify-sn sn-lumber-camp-max-distance c:+ 2)
+    (build lumber-camp)
+)
+
+; Rule 7 - Mining Camp
+(defrule
+    (dropsite-min-distance gold > 5)
+    (dropsite-min-distance gold != -1)
+    (dropsite-min-distance gold != 255)
+    (building-type-count-total blacksmith > 0)
+    (building-type-count-total market > 0)
+    (up-pending-objects c: mining-camp < 1)
+    =>
+    (up-modify-sn sn-mining-camp-max-distance c:+ 2)
+    (build mining-camp)
+)
+
+; Rule 8 - Mining Camp
+(defrule
+    (dropsite-min-distance stone > 5)
+    (dropsite-min-distance stone != -1)
+    (dropsite-min-distance stone != 255)
+    (building-type-count-total blacksmith > 0)
+    (building-type-count-total market > 0)
+    (up-pending-objects c: mining-camp < 1)
+    =>
+    (up-modify-sn sn-mining-camp-max-distance c:+ 2)
+    (build mining-camp)
+)
+
+; Rule 9 - Blacksmith
+(defrule
+    (current-age == feudal-age)
+    (building-type-count blacksmith < 1)
+    (up-pending-objects c: blacksmith < 1)
+    =>
+    (set-strategic-number sn-wood-gatherer-percentage 45)
+    (set-strategic-number sn-food-gatherer-percentage 35)
+    (set-strategic-number sn-gold-gatherer-percentage 20)
+    (build blacksmith)
+)
+
+; Rule 10 - Market
+(defrule
+    (current-age == feudal-age)
+    (building-type-count market < 1)
+    (up-pending-objects c: market < 1)
+    =>
+    (set-strategic-number sn-wood-gatherer-percentage 45)
+    (set-strategic-number sn-food-gatherer-percentage 35)
+    (set-strategic-number sn-gold-gatherer-percentage 20)
+    (build market)
+)
+
+; Rule 11 - Castle
+(defrule
+    (true)
+    =>
+    (research my-unique-research)
+    (build castle)
+)
+
+; Rule 12 - Siege Workshop
+(defrule
+    (current-age == castle-age)
+    (building-type-count siege-workshop < 5)
+    (up-pending-objects c: siege-workshop < 1)
+    =>
+    (set-strategic-number sn-wood-gatherer-percentage 35)
+    (set-strategic-number sn-food-gatherer-percentage 20)
+    (set-strategic-number sn-gold-gatherer-percentage 20)
+    (set-strategic-number sn-stone-gatherer-percentage 25)
+    (build siege-workshop)
+)
+
+; Rule 13 - Monastery
+(defrule
+    (current-age == castle-age)
+    (building-type-count monastery < 5)
+    (up-pending-objects c: monastery < 1)
+    =>
+    (set-strategic-number sn-wood-gatherer-percentage 35)
+    (set-strategic-number sn-food-gatherer-percentage 20)
+    (set-strategic-number sn-gold-gatherer-percentage 20)
+    (set-strategic-number sn-stone-gatherer-percentage 25)
+    (build monastery)
+)
+
+; Rule 14 - Woad Raiders
+(defrule
+    (goal 1 -1)
+    (current-age == imperial-age)
+    (can-afford-unit my-unique-unit-line)
+    (can-train my-unique-unit-line)
+    =>
+    (set-goal 1 0)
+    (research my-unique-unit-upgrade)
+    (research ri-scale-mail)
+    (research ri-chain-mail)
+    (research ri-plate-mail)
+    (research ri-forging)
+    (research ri-iron-casting)
+    (research ri-blast-furnace)
+    (train my-unique-unit-line)
+)
+
+; Rule 15 - Scorpions
+(defrule
+    (goal 1 0)
+    (current-age == imperial-age)
+    (can-afford-unit scorpion-line)
+    (can-train scorpion-line)
+    =>
+    (set-goal 1 1)
+    (research ri-heavy-scorpion)
+    (train scorpion-line)
+)
+
+; Rule 16 - Battering Rams
+(defrule
+    (goal 1 1)
+    (current-age == imperial-age)
+    (can-afford-unit battering-ram-line)
+    (can-train battering-ram-line)
+    =>
+    (set-goal 1 2)
+    (research ri-capped-ram)
+    (research ri-siege-ram)
+    (train battering-ram-line)
+)
+
+; Rule 17 - Monks
+(defrule
+    (goal 1 2)
+    (current-age == imperial-age)
+    (can-afford-unit monk)
+    (can-train monk)
+    =>
+    (set-goal 1 -1)
+    (research ri-redemption)
+    (research ri-fervor)
+    (research ri-sanctity)
+    (research ri-atonement)
+    (research 441)
+    (research ri-heresy)
+    (research ri-block-printing)
+    (research ri-illumination)
+    (research ri-faith)
+    (research ri-theocracy)
+    (train monk)
+)
+
+; Rule 18 - Attacking
+(defrule
+    (current-age == imperial-age)
+    (military-population > 35)
+    (up-enemy-buildings-in-town < 5)
+    =>
+    (up-modify-sn sn-maximum-town-size c:+ 1)
+)
+
+; Rule 19 - Reset Attacking
+(defrule
+    (current-age == imperial-age)
+    (military-population < 20)
+    ;(up-enemy-buildings-in-town < 5)
+    =>
+    (set-strategic-number sn-wood-gatherer-percentage 20)
+    (set-strategic-number sn-food-gatherer-percentage 40)
+    (set-strategic-number sn-gold-gatherer-percentage 25)
+    (set-strategic-number sn-stone-gatherer-percentage 15)
+    (set-strategic-number sn-maximum-town-size 20)
+)
+
+; Rule 20 - Team Games
+(defrule
+    (player-in-game any-ally)
+    (current-age == imperial-age)
+    (unit-type-count-total trade-cart < 49)
+    =>
+    (train trade-cart)
+)

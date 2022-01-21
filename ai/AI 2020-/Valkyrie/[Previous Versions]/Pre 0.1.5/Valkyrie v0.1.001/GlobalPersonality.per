@@ -1,0 +1,70 @@
+
+
+(defrule
+
+(true)
+
+=>
+
+(set-strategic-number sn-initial-exploration-required 0)
+(set-strategic-number sn-enable-new-building-system 1)
+(set-strategic-number sn-enable-training-queue 1)
+(set-strategic-number sn-cap-civilian-builders 3)
+(set-strategic-number sn-random-placement-factor 27512)
+(set-strategic-number sn-intelligent-gathering 1)
+(set-strategic-number sn-livestock-to-town-center 1)
+(set-strategic-number sn-wall-targeting-mode 1)
+(set-strategic-number sn-attack-intelligence 1)
+(set-strategic-number 47 2)
+(set-strategic-number sn-attack-winning-player 1)
+(set-strategic-number sn-enable-offensive-priority 1)
+(set-strategic-number sn-minimum-water-body-size-for-dock 500)
+
+
+
+
+(disable-self)
+
+)
+
+(defrule
+    (true)
+=>
+    (set-strategic-number sn-allow-adjacent-dropsites 1)
+    (set-strategic-number sn-dropsite-separation-distance 20)
+    (disable-self)
+)
+
+(defrule
+
+(true)
+
+=>
+(set-strategic-number sn-dropsite-separation-distance 12)
+(set-strategic-number sn-minimum-attack-group-size -1)
+(set-strategic-number sn-maximum-attack-group-size -1)
+
+(set-strategic-number sn-number-attack-groups -1)
+(set-strategic-number sn-number-defend-groups 0)
+(set-strategic-number sn-percent-attack-soldiers 100)
+(set-strategic-number sn-town-defend-priority 0)
+(set-strategic-number sn-sentry-distance 13)
+
+(disable-self)
+
+)
+
+
+
+
+
+
+(defrule
+(true)
+=>
+    (up-set-offense-priority c: palisade-wall c: 4)
+    (up-set-offense-priority c: stone-wall c: 5)
+    (up-set-offense-priority c: town-center c: 11)
+    (up-set-offense-priority c: villager c: 10)
+    (disable-self)
+)

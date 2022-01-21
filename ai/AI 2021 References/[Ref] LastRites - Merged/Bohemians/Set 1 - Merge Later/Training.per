@@ -1,0 +1,20 @@
+
+(defrule
+    (current-age == imperial-age)
+    (up-research-status c: my-unique-research == research-complete)
+    (can-train monk)
+    =>
+    (train monk)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (up-research-status c: my-unique-research == research-complete)
+    (up-get-fact unit-type-count-total monk gl-up-get-fact)
+    (up-modify-goal gl-up-get-fact c:/ 2)
+    (up-object-type-count-total c: houfnice g:< gl-up-get-fact)
+    (can-train houfnice)
+    =>
+    (train houfnice)
+)
+

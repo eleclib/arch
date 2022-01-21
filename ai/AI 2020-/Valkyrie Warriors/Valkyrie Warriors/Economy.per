@@ -1,0 +1,254 @@
+
+(defrule
+    (true)
+    =>
+    (set-strategic-number sn-food-gatherer-percentage 100)
+    (disable-self)
+)
+
+(defrule
+    (unit-type-count villager >= 8)
+    =>
+    (set-strategic-number sn-wood-gatherer-percentage 10)
+    (set-strategic-number sn-food-gatherer-percentage 90)
+    (disable-self)
+)
+
+(defrule
+    (unit-type-count villager >= 14)
+    =>
+    (set-strategic-number sn-wood-gatherer-percentage 30)
+    (set-strategic-number sn-food-gatherer-percentage 70)
+    (disable-self)
+)
+
+(defrule
+    (building-type-count-total lumber-camp >= 1)
+    (or(building-type-count-total house >= 4)
+    (civ-selected hun))
+    =>
+    (set-strategic-number sn-wood-gatherer-percentage 30)
+    (set-strategic-number sn-food-gatherer-percentage 70)
+    (disable-self)
+)
+
+(defrule
+    (up-research-status c: feudal-age == research-pending)
+    (up-compare-const is-pocket == 0)
+    =>
+    (set-strategic-number sn-wood-gatherer-percentage 80)
+    (set-strategic-number sn-food-gatherer-percentage 20)
+)
+
+(defrule
+    (up-research-status c: feudal-age == research-pending)
+    (up-compare-const is-pocket == 1)
+    =>
+    (set-strategic-number sn-wood-gatherer-percentage 45)
+    (set-strategic-number sn-food-gatherer-percentage 55)
+)
+
+(defrule
+    (up-compare-const is-pocket == 0)
+    (building-type-count-total archery-range > 1)
+    (building-type-count-total blacksmith <= 0)
+    (current-age == feudal-age)
+    =>
+    (set-strategic-number sn-wood-gatherer-percentage 45)
+    (set-strategic-number sn-food-gatherer-percentage 55)
+)
+
+(defrule
+    (up-compare-const is-pocket == 0)
+    (building-type-count-total archery-range > 1)
+    (building-type-count-total blacksmith > 0)
+    (current-age == feudal-age)
+    =>
+    (set-strategic-number sn-wood-gatherer-percentage 44)
+    (set-strategic-number sn-food-gatherer-percentage 54)
+    (set-strategic-number sn-gold-gatherer-percentage 2)
+)
+
+(defrule
+    (up-compare-const is-pocket == 0)
+    (or	(building-type-count-total archery-range > 1)
+    	(building-type-count-total barracks > 1))
+    (building-type-count-total blacksmith > 0)
+    (building-type-count-total mining-camp > 0)
+    (current-age == feudal-age)
+    =>
+    (set-strategic-number sn-wood-gatherer-percentage 35)
+    (set-strategic-number sn-food-gatherer-percentage 55)
+    (set-strategic-number sn-gold-gatherer-percentage 10)
+)
+
+(defrule
+    (up-compare-const is-pocket == 0)
+    (up-research-status c: castle-age == research-pending)
+    =>
+    (set-strategic-number sn-wood-gatherer-percentage 40)
+    (set-strategic-number sn-food-gatherer-percentage 45)
+    (set-strategic-number sn-gold-gatherer-percentage 15)
+)
+
+(defrule
+    (up-compare-const is-pocket == 1)
+	(or	(and	(building-type-count mining-camp > 0)
+			(up-research-status c: feudal-age == research-pending))
+    		(current-age == feudal-age))
+    =>
+    (set-strategic-number sn-wood-gatherer-percentage 35)
+    (set-strategic-number sn-food-gatherer-percentage 55)
+    (set-strategic-number sn-gold-gatherer-percentage 10)
+)
+
+ (defrule
+	(up-compare-const is-pocket == 1)
+     (current-age >= castle-age)
+     (building-type-count-total barracks < 2)
+     (building-type-count-total stable < 2)
+     =>
+     (set-strategic-number sn-wood-gatherer-percentage 55)
+     (set-strategic-number sn-food-gatherer-percentage 40)
+     (set-strategic-number sn-gold-gatherer-percentage 5)
+     (set-strategic-number sn-stone-gatherer-percentage 0)
+)
+
+ (defrule
+	(up-compare-const is-pocket == 1)
+     (current-age >= castle-age)
+     (or	(building-type-count-total barracks >= 2)
+     		(building-type-count-total stable >= 2))
+     (building-type-count-total town-center < 2)
+     =>
+     (set-strategic-number sn-wood-gatherer-percentage 36)
+     (set-strategic-number sn-food-gatherer-percentage 49)
+     (set-strategic-number sn-gold-gatherer-percentage 15)
+     (set-strategic-number sn-stone-gatherer-percentage 0)
+)
+
+ (defrule
+     (current-age >= castle-age)
+     (up-compare-const is-pocket == 0)
+     =>
+     (set-strategic-number sn-wood-gatherer-percentage 30)
+     (set-strategic-number sn-food-gatherer-percentage 40)
+     (set-strategic-number sn-gold-gatherer-percentage 25)
+     (set-strategic-number sn-stone-gatherer-percentage 5)
+)
+
+ (defrule
+     (game-time < 1800)
+     (current-age >= castle-age)
+     (up-compare-const is-pocket == 1)
+     (or	(building-type-count-total barracks >= 2)
+     		(building-type-count-total stable >= 2))
+     (building-type-count-total town-center >= 2)
+     =>
+     (set-strategic-number sn-wood-gatherer-percentage 31)
+     (set-strategic-number sn-food-gatherer-percentage 45)
+     (set-strategic-number sn-gold-gatherer-percentage 22)
+     (set-strategic-number sn-stone-gatherer-percentage 2)
+)
+
+ (defrule
+     (game-time > 1800)
+     (current-age >= castle-age)
+     (up-compare-const is-pocket == 1)
+     (building-type-count-total town-center >= 2)
+     =>
+     (set-strategic-number sn-wood-gatherer-percentage 28)
+     (set-strategic-number sn-food-gatherer-percentage 44)
+     (set-strategic-number sn-gold-gatherer-percentage 23)
+     (set-strategic-number sn-stone-gatherer-percentage 5)
+)
+
+; Some Kind of Balancing Economy ---
+
+(defrule
+    (current-age == feudal-age)
+    (building-type-count-total archery-range > 1)
+    (building-type-count-total mining-camp > 0)
+    (food-amount > 500)
+    (gold-amount < 150)
+    (up-compare-sn sn-gold-gatherer-percentage c:< 18)
+    =>
+    (up-modify-sn sn-gold-gatherer-percentage c:+ 5)
+    (up-modify-sn sn-food-gatherer-percentage c:- 5)
+)
+
+(defrule
+    (up-compare-const is-pocket == 1)
+    (current-age == feudal-age)
+    (up-research-status c: castle-age < research-pending)
+    (building-type-count-total stable > 0)
+    (building-type-count-total blacksmith > 0)
+    (food-amount < 750)
+    (gold-amount > 100)
+    (up-compare-sn sn-food-gatherer-percentage c:< 65)
+    =>
+    (up-modify-sn sn-wood-gatherer-percentage c:- 10)
+    (up-modify-sn sn-food-gatherer-percentage c:+ 10)
+)
+
+(defrule
+    (current-age >= castle-age)
+    (food-amount < 200)
+    (gold-amount > 300)
+    (up-compare-sn sn-food-gatherer-percentage c:< 50)
+    =>
+    (up-modify-sn sn-food-gatherer-percentage c:+ 4)
+    (up-modify-sn sn-gold-gatherer-percentage c:- 4)
+)
+
+(defrule
+    (current-age >= castle-age)
+    (food-amount > 400)
+    (gold-amount < 150)
+    (up-compare-sn sn-gold-gatherer-percentage c:< 25)
+    =>
+    (up-modify-sn sn-gold-gatherer-percentage c:+ 4)
+    (up-modify-sn sn-food-gatherer-percentage c:- 4)
+)
+
+(defrule
+    (current-age >= feudal-age)
+    (dropsite-min-distance wood > 2)
+    (wood-amount < 100)
+    (gold-amount > 350)
+    (food-amount > 250)
+    (up-compare-sn sn-wood-gatherer-percentage c:< 40)
+    =>
+    (up-modify-sn sn-wood-gatherer-percentage c:+ 6)
+    (up-modify-sn sn-gold-gatherer-percentage c:- 3)
+    (up-modify-sn sn-food-gatherer-percentage c:- 3)
+)
+
+(defrule
+	(current-age > feudal-age)
+	(building-type-count town-center > 2)
+	(food-amount > 600)
+	(gold-amount > 500)
+	(or	(building-type-count-total siege-workshop <= 0)
+		(building-type-count-total monastery <= 0))
+	(resource-found wood)
+	(up-compare-sn sn-wood-gatherer-percentage c:< 35)
+=>	(up-modify-sn sn-wood-gatherer-percentage c:+ 9)
+	(up-modify-sn sn-stone-gatherer-percentage c:- 3)
+	(up-modify-sn sn-gold-gatherer-percentage c:- 3)
+	(up-modify-sn sn-food-gatherer-percentage c:- 3))
+
+(defrule
+    (current-age > feudal-age)
+	(building-type-count town-center > 2)
+	(building-type-count-total castle < 1)
+	(resource-found stone)
+	(dropsite-min-distance stone < 3)
+    (up-compare-sn sn-stone-gatherer-percentage c:< 10)
+    =>
+    (up-modify-sn sn-stone-gatherer-percentage c:+ 6)
+    (up-modify-sn sn-wood-gatherer-percentage c:- 2)
+    (up-modify-sn sn-gold-gatherer-percentage c:- 2)
+    (up-modify-sn sn-food-gatherer-percentage c:- 2)
+)
+

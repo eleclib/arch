@@ -1,0 +1,124 @@
+
+
+
+
+(defrule
+
+(current-age == dark-age)
+(goal ECONOMY_GOAL SHEEP_FORAGE_DEER_BOAR)
+
+=>
+
+(set-strategic-number sn-enable-boar-hunting 1)
+(disable-self)
+
+)
+
+
+
+(defrule
+
+(current-age == dark-age)
+(goal ECONOMY_GOAL FARMS_WOOD_FARMS_FARMS_FARMS)
+
+=>
+
+(set-strategic-number sn-enable-boar-hunting 0)
+
+(disable-self)
+
+)
+
+
+
+
+
+
+(defrule
+
+(current-age == dark-age)
+
+(up-object-type-count c: house < MINIMUM_HOUSES_FOR_GATHERING)
+
+=>
+
+(set-strategic-number sn-percent-civilian-explorers 0)
+(set-strategic-number sn-percent-civilian-gatherers 0)
+(set-strategic-number sn-percent-civilian-builders 100)
+(set-strategic-number sn-cap-civilian-gatherers 0)
+(disable-self)
+
+)
+
+
+
+
+
+(defrule
+
+(current-age == dark-age)
+
+(up-object-type-count c: house >= MINIMUM_HOUSES_FOR_GATHERING)
+
+=>
+
+(set-strategic-number sn-percent-civilian-explorers 0)
+(set-strategic-number sn-percent-civilian-gatherers 33)
+(set-strategic-number sn-percent-civilian-builders 67)
+(set-strategic-number sn-cap-civilian-gatherers -1)
+(disable-self)
+
+)
+
+
+
+
+
+
+
+
+
+(defrule
+    (current-age == dark-age)
+    (goal ECONOMY_GOAL SHEEP_FORAGE_DEER_BOAR)
+=>
+    (set-strategic-number sn-wood-dropsite-distance INITIAL_WOOD_DROPSITE)
+    (set-strategic-number sn-food-dropsite-distance INITIAL_FOOD_DROPSITE)
+    (set-strategic-number sn-gold-dropsite-distance 10)
+    (set-strategic-number sn-maximum-wood-drop-distance INITIAL_WOOD_DROP_DISTANCE)
+    (set-strategic-number sn-maximum-food-drop-distance INITIAL_MAX_FOOD_DROP_DISTANCE)
+    (set-strategic-number sn-maximum-hunt-drop-distance INITIAL_MAX_FOOD_FISHING_DROP_DISTANCE)
+    (set-strategic-number sn-maximum-gold-drop-distance INITIAL_GOLD_DROP_DISTANCE)
+    (disable-self)
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+(defrule
+    (current-age == dark-age)
+    (up-can-train 0 c: villager)
+    (up-object-type-count-total c: villager < DARK_TOTAL_VILLAGERS)
+=>
+    (up-train 0 c: villager)
+)
+
+
+
+

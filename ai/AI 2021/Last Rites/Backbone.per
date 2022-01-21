@@ -1,0 +1,449 @@
+
+; building in overrides
+
+
+; consts
+
+(defconst cn-dark-vills-total 27)
+(defconst cn-dark-vills-for-lumber 9)
+(defconst cn-dark-vills-for-mill 13)
+(defconst cn-dark-vills-for-farms 20)
+(defconst cn-dark-no-food-threshold-for-farms 175)
+(defconst cn-dark-min-vills-for-farms 17)
+(defconst cn-dark-initial-wood-food-eco-adjustment 28)
+(defconst cn-dark-farms-total 5)
+(defconst cn-dark-idle-farms-threshold 2)
+(defconst cn-dark-housing-headroom-threshold 5)
+(defconst cn-dark-trees-before-lumber 30)
+(defconst cn-dark-boar-lure-size 0)
+(defconst cn-dark-boar-hunt-size 2)
+(defconst cn-dark-vills-for-mill-fail 13)
+(defconst cn-dark-initial-gold-food-eco-adjustment 9)
+(defconst cn-dark-house-headroom-total 5)
+(defconst cn-dark-house-pending-total 1)
+(defconst cn-feudal-initial-gold-food-eco-adjustment 13)
+(defconst cn-castle-town-centers-total 4)
+(defconst cn-castle-initial-gold-food-eco-adjustment 7)
+(defconst cn-dropsite-min-distance-wood 4)
+(defconst cn-lumber-camp-adjustment-per-build 3)
+(defconst cn-feudal-initial-stone-eco-adjustment 10)
+(defconst cn-feudal-wood-eco-adjustment 10)
+(defconst cn-castle-per-town-center-gold-food-eco-adjustment 4)
+(defconst cn-mining-camp-adjustment-per-build 3)
+(defconst cn-dropsite-min-distance-gold 3)
+(defconst cn-dropsite-min-distance-stone 3)
+(defconst cn-dropsite-max-distance-gold 7)
+(defconst cn-dropsite-max-distance-stone 7)
+(defconst cn-safety-farm-threshold 5)
+
+
+
+; defined in OverridesStart
+;(defconst cn-backbone1-id 1)
+;(defconst cn-backbone2-id 2)
+
+
+; backbone 2
+(defconst cn-bb2-dark-villagers-fast-feudal 22)
+(defconst cn-bb2-dark-vills-for-mill 8)
+(defconst cn-bb2-dark-vills-for-mill-fail 13)
+(defconst cn-bb2-lumber-camp-adjustment-per-build 1)
+(defconst cn-bb2-safety-farm-threshold 7)
+(defconst cn-bb2-dark-no-food-threshold-for-farms 225)
+(defconst cn-bb2-dark-vills-for-farms 25) ; unused?
+(defconst cn-bb2-dark-min-vills-for-farms 25) ; unused?
+(defconst cn-bb2-dark-farms-total 2)
+(defconst cn-bb2-dark-vills-for-lumber 11)
+(defconst cn-bb2-dark-initial-wood-food-eco-adjustment 36)
+(defconst cn-bb2-feudal-initial-wood-food-eco-adjustment 20)
+(defconst cn-bb2-feudal-intial-food-stone-eco-adjustment 0)
+
+
+
+
+
+; goals
+
+(defconst gl-vills-total 1)
+(defconst gl-vill-arry-1 2)
+(defconst gl-vill-arry-2 3)
+(defconst gl-vill-arry-3 4)
+(defconst gl-vill-arry-ptr 5)
+(defconst gl-get-indirect 6)
+
+(defconst gl-farms-total 7)
+(defconst gl-farm-arry-1 8)
+(defconst gl-farm-arry-2 9)
+(defconst gl-farm-arry-3 10)
+(defconst gl-farm-arry-ptr 11)
+
+(defconst gl-farms-idle-total 12)
+(defconst gl-farm-idle-arry-1 13)
+(defconst gl-farm-idle-arry-2 14)
+(defconst gl-farm-idle-arry-3 15)
+(defconst gl-farm-idle-arry-ptr 16)
+
+(defconst gl-up-get-fact 17)
+
+(defconst gl-house-headroom-total 18)
+(defconst gl-house-headroom-arry-1 19)
+(defconst gl-house-headroom-arry-2 20)
+(defconst gl-house-headroom-arry-3 21)
+(defconst gl-house-headroom-arry-ptr 22)
+
+(defconst gl-house-pending-total 23)
+(defconst gl-house-pending-arry-1 24)
+(defconst gl-house-pending-arry-2 25)
+(defconst gl-house-pending-arry-3 26)
+(defconst gl-house-pending-arry-ptr 27)
+
+
+
+;(defconst gl-ai-tick-count 28)
+
+
+
+
+; override using tick 0
+
+;(defrule
+;    (up-compare-goal gl-ai-tick-count c:== -1)
+;    =>
+;    (up-modify-goal gl-ai-tick-count c:+ 2)
+;    (up-jump-rule 27) ; Adjust to Rule Count !!!
+;)
+
+;(defrule
+;    (true)
+;    =>
+;    (up-modify-goal gl-ai-tick-count c:+ 1)
+;)
+
+
+
+
+; start backbone 2
+
+(defrule
+    (up-compare-goal gl-backbone-picker c:!= cn-backbone2-id)
+    =>
+    (up-jump-rule 22) ; Fix this when done
+)
+
+; start rules for backbone 2 - feudal defense, eco and buildings only
+; put rest in overrides for Bohemians
+
+(defrule ;settings
+    (true)
+    =>
+    (set-strategic-number sn-enable-new-building-system 1)
+    (set-strategic-number sn-cap-civilian-builders 200)
+    (set-strategic-number sn-initial-exploration-required 0)
+    (set-strategic-number sn-home-exploration-time 600)
+    (set-strategic-number sn-percent-civilian-explorers 0)
+    (set-strategic-number sn-number-explore-groups 1)
+    (set-strategic-number sn-enable-training-queue 2)
+    (set-strategic-number sn-enable-research-queue 1)
+    (set-strategic-number sn-food-gatherer-percentage 100)
+    (set-strategic-number sn-maximum-wood-drop-distance 30)
+    (set-strategic-number sn-maximum-food-drop-distance 30)
+    (set-strategic-number sn-maximum-gold-drop-distance 30)
+    (set-strategic-number sn-maximum-stone-drop-distance 30)
+    (set-strategic-number sn-maximum-hunt-drop-distance 30)
+    (set-strategic-number sn-lumber-camp-max-distance 17)
+    (set-strategic-number sn-enable-boar-hunting 0)
+    (set-strategic-number sn-minimum-boar-hunt-group-size 8)
+    (set-strategic-number sn-minimum-boar-lure-group-size 0)
+    (set-strategic-number sn-maximum-town-size 10)
+    (disable-self)
+)
+
+(defrule ; settings 2
+    (true) ; dark age
+    =>
+    (set-goal gl-vills-total cn-bb2-dark-villagers-fast-feudal)
+    (set-goal gl-farms-total cn-bb2-dark-farms-total)
+    (set-goal gl-house-headroom-total 5)
+    (set-goal gl-house-pending-total 1)
+    (set-goal gl-farms-idle-total 2)
+    (disable-self)
+)
+
+(defrule
+    (can-research ri-loom)
+    =>
+    (research ri-loom)
+)
+
+(defrule
+    (up-object-type-count-total c: villager g:< gl-vills-total)
+    (not(can-train feudal-age))
+    (not(can-train castle-age))
+    (not(can-train imperial-age))
+    (food-amount < 525)
+    (can-train villager)
+    =>
+    (train villager)
+)
+
+(defrule
+
+    (up-get-fact housing-headroom 0 gl-up-get-fact)
+    (up-compare-goal gl-up-get-fact g:< gl-house-headroom-total)
+    (up-pending-objects c: house g:< gl-house-pending-total)
+    (can-build house)
+    =>
+    (up-set-placement-data my-player-number town-center c: 8)
+    (up-build place-control 0 c: house)
+)
+
+(defrule
+    (building-type-count-total mill < 1)
+    (unit-type-count villager >= cn-bb2-dark-vills-for-mill)
+    (or
+        (resource-found food)
+        (unit-type-count villager >= cn-bb2-dark-vills-for-mill-fail)
+    )
+    (can-build mill)
+    =>
+    (up-modify-sn sn-wood-gatherer-percentage c:+ cn-bb2-dark-initial-wood-food-eco-adjustment)
+    (up-modify-sn sn-food-gatherer-percentage c:- cn-bb2-dark-initial-wood-food-eco-adjustment)
+    (build mill)
+)
+
+(defrule
+    (current-age >= feudal-age)
+    (building-type-count mill > 0)
+    (building-type-count-total archery-range >= 2)
+    (building-type-count-total mill < 2)
+    (unit-type-count villager >= cn-dark-vills-for-mill)
+    (or
+        (resource-found food)
+        (unit-type-count villager >= cn-dark-vills-for-mill-fail)
+    )
+    (can-build mill)
+    =>
+    (up-modify-sn sn-wood-gatherer-percentage c:+ cn-dark-initial-wood-food-eco-adjustment)
+    (up-modify-sn sn-food-gatherer-percentage c:- cn-dark-initial-wood-food-eco-adjustment)
+    (up-modify-sn sn-food-gatherer-percentage c:- cn-dark-initial-gold-food-eco-adjustment)
+    (up-modify-sn sn-gold-gatherer-percentage c:+ cn-dark-initial-gold-food-eco-adjustment)
+
+    (up-set-placement-data my-player-number town-center c: -16)
+    (up-build place-control 0 c: mill)
+)
+
+(defrule
+    (building-type-count-total mill > 0)
+    (building-type-count-total lumber-camp < 2)
+    (unit-type-count villager >= cn-bb2-dark-vills-for-lumber)
+    (can-build lumber-camp)
+    =>
+    (build lumber-camp)
+)
+
+(defrule
+    (current-age == dark-age)
+    (building-type-count-total lumber-camp > 0)
+    (up-object-type-count-total c: farm g:< gl-farms-total)
+    (up-get-fact idle-farm-count 0 gl-up-get-fact)
+    (up-compare-goal gl-up-get-fact g:< gl-farms-idle-total)
+    (can-build farm)
+    =>
+    (build farm)
+)
+
+(defrule
+    (current-age == dark-age)
+    (up-object-type-count-total c: villager g:>= gl-vills-total)
+    =>
+    (up-modify-sn sn-wood-gatherer-percentage c:+ cn-bb2-feudal-initial-wood-food-eco-adjustment)
+    (up-modify-sn sn-food-gatherer-percentage c:- cn-bb2-feudal-initial-wood-food-eco-adjustment)
+    (up-modify-sn sn-stone-gatherer-percentage c:+ cn-bb2-feudal-intial-food-stone-eco-adjustment)
+    (up-modify-sn sn-food-gatherer-percentage c:- cn-bb2-feudal-intial-food-stone-eco-adjustment)
+    (disable-self)
+)
+
+(defrule
+    (can-research feudal-age)
+    =>
+    (research feudal-age)
+    (up-modify-goal gl-vills-total c:+ 24)
+    (up-modify-goal gl-house-headroom-total c:+ 5)
+    (up-modify-goal gl-house-pending-total c:+ 1)
+)
+
+(defrule
+    (up-research-status c: feudal-age >= research-pending)
+    (building-type-count-total barracks < 1)
+    (can-build barracks)
+    =>
+    (up-set-placement-data my-player-number town-center c: -2)
+    (up-build place-control 0 c: barracks)
+)
+
+; feudal age
+
+(defrule
+    (building-type-count-total archery-range < 2)
+    (can-build archery-range)
+    =>
+    (build archery-range)
+)
+
+(defrule
+    (building-type-count-total watch-tower < 1)
+    (building-type-count-total archery-range >= 2)
+    (can-build watch-tower)
+    =>
+    (up-set-placement-data my-player-number lumber-camp c: 2)
+    (up-build place-control 0 c: watch-tower)
+)
+
+;(defrule
+;    (building-type-count-total watch-tower == 1)
+;    (building-type-count-total archery-range >= 2)
+;    (can-build watch-tower)
+;    =>
+;    (up-set-placement-data my-player-number lumber-camp c: 3)
+;    (up-build place-control 0 c: watch-tower)
+;)
+
+;(defrule
+;    (building-type-count-total watch-tower == 2)
+;    (building-type-count-total archery-range >= 2)
+;    (can-build watch-tower)
+;    =>
+;    (up-set-placement-data my-player-number lumber-camp c: 3)
+;    (up-build place-control 0 c: watch-tower)
+;)
+
+;(defrule
+;    (building-type-count-total watch-tower == 3)
+;    (building-type-count-total archery-range >= 2)
+;    (can-build watch-tower)
+;    =>
+;    (up-set-placement-data my-player-number lumber-camp c: 3)
+;    (up-build place-control 0 c: watch-tower)
+;)
+
+(defrule
+    (building-type-count-total archery-range >= 2)
+    (building-type-count-total blacksmith < 1)
+    (can-build blacksmith)
+    =>
+    (build blacksmith)
+)
+
+(defrule
+    (can-research castle-age)
+    =>
+    (up-modify-goal gl-vills-total c:+ 36)
+    (up-modify-goal gl-farms-total c:+ 9)
+    (research castle-age)
+)
+
+(defrule
+    (building-type-count-total monastery < 1)
+    (can-build monastery)
+    =>
+    (build monastery)
+)
+
+(defrule
+    (building-type-count-total university < 1)
+    (can-build university)
+    =>
+    (build university)
+)
+
+(defrule
+    (current-age >= feudal-age)
+    (building-type-count-total archery-range >= 2)
+    (up-object-type-count-total c: farm g:< gl-farms-total)
+    (up-get-fact idle-farm-count 0 gl-up-get-fact)
+    (up-compare-goal gl-up-get-fact g:< gl-farms-idle-total)
+    (can-build farm)
+    =>
+    (build farm)
+)
+
+; mining camps
+
+(defrule
+    (building-type-count-total monastery > 0)
+    (current-age >= castle-age)
+    (or
+        (or
+            (and
+                (and
+                    (up-gaia-type-count-total c: gold > 0)
+                    (dropsite-min-distance gold != 255)
+                )
+                (and
+                    (dropsite-min-distance gold > cn-dropsite-min-distance-gold)
+                    (dropsite-min-distance gold < cn-dropsite-max-distance-gold)
+                )
+            )
+            (and
+                (and
+                    (up-gaia-type-count-total c: stone > 0)
+                    (dropsite-min-distance stone != 255)
+                )
+                (and
+                    (dropsite-min-distance stone > cn-dropsite-min-distance-stone)
+                    (dropsite-min-distance stone < cn-dropsite-max-distance-stone)
+                )
+            )
+        )
+        (and
+            (or
+                (up-gaia-type-count-total c: gold == 0)
+                (up-gaia-type-count-total c: stone == 0)
+            )
+            (up-modify-sn sn-mining-camp-max-distance c:+ cn-mining-camp-adjustment-per-build)
+        )
+    )
+    (can-build mining-camp)
+    =>
+    (build mining-camp)
+)
+
+
+(defrule
+    (building-type-count-total mill > 0)
+    (unit-type-count villager >= cn-dark-vills-for-lumber)
+    ;(resource-found wood)
+
+    (xor
+        (and
+            (current-age == dark-age)
+            (and
+                (up-gaia-type-count-total c: wood >= cn-dark-trees-before-lumber)
+                (and
+                    (building-type-count lumber-camp < 1)
+                    (up-pending-objects c: lumber-camp < 1)
+                )
+            )
+        )
+        (and
+            (current-age > dark-age)
+            (and
+                (and
+                    (dropsite-min-distance wood > cn-dropsite-min-distance-wood)
+                    (dropsite-min-distance wood != 255)
+                )
+                (up-modify-sn sn-lumber-camp-max-distance c:+ cn-lumber-camp-adjustment-per-build)
+            )
+        )
+    )
+
+    (can-build lumber-camp)
+    =>
+    (build lumber-camp)
+)
+
+(defrule
+    (can-research imperial-age)
+    =>
+    (research imperial-age)
+)

@@ -1,0 +1,27 @@
+
+(defrule
+    (current-age == imperial-age)
+    (military-population > 70)
+    (up-modify-goal gl-up-get-fact g:= gl-vills-total)
+    (up-modify-goal gl-up-get-fact c:- 70)
+    (up-object-type-count-total c: villager g:> gl-up-get-fact)
+    (unit-type-count-total villager > 40)
+    =>
+    (up-modify-goal gl-vills-total c:- 1)
+    (delete-unit villager)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (military-population < 24)
+    (up-enemy-buildings-in-town > 4)
+    =>
+    (up-modify-goal gl-vills-total c:+ 1)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (up-compare-goal gl-vills-total c:< 40)
+    =>
+    (set-goal gl-vills-total 40)
+)

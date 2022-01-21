@@ -1,0 +1,38 @@
+
+(defrule
+    (unit-type-count villager >= 9)
+    =>
+    (up-drop-resources food c: 0)
+    (disable-self)
+)
+
+(defrule
+    (unit-type-count villager >= 17)
+    =>
+    (up-drop-resources food c: 0)
+    (disable-self)
+)
+
+(defrule
+    (unit-type-count villager >= 10)
+    =>
+    (set-strategic-number sn-focus-player-number 0)
+    (up-full-reset-search)
+    (up-find-local c: villager-class c: 4)
+    (up-find-remote c: javelina c: 1)
+    (up-find-remote c: wild-boar c: 1)
+    (up-target-objects 0 action-default -1 -1)
+    (disable-self)
+)
+
+(defrule
+    (unit-type-count villager >= 17)
+    =>
+    (set-strategic-number sn-focus-player-number 0)
+    (up-full-reset-search)
+    (up-find-local c: villager-class c: 4)
+    (up-find-remote c: javelina c: 1)
+    (up-find-remote c: wild-boar c: 1)
+    (up-target-objects 0 action-default -1 -1)
+    (disable-self)
+)

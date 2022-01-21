@@ -1,0 +1,12 @@
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 1)
+    (current-age == feudal-age)
+    (up-compare-goal ScoutRush == 1)
+    (up-can-train 0 c: scout-cavalry-line)
+    (up-pending-objects c: scout-cavalry-line < 1)
+    =>
+    (up-train 0 c: scout-cavalry)
+    (up-modify-goal FoodVillagers c:+ 1)
+)
+

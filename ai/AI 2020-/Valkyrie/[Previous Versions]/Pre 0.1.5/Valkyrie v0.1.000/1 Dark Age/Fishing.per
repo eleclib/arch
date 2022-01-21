@@ -1,0 +1,15 @@
+
+
+
+(defrule
+
+(current-age == dark-age)
+(up-object-type-count-total c: dock >= DOCKS_BEFORE_FISHING_SHIPS)
+(up-object-type-count-total c: fishing-ship < FISHING_SHIPS_COUNT_DARK)
+(up-can-train 0 c: fishing-ship)
+
+=>
+
+(up-train 0 c: fishing-ship)
+
+)

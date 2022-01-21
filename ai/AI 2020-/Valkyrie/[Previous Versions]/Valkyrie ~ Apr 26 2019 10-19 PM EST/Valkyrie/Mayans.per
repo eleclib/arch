@@ -1,0 +1,22 @@
+
+#load-if-defined MAYAN-CIV
+
+(defrule
+    (current-age == castle-age)
+    (goal goal-castle-strategy castle-push)
+    (building-type-count barracks < 3)
+    (can-build barracks)
+    =>
+    (build barracks)
+)
+
+(defrule
+    (current-age == castle-age)
+    (goal goal-castle-strategy castle-push)
+    (current-age-time < 1200)
+    (can-train eagle-warrior)
+    =>
+    (train eagle-warrior)
+)
+
+#end-if

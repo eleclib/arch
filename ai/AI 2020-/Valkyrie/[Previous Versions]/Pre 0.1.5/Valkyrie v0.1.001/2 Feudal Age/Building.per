@@ -1,0 +1,94 @@
+
+
+(defrule
+    (current-age == feudal-age)
+    (up-can-build 0 c: house)
+    (up-pending-objects c: house < 1)
+    (housing-headroom < 3)
+=>
+    (up-build place-normal 0 c: house)
+)
+
+
+(defrule
+    (current-age == feudal-age)
+    (up-object-type-count-total c: lumber-camp < 2)
+    (up-pending-objects c: lumber-camp < 1)
+=>
+    (up-build place-normal 0 c: lumber-camp)
+)
+
+(defrule
+    (current-age == feudal-age)
+    (up-object-type-count-total c: mining-camp < 1)
+    (up-pending-objects c: mining-camp < 1)
+=>
+    (up-build place-normal 0 c: mining-camp)
+)
+
+
+(defrule
+    (current-age == feudal-age)
+    (up-object-type-count-total c: market < 1)
+    (up-pending-objects c: market < 1)
+    (up-can-build 0 c: market)
+=>
+    (up-build place-normal 0 c: market)
+)
+
+
+(defrule
+    (current-age == feudal-age)
+    (up-object-type-count-total c: market > 0)
+    (up-object-type-count-total c: blacksmith < 1)
+    (up-pending-objects c: blacksmith < 1)
+    (up-can-build 0 c: blacksmith)
+=>
+    (up-build place-normal 0 c: blacksmith)
+)
+
+
+(defrule
+    (current-age == feudal-age)
+    (up-object-type-count-total c: market > 0)
+    (up-object-type-count-total c: blacksmith > 0)
+    (up-object-type-count-total c: barracks < 1)
+    (up-pending-objects c: barracks < 1)
+    (up-can-build 0 c: barracks)
+=>
+    (up-build place-normal 0 c: barracks)
+)
+
+
+(defrule
+    (current-age == feudal-age)
+    (up-object-type-count-total c: market > 0)
+    (up-object-type-count-total c: blacksmith > 0)
+    (up-object-type-count-total c: archery-range < 1)
+    (up-pending-objects c: archery-range < 1)
+    (up-can-build 0 c: archery-range)
+=>
+    (up-build place-normal 0 c: archery-range)
+)
+
+
+(defrule
+    (current-age == feudal-age)
+    (up-object-type-count-total c: blacksmith > 0)
+    (up-object-type-count-total c: market > 0)
+    (up-object-type-count-total c: stable < 1)
+    (up-pending-objects c: stable < 1)
+    (up-can-build 0 c: stable)
+=>
+    (up-build place-normal 0 c: stable)
+)
+
+
+
+(defrule
+    (current-age == feudal-age)
+    (idle-farm-count == 0)
+    (up-object-type-count-total c: farm < 3)
+=>
+    (up-build place-normal 0 c: farm)
+)

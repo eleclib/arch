@@ -1,0 +1,1181 @@
+
+
+
+; palisade
+; fix for edge of map cases, save some wood
+(defrule
+    (current-age <= feudal-age)
+    (building-type-count-total lumber-camp > 0)
+    (unit-type-count villager >= 27)
+    (up-timer-status tm-full-wall-placement1 <= timer-triggered)
+    ;(can-build palisade-wall) ; hmmm, costs of up-build-line?
+    =>
+    ; gl-my-pos
+    (up-copy-point gl-walls1 gl-my-pos)
+    (up-modify-goal gl-walls1-x c:- cn-wall-tc-to-corner-length)
+    (up-modify-goal gl-walls1-y c:+ cn-wall-tc-to-corner-length)
+    (up-bound-point gl-walls1 gl-walls1)
+
+    (up-copy-point gl-walls2 gl-my-pos)
+    (up-modify-goal gl-walls2-x c:- cn-wall-tc-to-corner-length)
+    (up-modify-goal gl-walls2-y c:- cn-wall-tc-to-corner-length)
+    (up-bound-point gl-walls2 gl-walls2)
+
+    (up-copy-point gl-walls3 gl-my-pos)
+    (up-modify-goal gl-walls3-x c:+ cn-wall-tc-to-corner-length)
+    (up-modify-goal gl-walls3-y c:- cn-wall-tc-to-corner-length)
+    (up-bound-point gl-walls3 gl-walls3)
+
+    (up-copy-point gl-walls4 gl-my-pos)
+    (up-modify-goal gl-walls4-x c:+ cn-wall-tc-to-corner-length)
+    (up-modify-goal gl-walls4-y c:+ cn-wall-tc-to-corner-length)
+    (up-bound-point gl-walls4 gl-walls4)
+)
+
+
+
+
+
+
+
+
+
+
+
+(defrule
+    (true)
+    =>
+    (up-jump-rule 16)
+)
+
+
+
+
+
+(defrule
+    (current-age <= feudal-age)
+    (building-type-count-total lumber-camp > 0)
+    (unit-type-count villager >= 27)
+    (up-timer-status tm-full-wall-placement1 <= timer-triggered)
+    =>
+
+    (up-modify-goal gl-temp-x c:= 0)
+    (up-modify-goal gl-temp-y g:= gl-map-size)
+    
+    (up-modify-goal gl-temp-x g:- gl-walls1-x)
+
+    (up-bound-point gl-temp gl-temp)
+
+
+)
+
+
+; done
+(defrule
+    (current-age <= feudal-age)
+    (building-type-count-total lumber-camp > 0)
+    (unit-type-count villager >= 27)
+    (up-timer-status tm-full-wall-placement1 <= timer-triggered)
+
+    ;(up-modify-goal gl-temp-y g:- gl-walls1-y)
+    (up-compare-goal gl-temp-x <= 1)
+    =>
+    (set-goal gl-build-se-wall 0)
+)
+
+
+
+
+
+
+
+
+
+(defrule
+    (current-age <= feudal-age)
+    (building-type-count-total lumber-camp > 0)
+    (unit-type-count villager >= 27)
+    (up-timer-status tm-full-wall-placement1 <= timer-triggered)
+    =>
+    (up-modify-goal gl-temp-x c:= 0)
+    (up-modify-goal gl-temp-y g:= gl-map-size)
+
+    (up-modify-goal gl-temp-y g:- gl-walls1-y)
+
+    (up-bound-point gl-temp gl-temp)
+)
+
+(defrule
+    (current-age <= feudal-age)
+    (building-type-count-total lumber-camp > 0)
+    (unit-type-count villager >= 27)
+    (up-timer-status tm-full-wall-placement1 <= timer-triggered)
+
+    ;(up-modify-goal gl-temp-x g:- gl-walls1-x)
+
+    (up-compare-goal gl-temp-y <= 1)
+    =>
+    (set-goal gl-build-sw-wall 0)
+    ; set relevant goal to 0
+)
+
+
+
+
+
+
+
+
+
+
+
+(defrule
+    (current-age <= feudal-age)
+    (building-type-count-total lumber-camp > 0)
+    (unit-type-count villager >= 27)
+    (up-timer-status tm-full-wall-placement1 <= timer-triggered)
+    =>
+    (up-modify-goal gl-temp-x c:= 0)
+    (up-modify-goal gl-temp-y c:= 0)
+
+    (up-modify-goal gl-temp-y g:- gl-walls2-y)
+
+
+    (up-bound-point gl-temp gl-temp)
+)
+
+
+
+(defrule
+    (current-age <= feudal-age)
+    (building-type-count-total lumber-camp > 0)
+    (unit-type-count villager >= 27)
+    (up-timer-status tm-full-wall-placement1 <= timer-triggered)
+
+    ;(up-modify-goal gl-temp-x g:- gl-walls2-x)
+
+    (up-compare-goal gl-temp-y <= 1)
+    =>
+    (set-goal gl-build-sw-wall 0)
+)
+
+
+
+
+
+
+
+
+
+
+(defrule
+    (current-age <= feudal-age)
+    (building-type-count-total lumber-camp > 0)
+    (unit-type-count villager >= 27)
+    (up-timer-status tm-full-wall-placement1 <= timer-triggered)
+    =>
+    (up-modify-goal gl-temp-x c:= 0)
+    (up-modify-goal gl-temp-y c:= 0)
+
+
+
+
+
+    (up-modify-goal gl-temp-x g:+ gl-walls2-x)
+        (up-bound-point gl-temp gl-temp)
+)
+
+
+(defrule
+    (current-age <= feudal-age)
+    (building-type-count-total lumber-camp > 0)
+    (unit-type-count villager >= 27)
+    (up-timer-status tm-full-wall-placement1 <= timer-triggered)
+
+    ;(up-modify-goal gl-temp-y g:+ gl-walls2-y)
+    (up-compare-goal gl-temp-x <= 1)
+    =>
+    (set-goal gl-build-nw-wall 0)
+    ; set relevant goal to 0
+)
+
+
+
+
+
+
+
+
+
+
+
+(defrule
+    (current-age <= feudal-age)
+    (building-type-count-total lumber-camp > 0)
+    (unit-type-count villager >= 27)
+    (up-timer-status tm-full-wall-placement1 <= timer-triggered)
+    =>
+    (up-modify-goal gl-temp-x g:= gl-map-size)
+    (up-modify-goal gl-temp-y c:= 0)
+
+
+
+
+    (up-modify-goal gl-temp-y g:+ gl-walls3-y)
+        (up-bound-point gl-temp gl-temp)
+)
+
+(defrule
+    (current-age <= feudal-age)
+    (building-type-count-total lumber-camp > 0)
+    (unit-type-count villager >= 27)
+    (up-timer-status tm-full-wall-placement1 <= timer-triggered)
+
+    ;(up-modify-goal gl-temp-x g:- gl-walls3-x)
+    (up-compare-goal gl-temp-y >= 1)
+    =>
+    (set-goal gl-build-nw-wall 0)
+)
+
+
+
+
+
+
+
+
+
+
+(defrule
+    (current-age <= feudal-age)
+    (building-type-count-total lumber-camp > 0)
+    (unit-type-count villager >= 27)
+    (up-timer-status tm-full-wall-placement1 <= timer-triggered)
+    =>
+    (up-modify-goal gl-temp-x g:= gl-map-size)
+    (up-modify-goal gl-temp-x c:= 0)
+
+
+
+
+    (up-modify-goal gl-temp-y g:- gl-walls3-y)
+        (up-bound-point gl-temp gl-temp)
+)
+
+(defrule
+    (current-age <= feudal-age)
+    (building-type-count-total lumber-camp > 0)
+    (unit-type-count villager >= 27)
+    (up-timer-status tm-full-wall-placement1 <= timer-triggered)
+
+    ;(up-modify-goal gl-temp-x g:- gl-walls3-x)
+    (up-compare-goal gl-temp-y <= 1)
+    =>
+    (set-goal gl-build-ne-wall 0)
+    ; set relevant goal to 0
+)
+
+
+
+
+
+
+
+
+
+
+
+
+(defrule
+    (current-age <= feudal-age)
+    (building-type-count-total lumber-camp > 0)
+    (unit-type-count villager >= 27)
+    (up-timer-status tm-full-wall-placement1 <= timer-triggered)
+    =>
+    (up-copy-point gl-temp gl-map-size)
+
+
+
+
+    (up-modify-goal gl-temp-y g:- gl-walls4-y)
+
+        (up-bound-point gl-temp gl-temp)
+)
+
+
+
+
+(defrule
+    (current-age <= feudal-age)
+    (building-type-count-total lumber-camp > 0)
+    (unit-type-count villager >= 27)
+    (up-timer-status tm-full-wall-placement1 <= timer-triggered)
+
+    ;(up-modify-goal gl-temp-x g:- gl-walls4-x)
+    (up-compare-goal gl-temp-y <= 1)
+    =>
+    (set-goal gl-build-ne-wall 0)
+)
+
+
+
+
+
+
+
+
+
+
+(defrule
+    (current-age <= feudal-age)
+    (building-type-count-total lumber-camp > 0)
+    (unit-type-count villager >= 27)
+    (up-timer-status tm-full-wall-placement1 <= timer-triggered)
+    =>
+
+    (up-copy-point gl-temp gl-map-size)
+
+    
+    (up-modify-goal gl-temp-x g:- gl-walls4-x)
+
+    (up-bound-point gl-temp gl-temp)
+)
+
+(defrule
+    ;(up-modify-goal gl-temp-y g:- gl-walls4-y)
+    (up-compare-goal gl-temp-x <= 1)
+    =>
+    (set-goal gl-build-se-wall 0)
+    ; set relevant goal to 0
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+; find which side of wall is closer to edge and finish it
+
+
+; skip this process for now
+(defrule
+    (true)
+    =>
+    (up-jump-rule 4)
+)
+
+
+
+
+(defrule
+    (goal gl-build-se-wall 0)
+    =>
+    (up-copy-point gl-temp gl-map-size)
+    (up-modify-goal gl-temp-x g:- gl-walls1-x)
+    (up-modify-goal gl-temp-y g:- gl-walls1-y)
+    (up-copy-point gl-temp2 gl-map-size)
+    (up-modify-goal gl-temp2-x g:- gl-walls4-x)
+    (up-modify-goal gl-temp2-y g:- gl-walls4-y)
+    (up-modify-goal gl-temp3-x g:= gl-walls1-x)
+    (up-modify-goal gl-temp3-y g:= gl-map-size-y)
+    (up-copy-point gl-walls1 gl-temp3)
+    ;(up-build-line gl-walls1 gl-temp3 c: palisade-wall)
+    ; try if this doesnt work, skip move point over and build palisade here
+)
+
+
+
+
+
+
+
+
+
+
+
+
+(defrule
+    (goal gl-build-sw-wall 0)
+    =>
+    (up-copy-point gl-temp gl-map-size)
+    (up-modify-goal gl-temp-x g:- gl-walls2-x)
+    (up-modify-goal gl-temp-y g:- gl-walls2-y)
+    (up-copy-point gl-temp2 gl-map-size)
+    (up-modify-goal gl-temp2-x g:- gl-walls1-x)
+    (up-modify-goal gl-temp2-y g:- gl-walls1-y)
+    (up-modify-goal gl-temp3-x g:= gl-walls2-x)
+    (up-modify-goal gl-temp3-y g:= gl-map-size-y)
+    (up-copy-point gl-walls2 gl-temp3)
+    ;(up-build-line gl-walls1 gl-temp3 c: palisade-wall)
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+(defrule
+    (goal gl-build-nw-wall 0)
+    =>
+    (up-copy-point gl-temp gl-map-size)
+    (up-modify-goal gl-temp-x g:- gl-walls3-x)
+    (up-modify-goal gl-temp-y g:- gl-walls3-y)
+    (up-copy-point gl-temp2 gl-map-size)
+    (up-modify-goal gl-temp2-x g:- gl-walls2-x)
+    (up-modify-goal gl-temp2-y g:- gl-walls2-y)
+    (up-modify-goal gl-temp3-x g:= gl-walls3-x)
+    (up-modify-goal gl-temp3-y g:= gl-map-size-y)
+    (up-copy-point gl-walls3 gl-temp3)
+    ;(up-build-line gl-walls1 gl-temp3 c: palisade-wall)
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+(defrule
+    (goal gl-build-ne-wall 0)
+    =>
+    (up-copy-point gl-temp gl-map-size)
+    (up-modify-goal gl-temp-x g:- gl-walls4-x)
+    (up-modify-goal gl-temp-y g:- gl-walls4-y)
+    (up-copy-point gl-temp2 gl-map-size)
+    (up-modify-goal gl-temp2-x g:- gl-walls3-x)
+    (up-modify-goal gl-temp2-y g:- gl-walls3-y)
+    (up-modify-goal gl-temp3-x g:= gl-walls4-x)
+    (up-modify-goal gl-temp3-y g:= gl-map-size-y)
+    (up-copy-point gl-walls4 gl-temp3)
+    ;(up-build-line gl-walls1 gl-temp3 c: palisade-wall)
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+(defrule
+    (current-age <= feudal-age)
+    (building-type-count-total lumber-camp > 0)
+    (unit-type-count villager >= 27)
+
+    ;(goal gl-build-sw-wall -1)
+    (up-compare-goal gl-walls1-x c:> 0)
+
+
+
+    (up-timer-status tm-full-wall-placement1 <= timer-triggered)
+    =>
+    (up-build-line gl-walls1 gl-walls2 c: palisade-wall)
+)
+
+
+(defrule
+    (current-age <= feudal-age)
+    (building-type-count-total lumber-camp > 0)
+    (unit-type-count villager >= 27)
+
+    ;(goal gl-build-nw-wall -1)
+    (up-compare-goal gl-walls2-y c:> 0)
+
+    (up-timer-status tm-full-wall-placement1 <= timer-triggered)
+    =>
+    (up-build-line gl-walls2 gl-walls3 c: palisade-wall)
+)
+
+
+(defrule
+    (current-age <= feudal-age)
+    (building-type-count-total lumber-camp > 0)
+    (unit-type-count villager >= 27)
+    
+    ;(goal gl-build-ne-wall -1)
+    (up-compare-goal gl-walls3-x g:< gl-map-size-x)
+    (up-timer-status tm-full-wall-placement1 <= timer-triggered)
+    =>
+    (up-build-line gl-walls3 gl-walls4 c: palisade-wall)
+)
+
+
+(defrule
+    (current-age <= feudal-age)
+    (building-type-count-total lumber-camp > 0)
+    (unit-type-count villager >= 27)
+    (up-timer-status tm-full-wall-placement1 <= timer-triggered)
+
+    ;(goal gl-build-se-wall -1)
+    (up-compare-goal gl-walls4-y g:< gl-map-size-y)
+    =>
+    (up-build-line gl-walls4 gl-walls1 c: palisade-wall)  
+)
+
+
+
+
+
+(defrule
+    (current-age <= feudal-age)
+    (building-type-count-total lumber-camp > 0)
+    (unit-type-count villager >= 27)
+    (up-timer-status tm-full-wall-placement1 <= timer-triggered)
+    =>
+    (enable-timer tm-full-wall-placement1 30)
+)
+
+
+
+
+
+
+
+
+
+
+(defrule
+    (true)
+    =>
+    (up-jump-rule 16)
+)
+
+
+
+
+
+
+
+
+; if wall is close enough to edge of map, finish to edge
+
+
+
+(defrule
+    (current-age > dark-age)
+    (current-age <= castle-age)
+    (up-timer-status tm-full-wall-placement2 <= timer-triggered)
+    =>
+    (up-copy-point gl-temp gl-map-size)
+)
+
+
+; done
+(defrule
+    (current-age > dark-age)
+    (current-age <= castle-age)
+    (up-timer-status tm-full-wall-placement2 <= timer-triggered)
+
+    (up-modify-goal gl-temp-x g:- gl-walls1-x)
+    (up-modify-goal gl-temp-y g:- gl-walls1-y)
+    (up-compare-goal gl-temp-x <= 1)
+    =>
+    (set-goal gl-build-se-wall 0)
+)
+
+
+(defrule
+    (current-age > dark-age)
+    (current-age <= castle-age)
+    (up-timer-status tm-full-wall-placement2 <= timer-triggered)
+    =>
+    (up-copy-point gl-temp gl-map-size)
+)
+
+(defrule
+    (current-age > dark-age)
+    (current-age <= castle-age)
+    (up-timer-status tm-full-wall-placement2 <= timer-triggered)
+
+    (up-modify-goal gl-temp-x g:- gl-walls1-x)
+    (up-modify-goal gl-temp-y g:- gl-walls1-y)
+    (up-compare-goal gl-temp-y <= 1)
+    =>
+    (set-goal gl-build-sw-wall 0)
+    ; set relevant goal to 0
+)
+
+
+
+(defrule
+    (current-age > dark-age)
+    (current-age <= castle-age)
+    (up-timer-status tm-full-wall-placement2 <= timer-triggered)
+    =>
+    (up-copy-point gl-temp gl-map-size)
+)
+
+
+(defrule
+    (current-age > dark-age)
+    (current-age <= castle-age)
+    (up-timer-status tm-full-wall-placement2 <= timer-triggered)
+
+    (up-modify-goal gl-temp-x g:- gl-walls2-x)
+    (up-modify-goal gl-temp-y g:+ gl-walls2-y)
+    (up-compare-goal gl-temp-x <= 1)
+    =>
+    (set-goal gl-build-sw-wall 0)
+)
+
+
+(defrule
+    (current-age > dark-age)
+    (current-age <= castle-age)
+    (up-timer-status tm-full-wall-placement2 <= timer-triggered)
+    =>
+    (up-copy-point gl-temp gl-map-size)
+)
+
+
+(defrule
+    (current-age > dark-age)
+    (current-age <= castle-age)
+    (up-timer-status tm-full-wall-placement2 <= timer-triggered)
+
+    (up-modify-goal gl-temp-x g:- gl-walls2-x)
+    (up-modify-goal gl-temp-y g:+ gl-walls2-y)
+    (up-compare-goal gl-temp-y <= 1)
+    =>
+    (set-goal gl-build-nw-wall 0)
+    ; set relevant goal to 0
+)
+
+
+
+
+(defrule
+    (current-age > dark-age)
+    (current-age <= castle-age)
+    (up-timer-status tm-full-wall-placement2 <= timer-triggered)
+    =>
+    (up-copy-point gl-temp gl-map-size)
+)
+
+(defrule
+    (up-modify-goal gl-temp-x g:- gl-walls3-x)
+    (up-modify-goal gl-temp-y g:- gl-walls3-y)
+    (up-compare-goal gl-temp-x <= 1)
+    =>
+    (set-goal gl-build-nw-wall 0)
+)
+
+
+
+(defrule
+    (current-age > dark-age)
+    (current-age <= castle-age)
+    (up-timer-status tm-full-wall-placement2 <= timer-triggered)
+    
+    (current-age > dark-age)
+    (current-age <= castle-age)
+    (up-timer-status tm-full-wall-placement2 <= timer-triggered)
+    =>
+    (up-copy-point gl-temp gl-map-size)
+)
+
+
+(defrule
+    (current-age > dark-age)
+    (current-age <= castle-age)
+    (up-timer-status tm-full-wall-placement2 <= timer-triggered)
+
+    (up-modify-goal gl-temp-x g:- gl-walls3-x)
+    (up-modify-goal gl-temp-y g:- gl-walls3-y)
+    (up-compare-goal gl-temp-y <= 1)
+    =>
+    (set-goal gl-build-ne-wall 0)
+    ; set relevant goal to 0
+)
+
+
+
+
+(defrule
+    (current-age > dark-age)
+    (current-age <= castle-age)
+    (up-timer-status tm-full-wall-placement2 <= timer-triggered)
+    =>
+    (up-copy-point gl-temp gl-map-size)
+)
+
+
+(defrule
+    (current-age > dark-age)
+    (current-age <= castle-age)
+    (up-timer-status tm-full-wall-placement2 <= timer-triggered)
+
+    (up-modify-goal gl-temp-x g:- gl-walls4-x)
+    (up-modify-goal gl-temp-y g:- gl-walls4-y)
+    (up-compare-goal gl-temp-x <= 1)
+    =>
+    (set-goal gl-build-se-wall 0)
+)
+
+
+
+
+(defrule
+    (current-age > dark-age)
+    (current-age <= castle-age)
+    (up-timer-status tm-full-wall-placement2 <= timer-triggered)
+    =>
+    (up-copy-point gl-temp gl-map-size)
+)
+
+
+(defrule
+    (current-age > dark-age)
+    (current-age <= castle-age)
+    (up-timer-status tm-full-wall-placement2 <= timer-triggered)
+
+    (up-modify-goal gl-temp-x g:- gl-walls4-x)
+    (up-modify-goal gl-temp-y g:- gl-walls4-y)
+    (up-compare-goal gl-temp-y <= 1)
+    =>
+    (set-goal gl-build-sw-wall 0)
+    ; set relevant goal to 0
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+; find which side of wall is closer to edge and finish it
+
+
+; skip this process for now
+(defrule
+    (true)
+    =>
+    (up-jump-rule 4)
+)
+
+
+
+
+(defrule
+    (goal gl-build-se-wall 0)
+    =>
+    (up-copy-point gl-temp gl-map-size)
+    (up-modify-goal gl-temp-x g:- gl-walls1-x)
+    (up-modify-goal gl-temp-y g:- gl-walls1-y)
+    (up-copy-point gl-temp2 gl-map-size)
+    (up-modify-goal gl-temp2-x g:- gl-walls4-x)
+    (up-modify-goal gl-temp2-y g:- gl-walls4-y)
+    (up-modify-goal gl-temp3-x g:= gl-walls1-x)
+    (up-modify-goal gl-temp3-y g:= gl-map-size-y)
+    (up-copy-point gl-walls1 gl-temp3)
+    ;(up-build-line gl-walls1 gl-temp3 c: palisade-wall)
+    ; try if this doesnt work, skip move point over and build palisade here
+)
+
+
+
+
+
+
+
+
+
+
+
+
+(defrule
+    (goal gl-build-sw-wall 0)
+    =>
+    (up-copy-point gl-temp gl-map-size)
+    (up-modify-goal gl-temp-x g:- gl-walls2-x)
+    (up-modify-goal gl-temp-y g:- gl-walls2-y)
+    (up-copy-point gl-temp2 gl-map-size)
+    (up-modify-goal gl-temp2-x g:- gl-walls1-x)
+    (up-modify-goal gl-temp2-y g:- gl-walls1-y)
+    (up-modify-goal gl-temp3-x g:= gl-walls2-x)
+    (up-modify-goal gl-temp3-y g:= gl-map-size-y)
+    (up-copy-point gl-walls2 gl-temp3)
+    ;(up-build-line gl-walls1 gl-temp3 c: palisade-wall)
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+(defrule
+    (goal gl-build-nw-wall 0)
+    =>
+    (up-copy-point gl-temp gl-map-size)
+    (up-modify-goal gl-temp-x g:- gl-walls3-x)
+    (up-modify-goal gl-temp-y g:- gl-walls3-y)
+    (up-copy-point gl-temp2 gl-map-size)
+    (up-modify-goal gl-temp2-x g:- gl-walls2-x)
+    (up-modify-goal gl-temp2-y g:- gl-walls2-y)
+    (up-modify-goal gl-temp3-x g:= gl-walls3-x)
+    (up-modify-goal gl-temp3-y g:= gl-map-size-y)
+    (up-copy-point gl-walls3 gl-temp3)
+    ;(up-build-line gl-walls1 gl-temp3 c: palisade-wall)
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+(defrule
+    (goal gl-build-ne-wall 0)
+    =>
+    (up-copy-point gl-temp gl-map-size)
+    (up-modify-goal gl-temp-x g:- gl-walls4-x)
+    (up-modify-goal gl-temp-y g:- gl-walls4-y)
+    (up-copy-point gl-temp2 gl-map-size)
+    (up-modify-goal gl-temp2-x g:- gl-walls3-x)
+    (up-modify-goal gl-temp2-y g:- gl-walls3-y)
+    (up-modify-goal gl-temp3-x g:= gl-walls4-x)
+    (up-modify-goal gl-temp3-y g:= gl-map-size-y)
+    (up-copy-point gl-walls4 gl-temp3)
+    ;(up-build-line gl-walls1 gl-temp3 c: palisade-wall)
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+; stone
+; fix for edge of map cases, save some wood
+(defrule
+    (current-age > dark-age)
+    (current-age <= castle-age)
+    (up-timer-status tm-full-wall-placement2 <= timer-triggered)
+    ;(can-build palisade-wall) ; hmmm, costs of up-build-line?
+    =>
+    ; gl-my-pos
+    (up-copy-point gl-walls1 gl-my-pos)
+    (up-modify-goal gl-walls1-x c:+ 1)
+    (up-modify-goal gl-walls1-y c:- 1)
+    (up-modify-goal gl-walls1-x c:- cn-wall-tc-to-corner-length)
+    (up-modify-goal gl-walls1-y c:+ cn-wall-tc-to-corner-length)
+    ;(up-bound-point gl-walls1 gl-walls1)
+
+    (up-copy-point gl-walls2 gl-my-pos)
+    (up-modify-goal gl-walls2-x c:+ 1)
+    (up-modify-goal gl-walls2-y c:+ 1)
+    (up-modify-goal gl-walls2-x c:- cn-wall-tc-to-corner-length)
+    (up-modify-goal gl-walls2-y c:- cn-wall-tc-to-corner-length)
+    ;(up-bound-point gl-walls2 gl-walls2)
+
+    (up-copy-point gl-walls3 gl-my-pos)
+    (up-modify-goal gl-walls3-x c:- 1)
+    (up-modify-goal gl-walls3-y c:+ 1)
+    (up-modify-goal gl-walls3-x c:+ cn-wall-tc-to-corner-length)
+    (up-modify-goal gl-walls3-y c:- cn-wall-tc-to-corner-length)
+    ;(up-bound-point gl-walls3 gl-walls3)
+
+    (up-copy-point gl-walls4 gl-my-pos)
+    (up-modify-goal gl-walls4-x c:- 1)
+    (up-modify-goal gl-walls4-y c:- 1)
+    (up-modify-goal gl-walls4-x c:+ cn-wall-tc-to-corner-length)
+    (up-modify-goal gl-walls4-y c:+ cn-wall-tc-to-corner-length)
+    ;(up-bound-point gl-walls4 gl-walls4)
+
+
+)
+
+
+
+
+
+
+
+(defrule
+    (current-age > dark-age)
+    (current-age <= imperial-age)
+    ;(goal gl-build-sw-wall -1)
+    (up-timer-status tm-full-wall-placement2 <= timer-triggered)
+    =>
+    (up-build-line gl-walls1 gl-walls2 c: stone-wall)
+)
+
+
+(defrule
+    (current-age > dark-age)
+    (current-age <= imperial-age)
+    ;(goal gl-build-nw-wall -1)
+    (up-timer-status tm-full-wall-placement2 <= timer-triggered)
+    =>
+    (up-build-line gl-walls2 gl-walls3 c: stone-wall)
+)
+
+
+(defrule
+    (current-age > dark-age)
+    (current-age <= imperial-age)
+    ;(goal gl-build-ne-wall -1)
+    (up-timer-status tm-full-wall-placement2 <= timer-triggered)
+    =>
+    (up-build-line gl-walls3 gl-walls4 c: stone-wall)
+)
+
+
+(defrule
+    (current-age > dark-age)
+    (current-age <= imperial-age)
+    ;(goal gl-build-se-wall -1)
+    (up-timer-status tm-full-wall-placement2 <= timer-triggered)
+    =>
+    (up-build-line gl-walls4 gl-walls1 c: stone-wall)  
+)
+
+
+(defrule
+    (current-age > dark-age)
+    (current-age <= castle-age)
+    =>
+    (enable-timer tm-full-wall-placement2 30)
+)
+
+
+
+
+
+
+
+
+; stone
+(defrule ; fix for edge of map cases, save some wood
+    (current-age == imperial-age)
+    (up-timer-status tm-full-wall-placement2 <= timer-triggered)
+    ;(can-build palisade-wall) ; hmmm, costs of up-build-line?
+    =>
+    ; gl-my-pos
+    (up-copy-point gl-walls1 gl-my-pos)
+    (up-modify-goal gl-walls1-x c:+ 2)
+    (up-modify-goal gl-walls1-y c:- 2)
+    (up-modify-goal gl-walls1-x c:- cn-wall-tc-to-corner-length)
+    (up-modify-goal gl-walls1-y c:+ cn-wall-tc-to-corner-length)
+    ;(up-bound-point gl-walls1 gl-walls1)
+
+    (up-copy-point gl-walls2 gl-my-pos)
+    (up-modify-goal gl-walls2-x c:+ 2)
+    (up-modify-goal gl-walls2-y c:+ 2)
+    (up-modify-goal gl-walls2-x c:- cn-wall-tc-to-corner-length)
+    (up-modify-goal gl-walls2-y c:- cn-wall-tc-to-corner-length)
+    ;(up-bound-point gl-walls2 gl-walls2)
+
+    (up-copy-point gl-walls3 gl-my-pos)
+    (up-modify-goal gl-walls3-x c:- 2)
+    (up-modify-goal gl-walls3-y c:+ 2)
+    (up-modify-goal gl-walls3-x c:+ cn-wall-tc-to-corner-length)
+    (up-modify-goal gl-walls3-y c:- cn-wall-tc-to-corner-length)
+    ;(up-bound-point gl-walls3 gl-walls3)
+
+    (up-copy-point gl-walls4 gl-my-pos)
+    (up-modify-goal gl-walls4-x c:- 2)
+    (up-modify-goal gl-walls4-y c:- 2)
+    (up-modify-goal gl-walls4-x c:+ cn-wall-tc-to-corner-length)
+    (up-modify-goal gl-walls4-y c:+ cn-wall-tc-to-corner-length)
+    ;(up-bound-point gl-walls4 gl-walls4)
+
+
+)
+
+
+
+
+
+
+
+
+
+
+
+(defrule
+    ;(goal gl-build-sw-wall -1)
+    (current-age == imperial-age)
+    (up-timer-status tm-full-wall-placement2 <= timer-triggered)
+    =>
+    (up-build-line gl-walls1 gl-walls2 c: stone-wall)
+)
+
+
+(defrule
+    ;(goal gl-build-nw-wall -1)
+    (current-age == imperial-age)
+    (up-timer-status tm-full-wall-placement2 <= timer-triggered)
+    =>
+    (up-build-line gl-walls2 gl-walls3 c: stone-wall)
+)
+
+
+(defrule
+    ;(goal gl-build-ne-wall -1)
+    (current-age == imperial-age)
+    (up-timer-status tm-full-wall-placement2 <= timer-triggered)
+    =>
+    (up-build-line gl-walls3 gl-walls4 c: stone-wall)
+)
+
+
+(defrule
+    ;(goal gl-build-se-wall -1)
+    (current-age == imperial-age)
+    (up-timer-status tm-full-wall-placement2 <= timer-triggered)
+    =>
+    (up-build-line gl-walls4 gl-walls1 c: stone-wall)  
+)
+
+
+
+(defrule
+    ;(goal gl-build-se-wall -1)
+    (up-timer-status tm-full-wall-placement2 <= timer-triggered)
+    (current-age == imperial-age)
+    =>
+    (enable-timer tm-full-wall-placement2 45)
+)
+

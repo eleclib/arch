@@ -1,0 +1,134 @@
+(defrule
+    (current-age >= castle-age)
+    (up-can-research 0 c: ri-hand-cart)
+=>
+    (up-research 0 c: ri-hand-cart)
+)
+
+(defrule
+    (current-age >= castle-age)
+    (up-can-research 0 c: ri-town-patrol)
+=>
+    (up-research 0 c: ri-town-patrol)
+)
+
+(defrule
+    (current-age >= castle-age)
+    (up-can-research 0 c: ri-stone-shaft-mining)
+=>
+    (up-research 0 c: ri-stone-shaft-mining)
+)
+
+(defrule
+    (current-age >= castle-age)
+    (up-can-research 0 c: ri-gold-shaft-mining)
+=>
+    (up-research 0 c: ri-gold-shaft-mining)
+)
+
+(defrule
+    (current-age >= castle-age)
+    (up-can-research 0 c: ri-bow-saw)
+=>
+    (up-research 0 c: ri-bow-saw)
+)
+
+(defrule
+    (current-age >= castle-age)
+    (up-can-research 0 c: ri-heavy-plow)
+=>
+    (up-research 0 c: ri-heavy-plow)
+)
+
+(defrule
+    (player-in-game any-ally)
+    (current-age >= imperial-age)
+    (up-can-research 0 c: ri-cartography)
+=>
+    (up-research 0 c: ri-cartography)
+)
+
+(defrule
+    (player-in-game any-ally)
+    (current-age >= castle-age)
+    (up-can-research 0 c: ri-caravan)
+=>
+    (up-research 0 c: ri-caravan)
+)
+
+(defrule
+    (current-age >= castle-age)
+    (up-can-research 0 c: ri-crossbow)
+=>
+    (up-research 0 c: ri-crossbow)
+)
+
+(defrule
+    (current-age >= castle-age)
+    (up-can-research 0 c: ri-elite-skirmisher)
+=>
+    (up-research 0 c: ri-elite-skirmisher)
+)
+
+(defrule
+    (current-age >= castle-age)
+    (can-research ri-pikeman)
+    =>
+    (research ri-pikeman)
+)
+
+(defrule
+    (current-age >= castle-age)
+    (up-can-research 0 c: ri-leather-archer-armor)
+=>
+    (up-research 0 c: ri-leather-archer-armor)
+)
+
+(defrule
+    (current-age >= castle-age)
+    (up-can-research 0 c: ri-scale-barding)
+=>
+    (up-research 0 c: ri-scale-barding)
+)
+
+(defrule
+    (current-age >= castle-age)
+    (can-research ri-forging)
+=>
+    (research ri-forging)
+)
+
+(defrule
+    (current-age >= castle-age)
+    (can-research ri-bodkin-arrow)
+=>
+    (research ri-bodkin-arrow)
+)
+
+(defrule
+    (current-age >= castle-age)
+    (can-research ri-iron-casting)
+=>
+    (research ri-iron-casting)
+)
+
+(defrule
+    (current-age >= castle-age)
+    (can-research ri-iron-casting)
+=>
+    (research ri-iron-casting)
+)
+
+(defrule
+    (current-age >= castle-age)
+    (can-research ri-chain-barding)
+=>
+    (research ri-chain-barding)
+)
+
+(defrule
+    (current-age >= castle-age)
+    (can-research imperial-age)
+=>
+    (research imperial-age)
+)

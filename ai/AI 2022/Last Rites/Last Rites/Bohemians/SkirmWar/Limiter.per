@@ -1,0 +1,44 @@
+
+(defrule
+    (current-age == dark-age)
+    (up-compare-sn sn-maximum-town-size < 9)
+    =>
+    (set-strategic-number sn-maximum-town-size 9)
+)
+
+(defrule
+    (current-age == feudal-age)
+    (up-compare-sn sn-maximum-town-size < 11)
+    =>
+    (set-strategic-number sn-maximum-town-size 11)
+)
+
+(defrule
+    (current-age == castle-age)
+    (up-compare-sn sn-maximum-town-size < 17)
+    =>
+    (set-strategic-number sn-maximum-town-size 17)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (up-compare-sn sn-maximum-town-size < 36)
+    =>
+    (set-strategic-number sn-maximum-town-size 36)
+)
+
+
+
+(defrule
+    (current-age == feudal-age)
+    (current-age-time >= 720)
+    =>
+    (set-goal gl-prepare-age-up 1)
+)
+
+(defrule
+    (current-age == feudal-age)
+    (current-age-time < 720)
+    =>
+    (set-goal gl-prepare-age-up 0)
+)

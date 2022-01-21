@@ -1,0 +1,36 @@
+
+(defrule
+    (current-age == castle-age)
+    (goal goal-castle-strategy castle-unhinged)
+    (military-population > 50)
+    (up-enemy-buildings-in-town < 10)
+    =>
+    (up-modify-sn sn-maximum-town-size c:+ 3)
+)
+
+(defrule
+    (current-age == castle-age)
+    (goal goal-castle-strategy castle-unhinged)
+    (military-population < 20)
+    (up-enemy-buildings-in-town > 0)
+    =>
+    (up-modify-sn sn-maximum-town-size c:- 3)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (goal goal-imperial-strategy imperial-unhinged)
+    (military-population > 50)
+    (up-enemy-buildings-in-town < 10)
+    =>
+    (up-modify-sn sn-maximum-town-size c:+ 3)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (goal goal-imperial-strategy imperial-unhinged)
+    (military-population < 20)
+    (up-enemy-buildings-in-town > 0)
+    =>
+    (up-modify-sn sn-maximum-town-size c:- 3)
+)

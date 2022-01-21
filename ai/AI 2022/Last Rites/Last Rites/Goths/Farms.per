@@ -1,0 +1,110 @@
+
+(defrule
+    (true)
+    =>
+    (up-full-reset-search)
+    (up-find-local c: mill c: 60)
+    (up-get-search-state gl-search-state)
+)
+
+(defrule
+    (up-compare-goal gl-search-state-1 > 0)
+    =>
+    (up-modify-goal gl-iterator g:= gl-search-state-1)
+    (up-modify-goal gl-iterator c:- 1)
+    (up-jump-rule 1)
+)
+
+(defrule
+    (true)
+    =>
+    (up-jump-rule 9)
+)
+
+        (defrule
+            (up-compare-goal gl-iterator < 0)
+            =>
+            (up-jump-rule 3)
+        )
+
+                (defrule
+                    (up-set-target-object search-local g: gl-iterator)
+                    =>
+                    (up-reset-group c: 0)
+                    (up-create-group 0 0 c: 0)
+                    (up-full-reset-search)
+                    (up-filter-distance c: -1 c: 7)
+                    (up-find-local c: farm c: 20)
+                    (up-get-search-state gl-search-state)
+                )
+
+                (defrule
+                    (up-compare-goal gl-search-state-1 < 4)
+                    =>
+                    (up-full-reset-search)
+                    (up-set-group search-local c: 0)
+                    (up-set-target-object search-local g: gl-iterator)
+                    (up-get-point position-object gl-mill-point)
+                    (up-jump-rule 1)
+                )
+
+                (defrule
+                    (true)
+                    =>
+                    (up-full-reset-search)
+                    (up-set-group search-local c: 0)
+                    (up-modify-goal gl-iterator c:- 1)
+                    (up-jump-rule -4)
+                )
+
+
+
+
+(defrule
+    (true)
+    =>
+    (up-set-target-point gl-mill-point)
+    (up-jump-rule 1)
+)
+
+(defrule
+    (true)
+    =>
+    (up-jump-rule 3)
+)
+
+
+(defrule
+    (current-age == dark-age)
+    ;(up-object-type-count-total c: farm g:< gl-farms-total)
+    (building-type-count-total farm g:< gl-farms-total)
+    (up-get-fact idle-farm-count 0 gl-up-get-fact)
+    (up-compare-goal gl-up-get-fact g:< gl-farms-idle-total)
+    (building-type-count-total lumber-camp > 0)
+    (can-build farm)
+    =>
+    (up-build place-point 0 c: farm)
+)
+
+(defrule
+    (current-age == feudal-age)
+    ;(up-object-type-count-total c: farm g:< gl-farms-total)
+    (building-type-count-total farm g:< gl-farms-total)
+    (up-get-fact idle-farm-count 0 gl-up-get-fact)
+    (up-compare-goal gl-up-get-fact g:< gl-farms-idle-total)
+    (can-build farm)
+    =>
+    (up-build place-point 0 c: farm)
+)
+
+(defrule
+    (current-age >= castle-age)
+    ;(up-object-type-count-total c: farm g:< gl-farms-total)
+    (building-type-count-total farm g:< gl-farms-total)
+    (up-get-fact idle-farm-count 0 gl-up-get-fact)
+    (up-compare-goal gl-up-get-fact g:< gl-farms-idle-total)
+    (can-build farm)
+    =>
+    (up-build place-point 0 c: farm)
+)
+

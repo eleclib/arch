@@ -1,0 +1,16 @@
+
+
+(defrule
+
+(current-age == dark-age)
+(up-object-type-count c: farm >= FARMS_BEFORE_BARRACKS)
+(up-object-type-count-total c: barracks < TOTAL_BARRACKS_IN_DARK_AGE)
+(up-can-build 0 c: barracks)
+
+=>
+
+(up-build place-normal 0 c: barracks)
+
+)
+
+

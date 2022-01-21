@@ -1,0 +1,317 @@
+
+(defrule ; Micro Boar Hunting
+    (current-age == dark-age)
+    (up-research-status c: feudal-age != research-pending)
+    (up-object-type-count c: livestock-class < 3)
+    (unit-type-count villager >= 8)
+    (goal boar-switch -1)
+    =>
+    (up-full-reset-search)
+    (set-strategic-number sn-focus-player-number 0)
+    (up-find-local c: villager-class c: 1)
+    (up-set-target-object search-local c: 0)
+    (up-get-object-data object-data-id lurer-id)
+    (up-find-remote c: javelina c: 1)
+    (up-find-remote c: wild-boar c: 1)
+    (up-set-target-object search-remote c: 0)
+    (up-get-object-data object-data-id boar-id)
+    (up-target-objects 0 action-default -1 -1)
+    (set-goal boar-switch 1)
+)
+
+(defrule
+    (goal boar-switch 1)
+    =>
+    (up-full-reset-search)
+    (up-set-target-by-id g: boar-id)
+    (up-get-object-data object-data-carry boar-carry)
+)
+
+(defrule
+    (goal boar-switch 1)
+    (up-compare-goal boar-carry c:< 45)
+    =>
+    (set-goal boar-switch -1)
+)
+
+(defrule ; Target One Unit At A Time
+    (unit-type-count skirmisher > 9)
+    =>
+    (up-full-reset-search)
+    (up-find-player enemy find-closest player)
+    (up-modify-sn sn-focus-player-number g:= player)
+    (up-find-remote c: archery-class c: 1)
+    (up-set-target-object search-remote c: 0)
+    (up-get-object-data object-data-point-x pair1-x)
+    (up-get-object-data object-data-point-y pair1-y)
+    (up-set-target-point pair1-x)
+    (up-find-local c: archery-class c: 240)
+    (up-remove-objects search-local object-data-distance > 40)
+    (up-remove-objects search-local object-data-action == actionid-attack)
+    (up-remove-objects search-local object-data-action == actionid-move)
+    (up-target-objects 0 action-default -1 -1)
+)
+
+(defrule ; Drop Resources if Pending Villagers is < 2
+    (current-age == dark-age)
+    (up-pending-objects c: villager < 2)
+    (up-research-status c: feudal-age != research-pending)
+    (up-research-status c: ri-loom != research-pending)
+    =>
+    (up-drop-resources food c: 5)
+)
+
+(defrule ; Sheep Scout Targeting
+    (current-age == dark-age)
+    =>
+    (up-full-reset-search)
+)
+
+(defrule ; Sheep Scouting Targeting
+    (current-age == dark-age)
+    (up-find-remote c: livestock-class c: 1)
+    =>
+    (up-full-reset-search)
+    (up-find-local c: scout-cavalry-line c: 1)
+    (up-find-local c: eagle-warrior-line c: 1)
+    (set-strategic-number sn-focus-player-number 0)
+    (up-find-remote c: livestock-class c: 1)
+    (up-target-objects 0 action-move -1 -1) 
+    (set-goal sheep-switch 1)
+    (up-full-reset-search)
+)
+
+(defrule ; Sheep Scouting Targeting - Reset Scouts
+    (current-age == dark-age)
+    (not(up-find-remote c: livestock-class c: 1))
+    (goal sheep-switch 1)
+    =>
+    (up-reset-scouts)
+    (set-goal sheep-switch -1)
+)
+
+(defrule ; Retreat from Town Center / Watch Tower
+    (or
+        (up-projectile-detected projectile-town-center < 3000)
+        (up-projectile-detected projectile-watch-tower < 3000)
+    )
+    (unit-type-count battering-ram < 3)
+    =>
+    (up-find-player enemy find-closest player)
+    (up-modify-sn sn-focus-player-number g:= player)
+    (up-full-reset-search)
+    (up-find-remote c: town-center c: 1)
+    (up-set-target-object search-remote c: 0)
+    (up-get-object-data object-data-point-x pair1-x)
+    (up-get-object-data object-data-point-y pair1-y)
+    (up-set-target-point pair1-x)
+    (set-goal projectile-retreat 1)
+)
+
+(defrule ; Retreat from Town Center / Watch Tower
+    (or
+        (up-projectile-detected projectile-town-center < 3000)
+        (up-projectile-detected projectile-watch-tower < 3000)
+    )
+    (unit-type-count battering-ram < 3)
+    =>
+    (up-full-reset-search)
+    (up-filter-distance c: -1 c: 25)
+    (up-find-local c: archery-class c: 240)
+    (up-get-point position-self pair1-x)
+;    (up-target-point pair1-x action-move -1 -1)
+    (set-goal projectile-retreat 1)
+)
+
+(defrule
+    (up-projectile-detected projectile-town-center > 3000)
+    (up-projectile-detected projectile-watch-tower > 3000)
+    (goal projectile-retreat 1)
+    =>
+    (up-reset-unit c: skirmisher-line)
+    (set-goal projectile-retreat -1)
+)
+
+(defrule
+    (true)
+    =>
+    (up-full-reset-search)
+)
+
+(defrule ; Deer Luring - Town Center Get Position
+    (current-age == dark-age)
+    (or
+        (unit-type-count scout-cavalry-line >= 1)
+        (unit-type-count eagle-warrior-line >= 1)
+    )
+    (up-find-remote c: deer c: 1)
+    ;(building-type-count lumber-camp >= 1)
+    (goal boar-switch 1)
+    (up-compare-goal boar-carry c:< 45)
+    =>
+    (up-full-reset-search)
+    (up-find-local c: town-center c: 1)
+    (up-set-target-object search-local c: 0)
+    (up-get-object-data object-data-point-x tc-x)
+    (up-get-object-data object-data-point-y tc-y)
+    (up-full-reset-search)
+    (set-strategic-number sn-focus-player-number 0)
+)
+
+(defrule ; Deer Luring - Deer Get Position
+    (current-age == dark-age)
+    (or
+        (unit-type-count scout-cavalry-line >= 1)
+        (unit-type-count eagle-warrior-line >= 1)
+    )
+    (up-find-remote c: deer c: 1)
+    ;(building-type-count lumber-camp >= 1)
+    (goal boar-switch 1)
+    (up-compare-goal boar-carry c:< 45)
+    =>
+    (up-full-reset-search)
+    (set-strategic-number sn-focus-player-number 0)
+    (up-find-remote c: deer c: 1)
+    (up-set-target-object search-remote c: 0)
+    (up-get-object-data object-data-point-x deer-x)
+    (up-get-object-data object-data-point-y deer-y)
+    (up-full-reset-search)
+    (set-strategic-number sn-focus-player-number 0)
+)
+
+(defrule ; Deer Luring - Lerping
+    (current-age == dark-age)
+    (or
+        (unit-type-count scout-cavalry-line >= 1)
+        (unit-type-count eagle-warrior-line >= 1)
+    )
+    (up-find-remote c: deer c: 1)
+    ;(building-type-count lumber-camp >= 1)
+    (goal boar-switch 1)
+    (up-compare-goal boar-carry c:< 45)
+    =>
+    (up-full-reset-search)
+    (up-modify-goal pair3-x g:= tc-x)
+    (up-modify-goal pair3-y g:= tc-y)
+    ;(up-set-target-point pair2-x)
+    (up-lerp-percent tc-x deer-x c: 110)
+    (up-full-reset-search)
+    (set-strategic-number sn-focus-player-number 0)
+)
+
+(defrule ; Deer Luring - Moving Scout to Deer
+    (current-age == dark-age)
+    (or
+        (unit-type-count scout-cavalry-line >= 1)
+        (unit-type-count eagle-warrior-line >= 1)
+    )
+    (up-find-remote c: deer c: 1)
+    ;(building-type-count lumber-camp >= 1)
+    (goal boar-switch 1)
+    (up-compare-goal boar-carry c:< 45)
+    =>
+    (up-full-reset-search)
+    (up-find-local c: scout-cavalry-line c: 1)
+    (up-find-local c: eagle-warrior-line c: 1)
+    (up-target-point tc-x action-move -1 -1)
+    (up-full-reset-search)
+    (set-strategic-number sn-focus-player-number 0)
+)
+
+(defrule ; Villagers Hunt Deer Lured
+    (current-age == dark-age)
+    (or
+        (unit-type-count scout-cavalry-line >= 1)
+        (unit-type-count eagle-warrior-line >= 1)
+    )
+    (up-find-remote c: deer c: 1)
+    ;(building-type-count lumber-camp >= 1)
+    (goal boar-switch 1)
+    (up-compare-goal boar-carry c:< 45)
+    =>
+    (up-full-reset-search)
+    (up-set-target-point pair3-x)
+    (up-filter-distance c: -1 c: 7)
+    (up-find-remote c: deer c: 1)
+    (up-reset-filters)
+    (up-find-local c: villager-class c: 5)
+)
+
+(defrule ; Check Lurer Id
+    (true)
+    =>
+    (set-goal iterator 4)
+)
+
+(defrule ; Check Lurer Id
+    (up-compare-goal iterator c:>= 0)
+    =>
+    (up-set-target-object search-local g: iterator)
+    (up-get-object-data object-data-id check-id)
+)
+
+(defrule ; Check Lurer Id
+    (up-compare-goal iterator c:>= 0)
+    (up-compare-goal lurer-id g:!= check-id)
+    =>
+    (up-target-objects 0 action-default -1 -1)
+)
+
+(defrule ; Check Lurer Id
+    (up-compare-goal iterator c:>= 0)
+    =>
+    (up-modify-goal iterator c:- 1)
+    (up-jump-rule -3)  
+)
+
+(defrule ; Prevent Lurer From Hunting Deer While Luring Boar
+    (current-age == dark-age)
+    =>
+    (up-full-reset-search)
+    (up-set-target-by-id g: lurer-id)
+    (up-get-object-target-data object-data-target lurer-target-target)
+    (up-full-reset-search)
+    (set-strategic-number sn-focus-player-number 0)
+)
+
+(defrule ; Target Deer Except Lurer
+    (current-age == dark-age)
+    (up-compare-goal lurer-id g:== lurer-target-target)
+    (or
+        (up-find-remote c: javelina c: 1)
+        (up-find-remote c: wild-boar c: 1)
+    )
+    =>
+    (up-find-local c: town-center c: 1)
+    (up-set-target-object search-local c: 0)
+    (up-get-object-data object-data-point-x pair1-x)
+    (up-get-object-data object-data-point-y pair1-y)
+    (up-full-reset-search)
+    (up-add-object-by-id search-local g: lurer-id)
+    (up-target-point pair1-x action-move -1 -1)
+)
+
+(defrule
+    (unit-type-count skirmisher-line > 0)
+    =>
+    (up-full-reset-search)
+    (up-find-player enemy find-closest player)
+    (up-modify-sn sn-focus-player-number g:= player)
+    (up-find-remote c: skirmisher-line c: 40)
+    (up-get-search-state search-state1-1)
+)
+
+(defrule
+    (unit-type-count skirmisher-line > 0)
+    =>
+    (up-modify-goal enemy-units g:= search-state1-3)
+    ;(up-get-fact enemy-units-in-town 0 enemy-units)
+    (up-get-fact military-population 0 friendly-units)
+)
+
+(defrule
+    (unit-type-count skirmisher-line > 0)
+    (up-compare-goal enemy-units g:>= friendly-units)
+    =>
+    (up-retreat-to town-center c: skirmisher)
+)

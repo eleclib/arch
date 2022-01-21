@@ -1,0 +1,32 @@
+
+
+(defrule
+    (current-age == imperial-age)
+    =>
+    (set-strategic-number sn-enable-patrol-attack 1)
+    (disable-self)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (military-population > 70)
+    (up-enemy-buildings-in-town < 3)
+    =>
+    (up-modify-sn sn-maximum-town-size c:+ 3)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (military-population < 24)
+    (up-enemy-buildings-in-town > 4)
+    =>
+    (up-modify-sn sn-maximum-town-size c:- 7)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (town-under-attack)
+    =>
+    (set-strategic-number sn-maximum-town-size 27)
+    ;(up-retreat-now)
+)

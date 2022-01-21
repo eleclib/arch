@@ -1,0 +1,783 @@
+
+#load-if-defined UP-POCKET-POSITION
+(defconst is-pocket 1)
+#else
+(defconst is-pocket 0)
+#end-if
+
+#load-if-defined UP-HUMAN-IN-GAME
+(defconst human-in-game 1)
+#else
+(defconst human-in-game 0)
+#end-if
+
+(defrule
+    (up-compare-const is-pocket == 0)
+    =>
+    (set-goal is-pocket-pos 0)
+    (disable-self)
+)
+
+(defrule
+    (up-compare-const is-pocket == 1)
+    =>
+    (set-goal is-pocket-pos 1)
+    (disable-self)
+)
+
+; --- Pocket / Flank Ownership Valkyrie Detection
+
+#load-if-defined UP-4-PLAYER-TEAM
+
+
+(defrule
+    (game-time > 3)
+    =>
+    (up-find-player ally find-closest store1)
+    (up-modify-sn sn-focus-player-number g:= store1)
+    (disable-self)
+)
+
+(defrule ; Correct
+    (game-time > 3)
+    (up-compare-const is-pocket == 0)
+    (up-allied-goal focus-player is-pocket-pos == 1) ; ally pocket
+    (up-allied-goal focus-player valkyrie-goal-1 c:== 4096)
+    (up-allied-goal focus-player valkyrie-goal-2 c:== -8192)
+    (up-allied-goal focus-player valkyrie-goal-3 c:== -2048)
+    =>
+    (up-modify-goal my-ally-pocket g:= store1)
+    (disable-self)
+)
+
+(defrule ; Correct
+    (game-time > 3)
+    (up-compare-const is-pocket == 1)
+    (up-allied-goal focus-player is-pocket-pos == 0) ; ally flank
+    (up-allied-goal focus-player valkyrie-goal-1 c:== 4096)
+    (up-allied-goal focus-player valkyrie-goal-2 c:== -8192)
+    (up-allied-goal focus-player valkyrie-goal-3 c:== -2048)
+    =>
+    (up-modify-goal my-ally-flank g:= store1)
+    (disable-self)
+)
+
+(defrule ; Correct
+    (game-time > 3)
+    (up-compare-const is-pocket == 1)
+    (up-allied-goal focus-player is-pocket-pos == 1) ; ally flank
+    (up-allied-goal focus-player valkyrie-goal-1 c:== 4096)
+    (up-allied-goal focus-player valkyrie-goal-2 c:== -8192)
+    (up-allied-goal focus-player valkyrie-goal-3 c:== -2048)
+    =>
+    (up-modify-goal my-ally-second-pocket g:= store1)
+    (disable-self)
+)
+
+; ---
+
+(defrule
+    (game-time > 3)
+    =>
+    (up-find-player ally find-closest store1)
+    (up-find-next-player ally find-closest store1)
+    (up-find-next-player ally find-closest store1)
+    (up-modify-sn sn-focus-player-number g:= store1)
+    (disable-self)
+)
+
+(defrule
+    (game-time > 3) ;Correct
+    (up-compare-const is-pocket == 0)
+    (up-allied-goal focus-player is-pocket-pos == 0) ; ally pocket
+    (up-allied-goal focus-player valkyrie-goal-1 c:== 4096)
+    (up-allied-goal focus-player valkyrie-goal-2 c:== -8192)
+    (up-allied-goal focus-player valkyrie-goal-3 c:== -2048)
+    ;(up-compare-goal my-ally-flank c:> 0)
+    =>
+    (up-modify-goal my-ally-second-flank g:= store1)
+    (disable-self)
+)
+
+; ---
+
+(defrule
+    (game-time > 3)
+    =>
+    (up-find-player ally find-closest store1)
+    (up-find-next-player ally find-closest store1)
+    (up-modify-sn sn-focus-player-number g:= store1)
+    (disable-self)
+)
+
+(defrule ; Correct
+    (game-time > 3)
+    (up-compare-const is-pocket == 1)
+    (up-allied-goal focus-player is-pocket-pos == 0) ; ally flank
+    (up-allied-goal focus-player valkyrie-goal-1 c:== 4096)
+    (up-allied-goal focus-player valkyrie-goal-2 c:== -8192)
+    (up-allied-goal focus-player valkyrie-goal-3 c:== -2048)
+    =>
+    (up-modify-goal my-ally-flank g:= store1)
+    (disable-self)
+)
+
+(defrule
+    (game-time > 3) ; Correct
+    (up-compare-const is-pocket == 0) ; flank
+    (up-allied-goal focus-player is-pocket-pos == 1) ; ally pocket
+    (up-allied-goal focus-player valkyrie-goal-1 c:== 4096)
+    (up-allied-goal focus-player valkyrie-goal-2 c:== -8192)
+    (up-allied-goal focus-player valkyrie-goal-3 c:== -2048)
+    ;(up-compare-goal my-ally-pocket c:> -1)
+    =>
+    (up-modify-goal my-ally-second-pocket g:= store1)
+    (disable-self)
+)
+
+
+
+
+
+(defrule
+    (game-time > 3)
+    (up-compare-const is-pocket == 1) ; pocket
+    (up-allied-goal focus-player is-pocket-pos == 1) ; ally pocket
+    (up-allied-goal focus-player valkyrie-goal-1 c:== 4096)
+    (up-allied-goal focus-player valkyrie-goal-2 c:== -8192)
+    (up-allied-goal focus-player valkyrie-goal-3 c:== -2048)
+    ;(up-compare-goal my-ally-pocket c:> -1)
+    =>
+    (up-modify-goal my-ally-second-pocket g:= store1)
+    (disable-self)
+)
+
+; ---
+
+(defrule
+    (game-time > 3)
+    =>
+    (up-find-player ally find-closest store1)
+    (up-find-next-player ally find-closest store1)
+    (up-find-next-player ally find-closest store1)
+    (up-modify-sn sn-focus-player-number g:= store1)
+    (disable-self)
+)
+
+(defrule ; Correct
+    (game-time > 3)
+    (up-compare-const is-pocket == 0)
+    (up-allied-goal focus-player is-pocket-pos == 1) ; ally pocket
+    (up-allied-goal focus-player valkyrie-goal-1 c:== 4096)
+    (up-allied-goal focus-player valkyrie-goal-2 c:== -8192)
+    (up-allied-goal focus-player valkyrie-goal-3 c:== -2048)
+    ;(up-compare-goal my-ally-second-pocket c:> 0)
+    =>
+    (up-modify-goal my-ally-second-pocket g:= store1)
+    (disable-self)
+)
+
+(defrule ; Correct
+    (game-time > 3)
+    (up-compare-const is-pocket == 1)
+    (up-allied-goal focus-player is-pocket-pos == 0) ; ally flank
+    (up-allied-goal focus-player valkyrie-goal-1 c:== 4096)
+    (up-allied-goal focus-player valkyrie-goal-2 c:== -8192)
+    (up-allied-goal focus-player valkyrie-goal-3 c:== -2048)
+    ;(up-compare-goal my-ally-flank c:> 0)
+    =>
+    (up-modify-goal my-ally-second-flank g:= store1)
+    (disable-self)
+)
+
+; (defrule
+;     (true)
+;     =>
+;     (set-goal valkyrie-positions-set 1)
+;     (disable-self)
+; )
+
+
+#end-if
+
+#load-if-defined UP-3-PLAYER-TEAM
+
+(defrule
+    (game-time > 3)
+    =>
+    (up-find-player ally find-closest store1)
+    (up-modify-sn sn-focus-player-number g:= store1)
+    (disable-self)
+)
+
+(defrule ; Correct ; For Sure
+    (game-time > 3)
+    (up-compare-const is-pocket == 0)
+    (up-allied-goal focus-player is-pocket-pos == 1) ; ally pocket
+    (up-allied-goal focus-player valkyrie-goal-1 c:== 4096)
+    (up-allied-goal focus-player valkyrie-goal-2 c:== -8192)
+    (up-allied-goal focus-player valkyrie-goal-3 c:== -2048)
+    =>
+    (up-modify-goal my-ally-pocket g:= store1)
+    (disable-self)
+)
+
+(defrule ; Correct ; For Sure
+    (game-time > 3)
+    (up-compare-const is-pocket == 1)
+    (up-allied-goal focus-player is-pocket-pos == 0) ; ally flank
+    (up-allied-goal focus-player valkyrie-goal-1 c:== 4096)
+    (up-allied-goal focus-player valkyrie-goal-2 c:== -8192)
+    (up-allied-goal focus-player valkyrie-goal-3 c:== -2048)
+    =>
+    (up-modify-goal my-ally-flank g:= store1)
+    (disable-self)
+)
+
+(defrule ; Correct ; For Sure
+    (game-time > 3)
+    =>
+    (up-find-player ally find-closest store1)
+    (up-find-next-player ally find-closest store1)
+    (up-modify-sn sn-focus-player-number g:= store1)
+    (disable-self)
+)
+
+(defrule ; Correct ;For Sure
+    (game-time > 3)
+    (up-compare-const is-pocket == 0)
+    (up-allied-goal focus-player is-pocket-pos == 0) ; ally flank
+    (up-allied-goal focus-player valkyrie-goal-1 c:== 4096)
+    (up-allied-goal focus-player valkyrie-goal-2 c:== -8192)
+    (up-allied-goal focus-player valkyrie-goal-3 c:== -2048)
+    =>
+    (up-modify-goal my-ally-second-flank g:= store1)
+    (disable-self)
+)
+
+(defrule ; Correct ;For Sure
+    (game-time > 3)
+    (up-compare-const is-pocket == 1)
+    (up-allied-goal focus-player is-pocket-pos == 0) ; ally flank
+    (up-allied-goal focus-player valkyrie-goal-1 c:== 4096)
+    (up-allied-goal focus-player valkyrie-goal-2 c:== -8192)
+    (up-allied-goal focus-player valkyrie-goal-3 c:== -2048)
+    =>
+    (up-modify-goal my-ally-second-flank g:= store1)
+    (disable-self)
+)
+
+
+; (defrule
+;     (true)
+;     =>
+;     (set-goal valkyrie-positions-set 1)
+;     (disable-self)
+; )
+
+; ---
+
+#end-if
+
+#load-if-defined UP-2-PLAYER-TEAM
+
+(defrule
+    (game-time > 3)
+    =>
+    (up-find-player ally find-closest store1)
+    (up-modify-sn sn-focus-player-number g:= store1)
+    (up-modify-goal my-ally-second-flank g:= store1)
+    (disable-self)
+)
+
+; (defrule
+;     (true)
+;     =>
+;     (set-goal valkyrie-positions-set 1)
+;     (disable-self)
+; )
+
+#end-if
+
+#load-if-defined UP-4-PLAYER-TEAM
+
+(defrule
+    ;(up-compare-const is-pocket == 1)
+    (game-time > 3)
+    (or(up-compare-goal my-ally-flank c:== -1)
+    (goal flank-pre-established 1))
+    (up-compare-goal valkyrie-positions-set c:!= 1)
+    =>
+    (up-find-player ally find-closest my-ally-store)
+    (up-modify-goal my-ally-number-1 g:= my-ally-store)
+    (up-find-next-player ally find-closest my-ally-store)
+    (up-modify-goal my-ally-number-2 g:= my-ally-store)
+    (up-find-next-player ally find-closest my-ally-store)
+    (up-modify-goal my-ally-number-3 g:= my-ally-store)
+)
+
+(defrule
+    (game-time > 3)
+    (up-compare-const is-pocket == 1)
+    (or(up-compare-goal my-ally-flank c:== -1)
+    (goal flank-pre-established 1))
+    (up-compare-goal valkyrie-positions-set c:!= 1)
+    =>
+    (up-find-player enemy find-closest my-enemy-store)
+    (up-modify-sn sn-focus-player-number g:= my-enemy-store)
+)
+
+(defrule
+    (game-time > 3)
+    (up-compare-const is-pocket == 1)
+    (or(up-compare-goal my-ally-flank c:== -1)
+    (goal flank-pre-established 1))
+    (up-compare-goal valkyrie-positions-set c:!= 1)
+    =>
+    (up-modify-sn sn-focus-player-number g:= my-ally-number-1)
+    (up-full-reset-search)
+    (up-find-remote c: town-center c: 1)
+    (up-set-target-object search-remote c: 0)
+    (up-get-object-data object-data-point-x my-tc-x)
+    (up-get-object-data object-data-point-y my-tc-y)
+)
+
+(defrule
+    (game-time > 3)
+    (up-compare-const is-pocket == 1)
+    (or(up-compare-goal my-ally-flank c:== -1)
+    (goal flank-pre-established 1))
+    (up-compare-goal valkyrie-positions-set c:!= 1)
+    =>
+    (up-full-reset-search)
+    (up-find-remote c: town-center c: 1)
+    (up-set-target-object search-remote c: 0)
+    (up-get-object-data object-data-point-x my-enemy-tc-x)
+    (up-get-object-data object-data-point-y my-enemy-tc-y)
+)
+
+(defrule
+    (game-time > 3)
+    (up-compare-const is-pocket == 1)
+    (or(up-compare-goal my-ally-flank c:== -1)
+    (goal flank-pre-established 1))
+    (up-compare-goal valkyrie-positions-set c:!= 1)
+    =>
+    (up-get-point-distance my-tc-x my-enemy-tc-x point-distance-1)
+)
+
+(defrule
+    (game-time > 3)
+    (up-compare-const is-pocket == 1)
+    (or(up-compare-goal my-ally-flank c:== -1)
+    (goal flank-pre-established 1))
+    (up-compare-goal valkyrie-positions-set c:!= 1)
+    =>
+    (up-modify-sn sn-focus-player-number g:= my-ally-number-2)
+    (up-full-reset-search)
+    (up-find-remote c: town-center c: 1)
+    (up-set-target-object search-remote c: 0)
+    (up-get-object-data object-data-point-x my-tc-x)
+    (up-get-object-data object-data-point-y my-tc-y)
+    (up-modify-sn sn-focus-player-number g:= my-enemy-store)
+)
+
+(defrule
+    (game-time > 3)
+    (up-compare-const is-pocket == 1)
+    (or(up-compare-goal my-ally-flank c:== -1)
+    (goal flank-pre-established 1))
+    (up-compare-goal valkyrie-positions-set c:!= 1)
+    =>
+    (up-full-reset-search)
+    (up-find-remote c: town-center c: 1)
+    (up-set-target-object search-remote c: 0)
+    (up-get-object-data object-data-point-x my-enemy-tc-x)
+    (up-get-object-data object-data-point-y my-enemy-tc-y)
+)
+
+(defrule
+    (game-time > 3)
+    (up-compare-const is-pocket == 1)
+    (or(up-compare-goal my-ally-flank c:== -1)
+    (goal flank-pre-established 1))
+    (up-compare-goal valkyrie-positions-set c:!= 1)
+    =>
+    (up-get-point-distance my-tc-x my-enemy-tc-x point-distance-2)
+)
+
+(defrule
+    (game-time > 3)
+    (up-compare-const is-pocket == 1)
+    (or(up-compare-goal my-ally-flank c:== -1)
+    (goal flank-pre-established 1))
+    (up-compare-goal valkyrie-positions-set c:!= 1)
+    =>
+    (up-modify-sn sn-focus-player-number g:= my-ally-number-3)
+    (up-full-reset-search)
+    (up-find-remote c: town-center c: 1)
+    (up-set-target-object search-remote c: 0)
+    (up-get-object-data object-data-point-x my-tc-x)
+    (up-get-object-data object-data-point-y my-tc-y)
+)
+
+(defrule
+    (game-time > 3)
+    (up-compare-const is-pocket == 1)
+    (or(up-compare-goal my-ally-flank c:== -1)
+    (goal flank-pre-established 1))
+    (up-compare-goal valkyrie-positions-set c:!= 1)
+    =>
+    (up-full-reset-search)
+    (up-find-remote c: town-center c: 1)
+    (up-set-target-object search-remote c: 0)
+    (up-get-object-data object-data-point-x my-enemy-tc-x)
+    (up-get-object-data object-data-point-y my-enemy-tc-y)
+)
+
+(defrule
+    (game-time > 3)
+    (up-compare-const is-pocket == 1)
+    (or(up-compare-goal my-ally-flank c:== -1)
+    (goal flank-pre-established 1))
+    (up-compare-goal valkyrie-positions-set c:!= 1)
+    =>
+    (up-get-point-distance my-tc-x my-enemy-tc-x point-distance-3)
+)
+
+(defrule ; second flank
+    (game-time > 3)
+    (up-compare-const is-pocket == 1)
+    (or(up-compare-goal my-ally-flank c:== -1)
+    (goal flank-pre-established 1))
+    (up-compare-goal valkyrie-positions-set c:!= 1)
+    =>
+    (up-modify-goal my-ally-second-flank g:= my-ally-number-3)
+)
+
+(defrule ; second flank
+    (game-time > 3)
+    (up-compare-const is-pocket == 1)
+    (or(up-compare-goal my-ally-flank c:== -1)
+    (goal flank-pre-established 1))
+    (up-compare-goal my-ally-flank g:!= my-ally-number-1)
+    (up-compare-goal valkyrie-positions-set c:!= 1)
+    =>
+    (up-modify-goal my-ally-second-flank g:= my-ally-number-1)
+)
+
+(defrule ; second flank
+    (game-time > 3)
+    (up-compare-const is-pocket == 1)
+    (or(up-compare-goal my-ally-flank c:== -1)
+    (goal flank-pre-established 1))
+    (up-compare-goal my-ally-flank g:!= my-ally-number-2)
+    (up-compare-goal valkyrie-positions-set c:!= 1)
+    =>
+    (up-modify-goal my-ally-second-flank g:= my-ally-number-2)
+)
+
+(defrule ; second flank
+    (game-time > 3)
+    (up-compare-const is-pocket == 1)
+    (or(up-compare-goal my-ally-flank c:== -1)
+    (goal flank-pre-established 1))
+    (up-compare-goal my-ally-flank g:!= my-ally-number-3)
+    (up-compare-goal valkyrie-positions-set c:!= 1)
+    =>
+    (up-modify-goal my-ally-second-flank g:= my-ally-number-3)
+)
+
+(defrule
+    (game-time > 3)
+    (up-compare-const is-pocket == 1)
+    (or(up-compare-goal my-ally-flank c:== -1)
+    (goal flank-pre-established 1))
+    ;(up-compare-goal my-ally-flank c:== -1)
+    (up-compare-goal point-distance-1 g:< point-distance-2)
+    (up-compare-goal point-distance-1 g:< point-distance-3)
+    ;(up-compare-goal point-distance-1 g:< point-distance-4)
+    (up-compare-goal valkyrie-positions-set c:!= 1)
+    =>
+    (up-modify-goal my-ally-flank g:= my-ally-number-1)
+    (set-goal flank-pre-established 1)
+)
+
+
+(defrule
+    (game-time > 3)
+    (up-compare-const is-pocket == 1)
+    (or(up-compare-goal my-ally-flank c:== -1)
+    (goal flank-pre-established 1))
+    ;(up-compare-goal my-ally-flank c:== -1)
+    (up-compare-goal point-distance-2 g:< point-distance-1)
+    (up-compare-goal point-distance-2 g:< point-distance-3)
+    ;(up-compare-goal point-distance-1 g:< point-distance-4)
+    (up-compare-goal valkyrie-positions-set c:!= 1)
+    =>
+    (up-modify-goal my-ally-flank g:= my-ally-number-2)
+    (set-goal flank-pre-established 1)
+)
+
+(defrule
+    (game-time > 3)
+    (up-compare-const is-pocket == 1)
+    (or(up-compare-goal my-ally-flank c:== -1)
+    (goal flank-pre-established 1))
+    ;(up-compare-goal my-ally-flank c:== -1)
+    (up-compare-goal point-distance-3 g:< point-distance-1)
+    (up-compare-goal point-distance-3 g:< point-distance-2)
+    ;(up-compare-goal point-distance-1 g:< point-distance-4)
+    (up-compare-goal valkyrie-positions-set c:!= 1)
+    =>
+    (up-modify-goal my-ally-flank g:= my-ally-number-3)
+    (set-goal flank-pre-established 1)
+)
+
+
+
+
+
+
+; (defrule ; second pocket
+;     (up-compare-const is-pocket == 1)
+;     ;(up-compare-goal my-ally-flank c:!= -1)
+;     (up-compare-goal my-ally-second-flank c:!= -1)
+;     ;(up-compare-goal my-ally-second-pocket c:== -1)
+
+;     (up-compare-goal my-ally-number-1 g:!= my-ally-flank)
+;     (up-compare-goal my-ally-number-2 g:!= my-ally-second-flank)
+;     =>
+;     ;(up-modify-goal my-ally-store g:= my-ally-flank)
+;     ;(up-chat-data-to-self "my-ally-store: %d" g: my-ally-store)
+;     ;(up-find-player ally find-closest my-ally-store)
+;     ;(up-chat-data-to-self "Closest my-ally-store: %d" g: my-ally-store)
+;     (up-modify-goal my-ally-second-pocket g:= my-ally-number-3)
+; )
+
+
+; (defrule ; second pocket
+;     (up-compare-const is-pocket == 1)
+;     ;(up-compare-goal my-ally-flank c:!= -1)
+;     (up-compare-goal my-ally-second-flank c:!= -1)
+;     ;(up-compare-goal my-ally-second-pocket c:== -1)
+
+;     (up-compare-goal my-ally-number-2 g:!= my-ally-flank)
+;     (up-compare-goal my-ally-number-3 g:!= my-ally-second-flank)
+;     =>
+;     ;(up-modify-goal my-ally-store g:= my-ally-flank)
+;     ;(up-chat-data-to-self "my-ally-store: %d" g: my-ally-store)
+;     ;(up-find-player ally find-closest my-ally-store)
+;     ;(up-chat-data-to-self "Closest my-ally-store: %d" g: my-ally-store)
+;     (up-modify-goal my-ally-second-pocket g:= my-ally-number-1)
+; )
+
+; (defrule ; second pocket
+;     (up-compare-const is-pocket == 1)
+;     ;(up-compare-goal my-ally-flank c:!= -1)
+;     (up-compare-goal my-ally-second-flank c:!= -1)
+;     ;(up-compare-goal my-ally-second-pocket c:== -1)
+
+;     (up-compare-goal my-ally-number-1 g:!= my-ally-flank)
+;     (up-compare-goal my-ally-number-3 g:!= my-ally-second-flank)
+;     =>
+;     ;(up-modify-goal my-ally-store g:= my-ally-flank)
+;     ;(up-chat-data-to-self "my-ally-store: %d" g: my-ally-store)
+;     ;(up-find-player ally find-closest my-ally-store)
+;     ;(up-chat-data-to-self "Closest my-ally-store: %d" g: my-ally-store)
+;     (up-modify-goal my-ally-second-pocket g:= my-ally-number-2)
+; )
+; (defrule ; second pocket
+;     (game-time > 3)
+;     (up-compare-const is-pocket == 1)
+;     (up-compare-goal my-ally-second-pocket c:== -1)
+;     (up-compare-goal my-ally-flank c:!= -1)
+;     (up-compare-goal my-ally-number-2 g:!= my-ally-flank)
+;     (up-compare-goal my-ally-number-2 g:!= my-ally-second-flank)
+    
+
+;     =>
+;     (up-modify-goal my-ally-second-pocket g:= my-ally-number-2)
+; )
+
+; (defrule ; second pocket
+;     (game-time > 3)
+;     (up-compare-const is-pocket == 1)
+;     (up-compare-goal my-ally-second-pocket c:== -1)
+;     (up-compare-goal my-ally-flank c:!= -1)
+;     (up-compare-goal my-ally-number-3 g:!= my-ally-flank)
+;     (up-compare-goal my-ally-number-3 g:!= my-ally-second-flank)
+;     =>
+;     (up-modify-goal my-ally-second-pocket g:= my-ally-number-3)
+; )
+
+
+
+; (defrule
+;     (game-time > 3)
+;     (up-compare-const is-pocket == 1)
+;     (up-compare-goal my-ally-flank c:== -1)
+;     =>
+;     (up-modify-sn sn-focus-player-number g:= my-ally-number-4)
+;     (up-full-reset-search)
+;     (up-find-remote c: town-center c: 1)
+;     (up-set-target-object search-remote c: 0)
+;     (up-get-object-data object-data-point-x my-tc-x)
+;     (up-get-object-data object-data-point-y my-tc-y)
+;     (up-modify-sn sn-focus-player-number g:= my-enemy-store)
+;     (up-full-reset-search)
+;     (up-find-remote c: town-center c: 1)
+;     (up-set-target-object search-remote c: 0)
+;     (up-get-object-data object-data-point-x my-enemy-tc-x)
+;     (up-get-object-data object-data-point-y my-enemy-tc-y)
+; )
+
+; (defrule
+;     (game-time > 3)
+;     (up-compare-const is-pocket == 1)
+;     (up-compare-goal my-ally-flank c:== -1)
+;     =>
+;     (up-get-point-distance my-tc-x my-enemy-tc-x point-distance-4)
+; )
+
+
+
+; (defrule ; Init Loop
+;     (game-time > 3)
+;     (up-compare-const is-pocket == 1)
+;     =>
+;     (set-goal iterator 1)
+; )
+
+; (defrule
+;     (game-time > 3)
+;     (up-compare-goal iterator c:<= 8)
+;     =>
+;     (up-get-point-distance my-tc-x my-enemy-tc-x point-distance)
+; )
+
+; (defrule
+;     (game-time > 3)
+;     (up-compare-goal iterator c:<= 8)
+;     (up-compare-goal )
+;     =>
+
+; )
+
+; ---
+
+(defrule
+    (game-time > 3)
+    (up-compare-const is-pocket == 0)
+    (up-compare-goal valkyrie-positions-set c:!= 1)
+    =>
+    (up-modify-goal my-ally-pocket g:= my-ally-number-1)
+    ;(up-modify-goal my-ally-second-pocket g:= my-ally-number-2)
+)
+
+(defrule
+    (game-time > 3)
+    (up-compare-const is-pocket == 0)
+    (or(up-compare-goal my-ally-flank c:== -1)
+    (goal flank-pre-established 1))
+    (up-compare-goal valkyrie-positions-set c:!= 1)
+    =>
+    (up-modify-goal my-ally-second-flank g:= my-ally-number-3)
+)
+
+
+; ---
+
+; (defrule
+;     (up-compare-goal my-ally-flank c:== -1)
+;     (up-compare-const is-pocket == 1)
+;     =>
+;     ()
+; )
+
+#end-if
+
+#load-if-defined UP-3-PLAYER-TEAM
+
+(defrule
+    (game-time > 3)
+    (up-compare-const is-pocket == 0)
+    =>
+    (up-find-player ally find-closest store1)
+    (up-modify-goal my-ally-pocket g:= store1)
+    (up-find-next-player ally find-closest store1)
+    (up-modify-goal my-ally-second-flank g:= store1)
+    (disable-self)
+)
+
+(defrule
+    (game-time > 3)
+    (up-compare-const is-pocket == 1)
+    =>
+    (up-find-player ally find-closest store1)
+    (up-modify-goal my-ally-flank g:= store1)
+    (up-find-next-player ally find-closest store1)
+    (up-modify-goal my-ally-second-flank g:= store1)
+    (disable-self)
+)
+
+#end-if
+
+
+#load-if-defined UP-2-PLAYER-TEAM
+
+(defrule
+    (game-time > 3)
+    =>
+    (up-find-player ally find-closest store1)
+    (up-modify-goal my-ally-flank g:= store1)
+    (disable-self)
+)
+
+#end-if
+
+
+; --- Valkyrie Detection Messages
+
+; (defrule
+;     (game-time > 30)
+;     (goal valkyrie-detect-switch -1)
+;     =>
+;     (set-goal iterator 1)
+;     (disable-self)
+; )
+
+; (defrule
+;     (game-time > 30)
+;     (goal valkyrie-detect-switch -1)
+;     =>
+;     (up-modify-sn sn-focus-player-number g:= iterator)
+; )
+
+; ; (defrule
+; ;     (game-time > 30)
+; ;     (goal valkyrie-detect-switch -1)
+; ;     (up-compare-goal iterator c:!= my-player-number)
+; ;     (up-allied-goal focus-player valkyrie-goal-1 c:== 4096)
+; ;     (up-allied-goal focus-player valkyrie-goal-2 c:== -8192)
+; ;     (up-allied-goal focus-player valkyrie-goal-3 c:== -2048)
+; ;     =>
+; ;     ;(chat-to-player focus-player "I have detected you as Valkyrie.")
+; ;     ;(up-chat-data-to-player every-ally "Valkyrie AI Player %d Detected." s: sn-focus-player-number)
+; ; )
+
+; (defrule
+;     (game-time > 30)
+;     (goal valkyrie-detect-switch -1)
+;     (up-compare-goal iterator c:< 8)
+;     =>
+;     (up-modify-goal iterator c:+ 1)
+;     (up-jump-rule -3)
+; )
+
+; (defrule
+;     (game-time > 30)
+;     (goal valkyrie-detect-switch -1)
+;     =>
+;     (set-goal valkyrie-detect-switch 1)
+; )

@@ -1,0 +1,161 @@
+
+
+
+(defrule
+    (current-age == imperial-age)
+    =>
+    (up-get-fact building-type-count monastery gl-up-get-fact)
+    (up-modify-goal gl-iterator g:= gl-up-get-fact)
+    (up-jump-rule 1)
+)
+
+(defrule
+    (true)
+    =>
+    (up-jump-rule 4)
+)
+
+(defrule
+    (up-compare-goal gl-iterator <= 0)
+    =>
+    (up-jump-rule 3)
+)
+
+        (defrule
+            (current-age == imperial-age)
+            (can-train monk)
+            =>
+            (train monk)
+            (up-jump-rule 1)
+        )
+
+        (defrule
+            (true)
+            =>
+            (up-jump-rule 1)
+        )
+
+        (defrule
+            (true)
+            =>
+            (up-modify-goal gl-iterator c:- 1)
+            (up-jump-rule -4)
+        )
+
+
+
+
+
+
+        
+(defrule
+    (current-age == imperial-age)
+    =>
+    (up-get-fact building-type-count siege-workshop gl-up-get-fact)
+    (up-modify-goal gl-iterator g:= gl-up-get-fact)
+    (up-jump-rule 1)
+)
+
+(defrule
+    (true)
+    =>
+    (up-jump-rule 4)
+)
+
+(defrule
+    (up-compare-goal gl-iterator <= 0)
+    =>
+    (up-jump-rule 3)
+)
+
+        (defrule
+            (current-age == imperial-age)
+            (can-train houfnice)
+            =>
+            (train houfnice)
+            (up-jump-rule 1)
+        )
+
+        (defrule
+            (true)
+            =>
+            (up-jump-rule 1)
+        )
+
+        (defrule
+            (true)
+            =>
+            (up-modify-goal gl-iterator c:- 1)
+            (up-jump-rule -4)
+        )
+
+
+
+
+
+
+
+
+(defrule
+    (current-age == imperial-age)
+    =>
+    (up-get-fact building-type-count siege-workshop gl-up-get-fact)
+    (up-modify-goal gl-iterator g:= gl-up-get-fact)
+    (up-jump-rule 1)
+)
+
+(defrule
+    (true)
+    =>
+    (up-jump-rule 4)
+)
+
+(defrule
+    (up-compare-goal gl-iterator <= 0)
+    =>
+    (up-jump-rule 3)
+)
+
+        (defrule
+            (current-age == imperial-age)
+            (can-train battering-ram-line)
+            =>
+            (train battering-ram-line)
+            (up-jump-rule 1)
+        )
+
+        (defrule
+            (true)
+            =>
+            (up-jump-rule 1)
+        )
+
+        (defrule
+            (true)
+            =>
+            (up-modify-goal gl-iterator c:- 1)
+            (up-jump-rule -4)
+        )
+
+
+
+
+
+
+
+
+
+
+
+(defrule
+    (unit-type-count monk < cn-imperial-attack-threshold)
+    =>
+    (up-gather-inside c: monastery c: 1)
+)
+
+
+(defrule
+    (unit-type-count monk >= cn-imperial-attack-threshold)
+    =>
+    (up-gather-inside c: monastery c: 0)
+)

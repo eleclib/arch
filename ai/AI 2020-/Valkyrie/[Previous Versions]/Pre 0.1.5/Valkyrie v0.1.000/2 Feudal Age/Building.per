@@ -1,0 +1,111 @@
+(defrule
+
+
+(current-age == feudal-age)
+(up-object-type-count-total c: market < FEUDAL_TOTAL_MARKET)
+(up-can-build 0 c: market)
+
+=>
+
+(up-build place-normal 0 c: market)
+
+)
+
+
+
+(defrule
+
+
+(current-age == feudal-age)
+(up-object-type-count-total c: market > 0)
+(up-object-type-count-total c: blacksmith < FEUDAL_TOTAL_BLACKSMITH)
+(up-can-build 0 c: blacksmith)
+
+=>
+
+(up-build place-normal 0 c: blacksmith)
+
+)
+
+
+
+
+(defrule
+
+    (current-age == feudal-age)
+    (up-object-type-count-total c: market > 0)
+    (up-object-type-count-total c: blacksmith > 0)
+    (up-object-type-count-total c: lumber-camp < FEUDAL_LUMBER_CAMPS)
+    (resource-found wood)
+
+=>
+
+    (up-build place-normal 0 c: lumber-camp)
+
+)
+
+(defrule
+    (current-age == feudal-age)
+    (up-object-type-count-total c: market > 0)
+    (up-object-type-count-total c: blacksmith > 0)
+    (up-object-type-count-total c: mining-camp < FEUDAL_MINING_CAMPS)
+
+=>
+    (up-build place-normal 0 c: mining-camp)
+)
+
+
+
+(defrule
+
+
+(current-age == feudal-age)
+(up-object-type-count-total c: market > 0)
+(up-object-type-count-total c: blacksmith > 0)
+(up-object-type-count-total c: barracks < FEUDAL_TOTAL_BARRACKS)
+(up-can-build 0 c: barracks)
+
+=>
+
+(up-build place-normal 0 c: barracks)
+
+)
+
+
+
+(defrule
+
+
+(current-age == feudal-age)
+(up-object-type-count-total c: market > 0)
+(up-object-type-count-total c: blacksmith > 0)
+(up-object-type-count-total c: archery-range < FEUDAL_TOTAL_ARCHERY_RANGES)
+(up-can-build 0 c: archery-range)
+
+=>
+
+(up-build place-normal 0 c: archery-range)
+
+)
+
+
+
+
+(defrule
+
+
+(current-age == feudal-age)
+(up-object-type-count-total c: blacksmith > 0)
+(up-object-type-count-total c: market > 0)
+(up-object-type-count-total c: stable < FEUDAL_TOTAL_STABLES)
+(up-can-build 0 c: stable)
+
+=>
+
+(up-build place-normal 0 c: stable)
+
+)
+
+
+
+

@@ -1,0 +1,61 @@
+
+(defrule
+    (true)
+=>
+    (up-change-name "Valkyrie vTE R1 2018")
+    (disable-self)
+)
+
+(defrule
+    (true)
+=>
+    (set-strategic-number sn-initial-exploration-required 0)
+    (set-strategic-number sn-enable-new-building-system 1)
+    (set-strategic-number sn-disable-builder-assistance 1)
+    (set-strategic-number sn-enable-training-queue 1)
+    (set-strategic-number sn-cap-civilian-builders 10)
+    (set-strategic-number sn-intelligent-gathering 1)
+    (set-strategic-number sn-livestock-to-town-center 1)
+    (set-strategic-number sn-wall-targeting-mode 1)
+    (disable-self)
+)
+
+(defrule
+    (true)
+    =>
+    (set-strategic-number sn-enable-boar-hunting 1)
+    (set-strategic-number sn-minimum-boar-hunt-group-size 8)
+    (set-strategic-number sn-minimum-boar-lure-group-size 8)
+    (set-strategic-number sn-allow-civilian-defense 0)
+    (set-strategic-number sn-allow-civilian-offense 0)
+    (set-strategic-number sn-number-civilian-militia 0)
+    (set-strategic-number sn-attack-winning-player 0)
+    (set-strategic-number sn-attack-winning-player-factor 0)
+    (disable-self)
+)
+
+(defrule
+    (true)
+=>
+    (up-set-defense-priority c: villager-class c: 30000)
+    (up-set-defense-priority c: bombard-tower c: 17500)
+    (up-set-defense-priority c: watch-tower-line c: 17500)
+    (up-set-defense-priority c: castle c: 17500)
+    (up-set-defense-priority c: galley-line c: 1500)
+    (up-set-defense-priority c: camel-line c: 750)
+    (up-set-defense-priority c: skirmisher-line c: 250)
+    (up-set-defense-priority c: spearman-line c: 750)
+    (up-set-defense-priority c: knight-line c: 500)
+    (up-set-defense-priority c: archer-line c: 375)
+    (up-set-defense-priority c: palisade-wall c: 5000)
+    (up-set-defense-priority c: stone-wall c: 10000)
+    (disable-self)
+)
+
+(defrule
+    (true)
+=>
+    (set-strategic-number sn-cap-civilian-explorers 0)
+    (set-strategic-number sn-number-explore-groups 1)
+    (disable-self)
+)

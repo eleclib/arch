@@ -1,0 +1,108 @@
+
+;(defconst DeerFound 49)
+;(defconst HunterCount 49)
+;(defconst DeerX 51)
+;(defconst DeerY 52)
+;(defconst DeerDistance 53)
+;(defconst CurrentDeerId 50)
+;(defconst CurrentDeerFood 51)
+;(defconst NewDeerID 54)
+
+;(defrule
+;    (true)
+;    =>
+;    (set-goal DeerFound False)
+;    (disable-self)
+;)
+
+(defrule
+    (up-object-type-count c: villager >= 9)
+    =>
+    (set-goal HunterCount 5)
+    (set-goal TargetDeerOnceDone False)
+    (disable-self)
+)
+
+(defrule
+    (true)
+    =>
+    (up-full-reset-search)
+)
+
+(defrule
+    (up-set-target-by-id g: CurrentDeerId)
+    =>
+    (up-get-object-data object-data-carry CurrentDeerFood)
+    (up-get-object-data object-data-point-x DeerIdXPos)
+    (up-get-object-data object-data-point-y DeerIdYPos)
+    (up-find-local c: 109 c: 1) ; Town Center
+    (up-get-object-data object-data-point-x TownCenterX)
+    (up-get-object-data object-data-point-y TownCenterY)
+    (up-get-point-distance TownCenterX DeerIdXPos PointDistance)
+)
+
+; Target Deer
+(defrule
+    (up-compare-goal PointDistance c:<= 30)
+    (goal TargetDeerOnceDone False)
+    (up-compare-goal CurrentDeerFood c:>= 140)
+;    (up-find-remote c: 65 c: 1)
+    =>
+
+    ;Debug
+    
+
+    (up-full-reset-search)
+    (up-find-local c: villager-class g: HunterCount)
+;    (up-set-target-by-id g: CurrentDeerId)
+    (up-add-object-by-id search-remote g: CurrentDeerId)
+    (up-target-objects 0 action-default -1 -1)
+
+    (set-goal TargetDeerOnceDone True)
+
+    (up-full-reset-search)
+)
+
+(defrule
+    (up-compare-goal CurrentDeerFood <= 3)
+    =>
+    (set-goal TargetDeerOnceDone False)
+)
+
+; Find Deer
+(defrule
+    (not(up-set-target-by-id g: CurrentDeerId))
+    (up-find-remote c: 65 c: 1)
+;    (goal DeerFound False)
+    =>
+    (up-full-reset-search)
+    (up-find-remote c: 65 c: 1) ; Deer
+    (up-set-target-object search-remote c: 0)
+    (up-get-object-data object-data-id CurrentDeerId)
+
+;    (up-get-object-data object-data-point-x DeerX)
+;    (up-get-object-data object-data-point-y DeerY)
+;    (up-full-reset-search)
+;    (up-modify-goal DeerX c:+ 4)
+;    (up-modify-goal DeerY c:+ 4)
+;    (up-find-local c: 109 c: 1) ; Town Center
+;    (up-set-target-object search-local c: 0)
+;    (up-get-path-distance DeerX 0 DeerDistance)
+;    (up-modify-sn sn-maximum-food-drop-distance g: DeerDistance)
+;    (up-target-objects 0 action-default -1 -1)
+
+)
+
+; Debug
+;(defrule
+;    (true)
+;    (or
+;        (up-timer-status TimerDebugTwo == timer-disabled)
+;        (up-timer-status TimerDebugTwo == timer-triggered)
+;    )
+;    =>
+;    (up-chat-data-to-all "CurrentDeerId: %d" g: CurrentDeerId)
+;    (up-chat-data-to-all "CurrentDeerFood: %d" g: CurrentDeerFood)
+;    (up-chat-data-to-all "DeerDistance (from TC): %d" g: DeerDistance)
+;    (up-set-timer c: TimerDebugTwo c: 15)
+;)

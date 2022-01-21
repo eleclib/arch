@@ -1,0 +1,50 @@
+
+
+
+
+(defrule
+    (unit-type-count villager > 0)
+    =>
+    (up-full-reset-search)
+    (up-find-player enemy find-closest gl-player)
+    (up-modify-sn sn-focus-player-number g:= gl-player)
+    (up-set-target-point gl-my-pos)
+    (up-filter-distance c: -1 c: 30)
+    (up-find-remote c: -1 c: 40)
+    (up-get-search-state gl-search-state)
+)
+
+(defrule
+    (unit-type-count villager > 0)
+    (up-compare-goal gl-search-state-3 > 2)
+    =>
+    (up-find-local c: villager-class c: 240)
+    (up-remove-objects search-local object-data-action == actionid-attack)
+    (up-remove-objects search-local object-data-action == actionid-move)
+    (up-target-objects 0 action-default -1 -1)
+
+    (set-strategic-number sn-maximum-food-drop-distance -2)
+    (set-strategic-number sn-maximum-wood-drop-distance -2)
+    (set-strategic-number sn-maximum-gold-drop-distance -2)
+    (set-strategic-number sn-maximum-stone-drop-distance -2)
+    (set-strategic-number sn-maximum-hunt-drop-distance -2)
+
+    (set-strategic-number sn-allow-civilian-offense 1)
+    (set-strategic-number sn-allow-civilian-defense 0)
+    (set-strategic-number sn-number-civilian-militia 0)
+    (set-strategic-number sn-disable-villager-garrison 3)
+    ;(set-strategic-number sn-maximum-town-size 480)
+)
+
+(defrule
+    (unit-type-count villager > 0)
+    (up-compare-goal gl-search-state-3 <= 2)
+    =>
+    (set-strategic-number sn-cap-civilian-builders 200)
+    (set-strategic-number sn-maximum-wood-drop-distance 30)
+    (set-strategic-number sn-maximum-food-drop-distance 30)
+    (set-strategic-number sn-maximum-gold-drop-distance 30)
+    (set-strategic-number sn-maximum-stone-drop-distance 30)
+    (set-strategic-number sn-maximum-hunt-drop-distance 30)
+    ;(set-strategic-number sn-maximum-town-size 480)
+)

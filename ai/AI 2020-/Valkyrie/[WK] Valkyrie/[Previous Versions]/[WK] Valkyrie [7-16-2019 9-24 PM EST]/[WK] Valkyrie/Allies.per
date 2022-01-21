@@ -1,0 +1,50 @@
+
+(defrule
+    (current-age >= castle-age)
+    (up-compare-const is-pocket == 1)
+    (up-compare-goal my-ally-flank c:> 0)
+    (or(goal attacking 0)
+    (goal attacking -1))
+    (not(town-under-attack))
+    =>
+    (up-modify-sn sn-focus-player-number g:= my-ally-flank)
+    (up-full-reset-search)
+    (up-find-remote c: town-center c: 1)
+    (up-set-target-object search-remote c: 0)
+    (up-get-object-data object-data-point-x my-ally-tc-x)
+    (up-get-object-data object-data-point-y my-ally-tc-y)
+)
+
+(defrule
+    (current-age >= castle-age)
+    (up-compare-const is-pocket == 1)
+    (up-compare-goal my-ally-flank c:> 0)
+    (goal attacking 0)
+    (not(town-under-attack))
+    =>
+    (up-full-reset-search)
+    (up-set-target-point my-ally-tc-x)
+    (up-find-local c: knight-line c: 240)
+    (up-find-local c: eagle-warrior-line c: 240)
+    (up-find-local c: camel-line c: 240)
+    (up-remove-objects search-local object-data-distance < 35)
+    (up-target-point my-ally-tc-x action-move -1 -1)
+)
+
+(defrule
+    (current-age >= castle-age)
+    (goal attacking 0)
+    (not(town-under-attack))
+    =>
+    (up-find-player enemy find-closest store1)
+    (up-modify-sn sn-focus-player-number g:= store1)
+    (up-full-reset-search)
+    (up-set-target-point my-ally-tc-x)
+    (up-find-local c: knight-line c: 240)
+    (up-find-local c: eagle-warrior-line c: 240)
+    (up-find-local c: camel-line c: 240)
+    (up-find-remote c: all-units-class c: 40)
+    ;(up-remove-objects search-local object-data-distance < 35)
+    (up-remove-objects search-remote object-data-distance > 35)
+    (up-target-objects 0 action-default -1 -1)
+)

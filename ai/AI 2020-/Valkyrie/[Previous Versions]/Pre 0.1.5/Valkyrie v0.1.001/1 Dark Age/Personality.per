@@ -1,0 +1,13 @@
+
+
+
+(defrule
+    (current-age == dark-age)
+=>
+    (set-strategic-number sn-minimum-town-size 0)
+    (set-strategic-number sn-maximum-town-size 15)
+    (set-strategic-number sn-cap-civilian-builders 5)
+    (set-strategic-number sn-camp-max-distance DARK_CAMP_MAX_DISTANCE)
+    (disable-self)
+)
+

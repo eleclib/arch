@@ -1,0 +1,10 @@
+
+(defrule
+    (current-age == feudal-age)
+    (up-can-research 0 c: castle-age)
+    (food-amount > 800)
+    (gold-amount > 200)
+=>
+    (up-research 0 c: castle-age)
+    (disable-self)
+)

@@ -1,0 +1,26 @@
+
+
+
+(defrule
+    (current-age == dark-age)
+    (up-object-type-count-total c: villager >= DARK_TOTAL_VILLAGERS)
+    =>
+    (up-research 0 c: ri-loom)
+)
+
+
+
+
+
+
+(defrule
+
+    (current-age == dark-age)
+    (up-can-research 0 c: feudal-age)
+=>
+    (up-research 0 c: feudal-age)
+    (disable-self)
+)
+
+
+

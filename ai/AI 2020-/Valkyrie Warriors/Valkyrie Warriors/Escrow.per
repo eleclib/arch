@@ -1,0 +1,439 @@
+
+(defrule
+	(true)
+=>	(set-goal escrow-goal 0)
+	(disable-self))
+
+(defrule ; Villager
+    (up-compare-goal escrow-goal <= 0)
+    (up-compare-const is-pocket == 0)
+    (current-age == dark-age)
+    (unit-type-count-total villager < 23)
+    =>
+    (up-modify-escrow food c:+ 50)
+)
+
+(defrule ; Villager
+	(up-compare-goal escrow-goal <= 0)
+    (up-compare-const is-pocket == 0)
+    (current-age == feudal-age)
+    (unit-type-count-total villager < 70)
+    =>
+    (up-modify-escrow food c:+ 50)
+)
+
+(defrule ; Villager
+    (up-compare-goal escrow-goal <= 0)
+    (up-compare-const is-pocket == 1)
+    (current-age == dark-age)
+    (unit-type-count-total villager < 29)
+    =>
+    (up-modify-escrow food c:+ 50)
+)
+
+(defrule ; Villager
+    (up-compare-goal escrow-goal <= 0)
+    (up-compare-const is-pocket == 1)
+    (current-age == feudal-age)
+    (unit-type-count-total villager < 31)
+    =>
+    (up-modify-escrow food c:+ 50)
+)
+
+(defrule ; Villager
+    (up-compare-goal escrow-goal <= 0)
+    (up-compare-const is-pocket == 0)
+    (current-age == castle-age)
+    (unit-type-count-total villager < 120)
+    (civilian-population < 130)
+    =>
+    (up-modify-escrow food c:+ 50)
+)
+
+(defrule ; Villager
+    (up-compare-goal escrow-goal <= 0)
+    (up-compare-const is-pocket == 1)
+    (current-age == castle-age)
+    (military-population >= 12)
+    (unit-type-count-total villager < 120)
+    (civilian-population < 130)
+    =>
+    (up-modify-escrow food c:+ 50)
+)
+
+(defrule ; Villager
+    (up-compare-goal escrow-goal <= 0)
+    (current-age == imperial-age)
+    (unit-type-count-total villager < 120)
+    (civilian-population < 130)
+    =>
+    (up-modify-escrow food c:+ 50)
+)
+
+
+;**************************************************************************
+; -------------------------------FLETCHING---------------------------------
+;**************************************************************************
+
+(defrule
+	(goal escrow-goal 0)
+	(current-age == feudal-age)
+	(building-type-count blacksmith > 0)
+	(unit-type-count villager-class >= 32)
+	(unit-type-count skirmisher-line > 4)
+	(research-available ri-fletching)
+	(gold-amount >= 50)
+	(game-time > 960)
+=>	(set-escrow-percentage food 50)
+	(set-escrow-percentage gold 100)
+	(set-goal escrow-goal 2))
+
+(defrule
+	(current-age == feudal-age)
+	(research-available ri-fletching)
+	(goal escrow-goal 2)
+	(escrow-amount food > 100)
+=>	(set-escrow-percentage food 0))
+(defrule
+	(current-age == feudal-age)
+	(research-available ri-fletching)
+	(goal escrow-goal 2)
+	(escrow-amount gold > 50)
+=>	(set-escrow-percentage gold 0))
+(defrule
+	(goal escrow-goal 2)
+	(current-age == feudal-age)
+	(can-research-with-escrow ri-fletching)
+=>	(release-escrow food)
+	(release-escrow gold)
+	(research ri-fletching)
+	(set-escrow-percentage food 0)
+	(set-escrow-percentage gold 0)
+	(set-goal escrow-goal 0))
+
+(defrule
+	(goal escrow-goal 2)
+	(up-research-status c: ri-fletching >= research-pending)
+=>	(release-escrow food)
+	(release-escrow wood)
+	(release-escrow gold)
+	(set-escrow-percentage food 0)
+	(set-escrow-percentage wood 0)
+	(set-escrow-percentage gold 0)
+	(set-goal escrow-goal 0)
+	(disable-self))
+
+;**************************************************************************
+; ------------------------------CASTLE-AGE---------------------------------
+;**************************************************************************
+
+(defrule
+	(goal escrow-goal 0)
+	(up-research-status c: ri-fletching >= research-pending)
+	(current-age == feudal-age)
+	(unit-type-count villager-class >= 45)
+	(research-available castle-age)
+	(building-type-count mining-camp > 0)
+	(game-time > 1260)
+=>	(set-escrow-percentage food 20)
+	(set-escrow-percentage gold 20)
+	(set-goal escrow-goal 5))
+
+(defrule
+	(goal escrow-goal 5)
+	(research-available castle-age)
+	(escrow-amount food >= 800)
+	(escrow-amount gold < 200)
+=>	(set-escrow-percentage gold 100))
+
+(defrule
+	(goal escrow-goal 5)
+	(research-available castle-age)
+	(escrow-amount gold >= 200)
+	(escrow-amount food > 600)
+	(escrow-amount food < 800)
+=>	(set-escrow-percentage food 100))
+
+(defrule
+	(current-age == feudal-age)
+	(up-research-status c: castle-age < research-pending)
+	(goal escrow-goal 5)
+	(escrow-amount food > 800)
+=>	(set-escrow-percentage food 0))
+(defrule
+	(current-age == feudal-age)
+	(up-research-status c: castle-age < research-pending)
+	(goal escrow-goal 5)
+	(escrow-amount gold > 200)
+=>	(set-escrow-percentage gold 0))
+(defrule
+	(goal escrow-goal 5)
+	(current-age == feudal-age)
+	(can-research-with-escrow castle-age)
+=>	(release-escrow food)
+	(release-escrow gold)
+	(research castle-age)
+	(set-escrow-percentage food 0)
+	(set-escrow-percentage gold 0)
+	(set-goal escrow-goal 0))
+
+(defrule
+	(goal escrow-goal 5)
+	(up-research-status c: castle-age == research-pending)
+=>	(release-escrow food)
+	(release-escrow wood)
+	(release-escrow gold)
+	(set-escrow-percentage food 0)
+	(set-escrow-percentage wood 0)
+	(set-escrow-percentage gold 0)
+	(set-goal escrow-goal 0)
+	(disable-self))
+
+
+;**************************************************************************
+; ---------------------------ELITE SKIRMISHER------------------------------
+;**************************************************************************
+
+(defrule
+	(goal escrow-goal 0)
+	(up-research-status c: castle-age >= research-pending)
+	(up-research-status c: ri-elite-skirmisher < research-pending)
+	(unit-type-count skirmisher-line >= 10)
+=>	(set-escrow-percentage wood 30)
+	(set-escrow-percentage gold 20)
+	(set-goal escrow-goal 3))
+
+(defrule
+	(up-research-status c: castle-age >= research-pending)
+	(up-research-status c: ri-elite-skirmisher < research-pending)
+	(goal escrow-goal 3)
+	(escrow-amount wood > 250)
+=>	(set-escrow-percentage food 0))
+(defrule
+	(up-research-status c: castle-age >= research-pending)
+	(up-research-status c: ri-elite-skirmisher < research-pending)
+	(goal escrow-goal 3)
+	(escrow-amount gold > 160)
+=>	(set-escrow-percentage gold 0))
+(defrule
+	(goal escrow-goal 3)
+	(can-research-with-escrow ri-elite-skirmisher)
+=>	(release-escrow wood)
+	(release-escrow gold)
+	(research ri-elite-skirmisher)
+	(set-escrow-percentage wood 0)
+	(set-escrow-percentage gold 0)
+	(set-goal escrow-goal 0))
+
+(defrule
+	(goal escrow-goal 3)
+	(current-age == castle-age)
+	(up-research-status c: ri-elite-skirmisher >= research-pending)
+=>	(release-escrow food)
+	(release-escrow wood)
+	(release-escrow gold)
+	(set-escrow-percentage food 0)
+	(set-escrow-percentage wood 0)
+	(set-escrow-percentage gold 0)
+	(set-goal escrow-goal 0)
+	(disable-self))
+
+;**************************************************************************
+; ------------------------------IMPERIAL-AGE---------------------------------
+;**************************************************************************
+
+(defrule
+	(goal escrow-goal 0)
+	(current-age == castle-age)
+	(unit-type-count villager-class >= 75)
+	(research-available imperial-age)
+	(game-time > 1800)
+=>	(set-escrow-percentage food 30)
+	(set-escrow-percentage gold 30)
+	(set-goal escrow-goal 7))
+
+(defrule
+	(goal escrow-goal 7)
+	(research-available imperial-age)
+	(escrow-amount food >= 1000)
+	(escrow-amount gold > 550)
+	(escrow-amount gold < 800)
+=>	(set-escrow-percentage gold 100))
+
+(defrule
+	(goal escrow-goal 7)
+	(research-available imperial-age)
+	(escrow-amount gold >= 800)
+	(escrow-amount food > 650)
+	(escrow-amount food < 1000)
+=>	(set-escrow-percentage food 80))
+
+(defrule
+	(goal escrow-goal 7)
+	(research-available imperial-age)
+	(escrow-amount gold >= 800)
+	(escrow-amount food > 800)
+	(escrow-amount food < 1000)
+=>	(set-escrow-percentage food 100))
+
+(defrule
+	(current-age == castle-age)
+	(up-research-status c: imperial-age < research-pending)
+	(goal escrow-goal 7)
+	(escrow-amount food > 1000)
+=>	(set-escrow-percentage food 0))
+(defrule
+	(current-age == castle-age)
+	(up-research-status c: imperial-age < research-pending)
+	(goal escrow-goal 7)
+	(escrow-amount gold > 800)
+=>	(set-escrow-percentage gold 0))
+(defrule
+	(goal escrow-goal 7)
+	(can-research-with-escrow imperial-age)
+=>	(release-escrow food)
+	(release-escrow gold)
+	(research imperial-age)
+	(set-escrow-percentage food 0)
+	(set-escrow-percentage gold 0)
+	(set-goal escrow-goal 0))
+
+(defrule
+	(goal escrow-goal 7)
+	(up-research-status c: imperial-age >= research-pending)
+=>	(release-escrow food)
+	(release-escrow wood)
+	(release-escrow gold)
+	(set-escrow-percentage food 0)
+	(set-escrow-percentage wood 0)
+	(set-escrow-percentage gold 0)
+	(set-goal escrow-goal 0))
+
+;**************************************************************************
+; ---------------------------EXTRA BARRACKS--------------------------------
+;**************************************************************************
+
+(defrule
+	(goal escrow-goal 0)
+	(up-research-status c: castle-age < research-pending)
+	(current-age == feudal-age)
+	(or	(goal need-eagles-counter 1)
+		(goal need-knights-counter 1))
+	(building-type-count-total barracks < 2)
+=>	(set-escrow-percentage wood 60)
+	(set-goal escrow-goal 1))
+(defrule
+	(goal escrow-goal 1)
+	(escrow-amount wood > 175)
+=>	(set-escrow-percentage wood 0))
+(defrule
+	(goal escrow-goal 1)
+	(can-build-with-escrow barracks)
+	(building-type-count-total barracks < 2)
+=>	(release-escrow wood)
+	(up-assign-builders c: barracks c: 3)
+	(up-set-placement-data my-player-number -1 c: -2)
+	(set-strategic-number sn-placement-zone-size 15)
+	(up-build place-control 0 c: barracks)
+	(set-escrow-percentage wood 0)
+	(set-goal escrow-goal 0))
+
+(defrule
+	(goal escrow-goal 1)
+	(or	(up-research-status c: castle-age >= research-pending)
+	(and	(current-age == feudal-age)
+		(building-type-count-total barracks >= 2)))
+=>	(release-escrow wood)
+	(set-escrow-percentage wood 0)
+	(set-goal escrow-goal 0)
+	(disable-self))
+
+;**************************************************************************
+; -------------------------------PALADIN-----------------------------------
+;**************************************************************************
+
+(defrule
+	(goal escrow-goal 0)
+	(civilian-population > 100)
+	(unit-type-count knight-line > 5)
+	(research-available ri-paladin)
+=>	(set-escrow-percentage food 50)
+	(set-escrow-percentage gold 50)
+	(set-goal escrow-goal 8))
+(defrule
+	(goal escrow-goal 8)
+	(escrow-amount food > 1350)
+=>	(set-escrow-percentage food 0))
+(defrule
+	(goal escrow-goal 8)
+	(escrow-amount gold > 750)
+=>	(set-escrow-percentage gold 0))
+(defrule
+	(goal escrow-goal 8)
+	(can-research-with-escrow ri-paladin)
+=>	(release-escrow food)
+	(release-escrow gold)
+	(research ri-paladin)
+	(set-escrow-percentage food 0)
+	(set-escrow-percentage gold 0)
+	(set-goal escrow-goal 0))
+
+;**************************************************************************
+; -------------------------ELITE EAGLE WARRIOR-----------------------------
+;**************************************************************************
+
+(defrule
+	(goal escrow-goal 0)
+	(current-age == imperial-age)
+	(or	(unit-type-count eagle-warrior-line > 5)
+		(unit-type-count heavy-eagle-warrior > 5))
+	(civilian-population > 80)
+	(or	(research-available ri-eagle-warrior)
+		(research-available ri-elite-eagle-warrior))
+=>	(set-escrow-percentage food 50)
+	(set-escrow-percentage gold 50)
+	(set-goal escrow-goal 8))
+
+(defrule
+	(goal escrow-goal 8)
+	(can-research-with-escrow ri-eagle-warrior)
+=>	(release-escrow food)
+	(release-escrow gold)
+	(research ri-eagle-warrior))
+
+(defrule
+	(goal escrow-goal 8)
+	(or	(civ-selected aztec)
+	(or	(civ-selected incan)
+		(civ-selected mayan)))
+	(up-research-status c: ri-eagle-warrior >= research-pending)
+	(escrow-amount food > 800)
+=>	(set-escrow-percentage food 0))
+(defrule
+	(goal escrow-goal 8)
+	(or	(civ-selected aztec)
+	(or	(civ-selected incan)
+		(civ-selected mayan)))
+	(up-research-status c: ri-eagle-warrior >= research-pending)
+	(escrow-amount gold > 500)
+=>	(set-escrow-percentage gold 0))
+
+(defrule
+	(can-research-with-escrow ri-elite-eagle-warrior)
+=>	(release-escrow food)
+	(release-escrow gold)
+	(research ri-elite-eagle-warrior)
+	(set-escrow-percentage food 0)
+	(set-escrow-percentage gold 0)
+	(set-goal escrow-goal 0))
+
+;----------------------------RESETTING ESCROW-------------------------------------
+
+(defrule
+	(goal escrow-goal 8)
+	(civilian-population < 50)
+=>	(release-escrow food)
+	(release-escrow gold)
+	(set-escrow-percentage food 0)
+	(set-escrow-percentage gold 0)
+	(set-goal escrow-goal 0))

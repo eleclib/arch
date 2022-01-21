@@ -1,0 +1,9 @@
+
+(defrule
+    (current-age == dark-age)
+    (up-can-train 0 c: villager)
+    (up-object-type-count-total c: villager < 27)
+=>
+    (up-modify-goal FoodVillagers c:+ 1)
+    (up-train 0 c: villager)
+)

@@ -1,0 +1,17 @@
+
+(defrule
+    (current-age == imperial-age)
+=>
+    (set-strategic-number sn-wood-gatherer-percentage 38)
+    (set-strategic-number sn-food-gatherer-percentage 42)
+    (set-strategic-number sn-gold-gatherer-percentage 12)
+    (set-strategic-number sn-stone-gatherer-percentage 8)
+    (disable-self)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (up-object-type-count-total c: trade-cart < 20)
+    =>
+    (up-train 0 c: trade-cart)
+)

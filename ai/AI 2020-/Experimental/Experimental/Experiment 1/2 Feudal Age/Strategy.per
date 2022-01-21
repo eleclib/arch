@@ -1,0 +1,31 @@
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 1)
+    (current-age == feudal-age)
+    =>
+    (up-modify-goal ScoutRush c:= 1)
+    (disable-self)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 1)
+    (current-age == feudal-age)
+    (or
+        (or
+            (civ-selected aztec)
+            (civ-selected mayan)
+        )
+        (up-object-type-count-total c: scout-cavalry >= 7)
+    )
+    =>
+    (up-modify-goal ArcherRush c:= 1) ; Building is based on this
+    (disable-self)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 1)
+    (current-age == feudal-age)
+    =>
+    (up-modify-goal SkirmRush c:= 1)
+    (disable-self)
+)

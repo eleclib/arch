@@ -1,0 +1,22 @@
+
+(defrule
+    (current-age == feudal-age)
+    (up-can-train 0 c: villager)
+    (up-pending-objects c: villager < 1)
+    (not(can-research castle-age))
+=>
+    (up-train 0 c: villager)
+)
+
+(defrule
+    (current-age == feudal-age)
+=>
+    (set-strategic-number sn-wood-dropsite-distance 20)
+    (set-strategic-number sn-food-dropsite-distance 20)
+    (set-strategic-number sn-gold-dropsite-distance 20)
+    (set-strategic-number sn-maximum-wood-drop-distance 20)
+    (set-strategic-number sn-maximum-food-drop-distance 20)
+    (set-strategic-number sn-maximum-hunt-drop-distance 20)
+    (set-strategic-number sn-maximum-gold-drop-distance 20)
+    (disable-self)
+)

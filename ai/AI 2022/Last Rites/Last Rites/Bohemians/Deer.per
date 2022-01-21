@@ -1,0 +1,74 @@
+
+
+; fix to prevent gl-my-pos from being changed from Detection.per
+
+(defrule
+    (current-age == dark-age)
+    (unit-type-count villager >= 27)
+    =>
+    (up-full-reset-search)
+    (up-find-local c: town-center c: 1)
+    (up-set-target-object search-local c: 0)
+    (up-get-point position-object gl-my-pos)
+    (up-set-target-point gl-my-pos)
+    (up-filter-distance c: -1 c: 60)
+    (up-modify-sn sn-focus-player-number c:= 0)
+)
+
+(defrule
+    (current-age == dark-age)
+    (unit-type-count villager >= 27)
+    (up-find-remote c: prey-animal-class c: 40)
+    =>
+    (up-remove-objects search-remote object-data-resource != 0) ; food
+    (up-reset-filters)
+    (up-find-local c: scout-cavalry-line c: 1)
+    (up-set-target-object search-remote c: 0)
+    (up-get-point position-object gl-pos2)
+    ;(up-send-flare gl-my-pos)
+    (up-lerp-tiles gl-pos2 gl-my-pos c: -1)
+    (up-bound-point gl-pos2 gl-pos2)
+    (up-target-point gl-pos2 action-move -1 -1)
+
+
+
+
+    ;(up-modify-goal gl-my-pos-x c:* 100)
+    ;(up-modify-goal gl-my-pos-y c:* 100)
+    ;(up-modify-goal gl-pos2-x c:* 100)
+    ;(up-modify-goal gl-pos2-y c:* 100)
+    ;(up-chat-data-to-all "gl-my-pos-x %d" g: gl-my-pos-x)
+    ;(up-chat-data-to-all "gl-my-pos-y %d" g: gl-my-pos-y)
+    ;(up-chat-data-to-all "gl-pos2-x %d" g: gl-pos2-x)
+    ;(up-chat-data-to-all "gl-pos2-y %d" g: gl-pos2-y)
+)
+
+
+(defrule
+    (current-age == dark-age)
+    (unit-type-count villager >= 27)
+    =>
+    (up-full-reset-search)
+    (up-find-local c: town-center c: 1)
+    (up-set-target-object search-local c: 0)
+    (up-get-point position-object gl-my-pos)
+    (up-set-target-point gl-my-pos)
+    (up-filter-distance c: -1 c: 6)
+    (set-strategic-number sn-focus-player-number 0)
+)
+
+(defrule
+    (current-age == dark-age)
+    (unit-type-count villager >= 27)
+    (up-find-remote c: prey-animal-class c: 40)
+    =>
+    (up-find-local c: villager-class c: 12)
+    ;(up-remove-objects search-local object-data-gather-type != food)
+    ;(up-remove-objects search-local object-data-action != actionid-gather)
+    (up-get-search-state gl-search-state)
+    (up-modify-goal gl-search-state-1 c:/ 3)
+    (up-remove-objects search-local object-data-index g:> gl-search-state-1)
+    (up-target-objects 0 action-default -1 -1)
+)
+
+

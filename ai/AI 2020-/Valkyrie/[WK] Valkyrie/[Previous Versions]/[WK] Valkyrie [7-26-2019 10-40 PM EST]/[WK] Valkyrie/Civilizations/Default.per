@@ -1,0 +1,34 @@
+
+#load-if-not-defined AZTEC-CIV
+#load-if-not-defined INCAN-CIV
+#load-if-not-defined INDIAN-CIV
+#load-if-not-defined MAYAN-CIV
+
+(defconst pocket-castle-unit knight-line)
+
+#end-if
+#end-if
+#end-if
+#end-if
+
+#load-if-defined AZTEC-CIV
+(defconst is-meso-civ 1)
+#end-if
+
+#load-if-defined INCAN-CIV
+(defconst is-meso-civ 1)
+#end-if
+
+#load-if-defined MAYAN-CIV
+(defconst is-meso-civ 1)
+#end-if
+
+#load-if-not-defined AZTEC-CIV
+#load-if-not-defined INCAN-CIV
+#load-if-not-defined MAYAN-CIV
+
+(defconst is-meso-civ 0)
+
+#end-if
+#end-if
+#end-if

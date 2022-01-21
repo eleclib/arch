@@ -1,0 +1,84 @@
+
+(defrule
+    (true)
+    =>
+    (up-find-player enemy find-closest target-player)
+    (up-modify-sn sn-focus-player-number g:= target-player)
+    (up-modify-sn sn-target-player-number g:= target-player)
+)
+
+(defrule
+    (current-age >= feudal-age)
+    (up-timer-status attack-timer-threshold <= timer-triggered)
+    =>
+    (up-set-timer c: attack-timer-threshold c: 36)
+    (up-modify-goal attack-amount-threshold c:+ 1)
+    (up-chat-data-to-self "Attack Threshold to %d" g: attack-amount-threshold)
+)
+
+(defrule
+    (current-age >= feudal-age)
+    =>
+    (up-get-fact military-population 0 military-count)
+)
+
+(defrule
+    (current-age >= feudal-age)
+    (up-compare-goal military-count g:>= attack-amount-threshold)
+    (up-compare-goal map-size s:>= sn-maximum-town-size)
+    =>
+    (set-goal attacking 1)
+    (up-modify-sn sn-maximum-town-size c:+ 4)
+    (up-modify-sn sn-safe-town-size c:+ 4)
+    (up-chat-data-to-self "Town Size to %d" s: sn-maximum-town-size)
+)
+
+(defrule
+    (current-age >= feudal-age)
+    =>
+    (up-modify-goal math1 g:= attack-amount-threshold)
+    (up-modify-goal math1 c:/ 2)
+)
+
+(defrule
+    (current-age >= feudal-age)
+    (up-compare-goal military-count g:<= math1) ; half the threshold
+    (goal attacking 1)
+    =>
+    (set-goal attacking 0)
+    (set-strategic-number sn-maximum-town-size 16)
+    (set-strategic-number sn-safe-town-size 16)
+    (up-chat-data-to-self "Town Size to %d" s: sn-maximum-town-size)
+)
+
+(defrule
+    (current-age == castle-age)
+    =>
+    (up-modify-goal attack-amount-threshold c:%* 70)
+    (disable-self)
+)
+
+(defrule
+    (current-age == imperial-age)
+    =>
+    (up-modify-goal attack-amount-threshold c:%* 70)
+    (disable-self)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (up-timer-status attack-timer-div-set <= timer-triggered)
+    =>
+    (up-modify-goal attack-amount-threshold c:%* 70)
+    (up-set-timer c: attack-timer-div-set c: 600)
+)
+
+(defrule ; Debug
+    (up-timer-status debug-list-timer <= timer-triggered)
+    =>
+    (up-chat-data-to-self "Target Player: %d" s: sn-target-player-number)
+    (up-chat-data-to-self "Attack Threshold: %d" g: attack-amount-threshold)
+    (up-chat-data-to-self "Max Town Size: %d" s: sn-maximum-town-size)
+    (up-chat-data-to-self "Safe Town Size: %d" s: sn-safe-town-size)
+    (up-set-timer c: debug-list-timer c: 60)
+)

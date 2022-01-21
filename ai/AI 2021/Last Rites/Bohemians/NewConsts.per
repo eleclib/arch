@@ -1,0 +1,81 @@
+
+
+(defconst prey-animal-class 909)
+(defconst predator-animal-class 910)
+(defconst cn-wild-boar 48)
+(defconst cn-javelina 922)
+
+(defconst object-data-distance 44)
+(defconst object-data-upgrade-type 82)
+(defconst search-order-desc 2)
+
+(defconst gl-ai-ticks-done 100)
+
+(defconst gl-total-skirms-trained 101)
+(defconst gl-total-pikes-trained 102)
+
+(defconst gl-pos 103)
+(defconst gl-pos-x 103)
+(defconst gl-pos-y 104)
+
+(defconst gl-pos2 105)
+(defconst gl-pos2-x 105)
+(defconst gl-pos2-y 106)
+
+(defconst gl-up-get-object-data 107)
+(defconst gl-projectile-player 108) ; save space
+(defconst gl-player 109) ; save space
+(defconst gl-attacking 110)
+(defconst gl-under-attack 111)
+
+(defconst gl-search-state 112)
+(defconst gl-search-state-1 112)
+(defconst gl-search-state-2 113)
+(defconst gl-search-state-3 114)
+(defconst gl-search-state-4 115)
+
+(defconst tm-up-retreat-now 1)
+(defconst tm-up-retreat-now-2 2)
+(defconst tm-boar-timer 3)
+(defconst tm-projectiles-1 4)
+(defconst tm-projectiles-2 5)
+(defconst tm-eco-balance 6)
+(defconst tm-no-skirm-upgrade-retreat 7)
+(defconst tm-pre-castle-retreat 8)
+
+
+
+
+
+
+
+
+
+
+
+
+
+(defconst ri-herbal-medicine 441)
+(defconst ri-houfnice 787)
+
+(defconst houfnice 1709)
+
+
+(defconst gl-research-imp-jump 116)
+(defconst gl-research-hussite-jump 117)
+
+
+
+
+
+
+
+(defrule
+    (true)
+    =>
+    (set-goal gl-total-skirms-trained 0)
+    (set-goal gl-total-pikes-trained 0)
+    (set-goal gl-ai-ticks-done 0)
+    (disable-self)
+)
+

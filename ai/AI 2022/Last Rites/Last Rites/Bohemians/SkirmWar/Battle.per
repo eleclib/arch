@@ -1,0 +1,136 @@
+
+
+(defrule
+    (current-age >= feudal-age)
+    =>
+    (set-strategic-number sn-enable-patrol-attack 1)
+    (set-strategic-number sn-enemy-sighted-response-distance 35)
+    (set-strategic-number sn-percent-enemy-sighted-response 100)
+    (disable-self)
+)
+
+(defrule
+    (current-age >= feudal-age)
+    (current-age != imperial-age)
+    (military-population > 45)
+    (up-enemy-buildings-in-town < 3)
+    =>
+    (set-goal gl-attacking 1)
+    (up-modify-sn sn-maximum-town-size c:+ 4)
+)
+
+(defrule
+    (current-age >= feudal-age)
+    (current-age != imperial-age)
+    (military-population < 15)
+    (up-enemy-buildings-in-town >= 3)
+    =>
+    (set-goal gl-attacking 0)
+    (up-modify-sn sn-maximum-town-size c:- 7)
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+(defrule
+    (current-age == imperial-age)
+    =>
+    (set-strategic-number sn-enable-patrol-attack 1)
+    (disable-self)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (military-population >= cn-imperial-attack-threshold)
+    (up-enemy-buildings-in-town < 3)
+    =>
+    (up-modify-sn sn-maximum-town-size c:+ 3)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (military-population < cn-imperial-retreat-threshold)
+    (up-enemy-buildings-in-town > 4)
+    =>
+    (up-modify-sn sn-maximum-town-size c:- 7)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (up-compare-goal gl-under-attack == 1)
+    =>
+    ;(up-retreat-now)
+    (set-strategic-number sn-maximum-town-size 37)
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+(defrule
+    (true)
+    =>
+    (up-full-reset-search)
+    (up-find-player enemy find-closest gl-player)
+    (up-modify-sn sn-focus-player-number g:= gl-player)
+    (up-get-point position-self gl-pos)
+    (up-set-target-point gl-pos)
+    (up-modify-goal gl-temp s:= sn-maximum-town-size)
+    (up-modify-goal gl-temp c:+ 12)
+    (up-filter-distance c: -1 g: gl-temp)
+    (up-find-remote c: -1 c: 40)
+    (up-get-search-state gl-search-state)
+)
+
+(defrule
+    (up-compare-goal gl-search-state-3 >= 2)
+    (up-modify-goal gl-enemy-units-in-town g:= gl-search-state-3)
+    =>
+    (set-goal gl-under-attack 1)
+    (up-jump-rule 1)
+)
+
+(defrule
+    (true)
+    =>
+    (set-goal gl-under-attack 0)
+)

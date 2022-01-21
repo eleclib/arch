@@ -1,0 +1,48 @@
+
+#load-if-defined TINY-MAP
+(defrule
+    (true)
+    =>
+    (set-goal map-size-xy 72)
+)
+#end-if
+
+#load-if-defined SMALL-MAP
+(defrule
+    (true)
+    =>
+    (set-goal map-size-xy 96)
+)
+#end-if
+
+#load-if-defined MEDIUM-MAP
+(defrule
+    (true)
+    =>
+    (set-goal map-size-xy 120)
+)
+#end-if
+
+#load-if-defined NORMAL-MAP
+(defrule
+    (true)
+    =>
+    (set-goal map-size-xy 144)
+)
+#end-if
+
+#load-if-defined LARGE-MAP
+(defrule
+    (true)
+    =>
+    (set-goal map-size-xy 200)
+)
+#end-if
+
+#load-if-defined GIGANTIC-MAP
+(defrule
+    (true)
+    =>
+    (set-goal map-size-xy 255)
+)
+#end-if

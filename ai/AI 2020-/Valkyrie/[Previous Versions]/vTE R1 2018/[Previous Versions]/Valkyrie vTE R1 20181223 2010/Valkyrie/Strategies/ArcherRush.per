@@ -1,0 +1,7 @@
+
+(defrule
+    (current-age == feudal-age)
+    (up-object-type-count-total c: archer-line < 12)
+    =>
+    (up-train 0 c: archer-line)
+)

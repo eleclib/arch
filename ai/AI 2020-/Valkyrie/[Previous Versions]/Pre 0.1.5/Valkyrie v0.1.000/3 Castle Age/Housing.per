@@ -1,0 +1,16 @@
+
+
+
+(defrule
+
+(current-age == castle-age)
+(up-can-build 0 c: house)
+(up-object-type-count-total c: house < CASTLE_TOTAL_HOUSES)
+(housing-headroom < CASTLE_HOUSING_HEADROOM)
+
+=>
+
+(up-build place-normal 0 c: house)
+
+)
+

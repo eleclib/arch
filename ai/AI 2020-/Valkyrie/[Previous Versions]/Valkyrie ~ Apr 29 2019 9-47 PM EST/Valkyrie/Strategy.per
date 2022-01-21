@@ -1,0 +1,83 @@
+
+(defconst flank-position 0)
+(defconst pocket-position 1)
+
+#load-if-defined UP-POCKET-POSITION
+    (defconst conditional-position pocket-position)
+#else
+    (defconst conditional-position flank-position)
+#end-if
+
+(defconst dark-none 0)
+(defconst dark-fast-feudal 1)
+(defconst dark-fast-castle 2)
+(defconst dark-infantry-rush 3)
+(defconst dark-boom 4)
+(defconst dark-unhinged 5)
+(defconst dark-ownage 6)
+
+(defconst feudal-none 0)
+(defconst feudal-infantry-rush 1)
+(defconst feudal-archery-rush 2)
+(defconst feudal-cavalry-rush 3)
+(defconst feudal-boom 4)
+(defconst feudal-fast-castle 5)
+(defconst feudal-unhinged 6)
+(defconst feudal-ownage 7)
+
+(defconst castle-none 0)
+(defconst castle-push 1)
+(defconst castle-boom 2)
+(defconst castle-unique-unit 3)
+(defconst castle-unhinged 4)
+(defconst castle-ownage 5)
+
+(defconst imperial-none 0)
+(defconst imperial-mass 1)
+(defconst imperial-boom 2)
+(defconst imperial-siege-unique-unit 3)
+(defconst imperial-unhinged 4)
+(defconst imperial-ownage 5)
+
+(defconst goal-dark-strategy 1)
+(defconst goal-feudal-strategy 2)
+(defconst goal-castle-strategy 3)
+(defconst goal-imperial-strategy 4)
+
+(defrule
+    (true)
+    =>
+    (generate-random-number 1)
+    (disable-self)
+)
+
+(defrule
+    (random-number == 1)
+    =>
+    (set-goal goal-dark-strategy dark-unhinged)
+    (set-goal goal-feudal-strategy feudal-unhinged)
+    (set-goal goal-castle-strategy castle-unhinged)
+    (set-goal goal-imperial-strategy imperial-unhinged)
+    (disable-self)
+)
+
+(defrule
+    (random-number == 2)
+    =>
+    (set-goal goal-dark-strategy dark-fast-feudal)
+    (set-goal goal-feudal-strategy feudal-archery-rush)
+    (set-goal goal-castle-strategy castle-push)
+    (set-goal goal-imperial-strategy imperial-mass)
+    (disable-self)
+)
+
+(defrule
+    (random-number == 3)
+    =>
+    (set-goal goal-dark-strategy dark-ownage)
+    (set-goal goal-feudal-strategy feudal-ownage)
+    (set-goal goal-castle-strategy castle-ownage)
+    (set-goal goal-imperial-strategy imperial-ownage)
+    (disable-self)
+)
+

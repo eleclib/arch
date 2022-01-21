@@ -1,0 +1,194 @@
+(load "Experimental\UP15")
+
+; Experiment 1 ---------------------------
+
+(defconst VALK_TRUE 1)
+(defconst VALK_FALSE 0)
+
+; Constants
+(defconst True 1)
+(defconst False 0)
+
+(defconst GOAL_TownSizeAttack 1)
+
+; Sheep
+(defconst PlayerSheep 41)
+
+; Deer
+(defconst HunterCount 71)
+(defconst CurrentDeerId 74)
+(defconst CurrentDeerFood 77)
+(defconst TargetDeerOnceDone 80)
+(defconst DeerIdXPos 83)
+(defconst DeerIdYPos 86)
+
+; Boar
+(defconst CurrentBoarId 56)
+(defconst CurrentVillagerId 57)
+
+; Other
+(defconst TownCenterX 107)
+(defconst TownCenterY 110)
+(defconst PointDistance 113)
+
+(defconst ScoutReset 120)
+
+; Strategies
+
+(defconst ScoutRush 200)
+(defconst ArcherRush 201)
+(defconst SkirmRush 202)
+
+; Targeting Players
+(defconst TargetedPlayer 300)
+
+; Fact Checking Goals
+(defconst WoodTotal 350)
+(defconst FoodTotal 351)
+(defconst GoldTotal 352)
+(defconst StoneTotal 353)
+
+(defconst WoodVillagers 43)
+(defconst FoodVillagers 44)
+(defconst GoldVillagers 45)
+(defconst StoneVillagers 46)
+
+(defconst MathGoalA 505)
+(defconst MathGoalB 506)
+(defconst MathGoalC 507)
+(defconst MathGoalD 508)
+(defconst MathGoalE 509)
+
+(defconst FactCheckGoalA 510)
+
+(defconst TIMER_Attacking 1)
+(defconst TIMER_Feudal 2)
+(defconst TIMER_Spearmen 3)
+(defconst TIMER_CastleMilitary 4)
+
+(defconst BoarClickTimer 5)
+(defconst BoarAssistTimer 6)
+;(defconst TimerDebugTwo 7)
+
+(defconst EconomyUpdateTimer 8)
+(defconst EconomyResetTimer 9)
+
+(defconst GarrisonTimer 10)
+
+(defconst SiegeRamRepeatTimer 11)
+(defconst TrebuchetRepeatTimer 12)
+(defconst PlayerTargetingTimer 13)
+
+(defconst AgeEconomyTimer 14)
+(defconst GoldStoneEconomyTimer 15)
+
+; Experiment 1 ---------------------------
+
+; Experiment 3 ---------------------------
+
+(defconst TownSizeHolder 41)
+(defconst ScoutTrainTimer 1)
+(defconst EndGameTimer 2)
+
+(defconst TownSizeHolder2 42)
+(defconst EagleTrainTimer 3)
+(defconst EndGameTimer2 4)
+
+(defconst Turn 43)
+(defconst TrainVillagers 44)
+
+; Experiment 3 ---------------------------
+
+; Experiment 5 ---------------------------
+
+; Goals
+(defconst TrainVillagersSwitch 41)
+(defconst TrainArcherSwitch 42)
+(defconst TrainSkirmisherSwitch 43)
+
+(defconst BuildHousesSwitch 44)
+(defconst BuildFarmsSwitch 45)
+(defconst BuildMillsSwitch 46)
+(defconst BuildLumberCampSwitch 47)
+(defconst BuildBarracksSwitch 48)
+(defconst BuildArcheryRangeSwitch 49)
+(defconst BuildBlacksmithSwitch 50)
+
+(defconst TrainArcherPendingCount 51)
+(defconst TrainSkirmisherPendingCount 52)
+(defconst TrainVillagerPending 53)
+
+(defconst BuildHousePendingCount 54)
+(defconst BuildFarmPendingCount 55)
+(defconst BuildMillPendingCount 56)
+(defconst BuildLumberCampPendingCount 57)
+(defconst BuildBarracksPendingCount 58)
+(defconst BuildArcheryRangePendingCount 59)
+(defconst BuildBlacksmithPendingCount 60)
+
+; Numbers
+(defconst VillagersInDarkAge 17)
+(defconst ArchersInFeudalFlank 5)
+(defconst SkirmishersInFeudalFlank 7)
+
+; Experiment 5 ---------------------------
+
+(load "Experimental\Experiment 1\GameStart")
+(load "Experimental\Experiment 1\Mechanisms\BoarHunting")
+(load "Experimental\Experiment 1\Mechanisms\DeerHunting")
+(load "Experimental\Experiment 1\Mechanisms\SheepScouting")
+(load "Experimental\Experiment 1\Mechanisms\Economy")
+(load "Experimental\Experiment 1\Mechanisms\TownCenter")
+(load "Experimental\Experiment 1\Mechanisms\SiegeRam")
+(load "Experimental\Experiment 1\Mechanisms\Trebuchet")
+(load "Experimental\Experiment 1\Mechanisms\PlayerTargeting")
+(load "Experimental\Experiment 1\Strategies\ScoutRush")
+(load "Experimental\Experiment 1\Strategies\ArcherRush")
+(load "Experimental\Experiment 1\Strategies\SkirmRush")
+(load "Experimental\Experiment 1\1 Dark Age\Personality")
+(load "Experimental\Experiment 1\1 Dark Age\Research")
+(load "Experimental\Experiment 1\1 Dark Age\Building")
+(load "Experimental\Experiment 1\1 Dark Age\Villagers")
+(load "Experimental\Experiment 1\2 Feudal Age\Strategy")
+(load "Experimental\Experiment 1\2 Feudal Age\Personality")
+(load "Experimental\Experiment 1\2 Feudal Age\Research")
+(load "Experimental\Experiment 1\2 Feudal Age\Building")
+(load "Experimental\Experiment 1\2 Feudal Age\Villagers")
+(load "Experimental\Experiment 1\2 Feudal Age\Defense")
+(load "Experimental\Experiment 1\2 Feudal Age\Military")
+(load "Experimental\Experiment 1\3 Castle Age\Personality")
+(load "Experimental\Experiment 1\3 Castle Age\Research")
+(load "Experimental\Experiment 1\3 Castle Age\Building")
+(load "Experimental\Experiment 1\3 Castle Age\Villagers")
+(load "Experimental\Experiment 1\3 Castle Age\Economy")
+(load "Experimental\Experiment 1\3 Castle Age\Defense")
+(load "Experimental\Experiment 1\3 Castle Age\Military")
+(load "Experimental\Experiment 1\4 Imperial Age\Personality")
+(load "Experimental\Experiment 1\4 Imperial Age\Research")
+(load "Experimental\Experiment 1\4 Imperial Age\Building")
+(load "Experimental\Experiment 1\4 Imperial Age\Villagers")
+(load "Experimental\Experiment 1\4 Imperial Age\Economy")
+(load "Experimental\Experiment 1\4 Imperial Age\Defense")
+(load "Experimental\Experiment 1\4 Imperial Age\Military")
+
+(load "Experimental\Experiment 2\Main")
+
+(load "Experimental\Experiment 3\Standard")
+
+#load-if-not-defined AZTEC-CIV
+	#load-if-not-defined MAYAN-CIV
+		(load "Experimental\Experiment 3\Scouts")
+	#end-if
+#end-if
+
+#load-if-defined AZTEC-CIV
+	(load "Experimental\Experiment 3\Meso")
+#end-if
+
+#load-if-defined MAYAN-CIV
+	(load "Experimental\Experiment 3\Meso")
+#end-if
+
+(load "Experimental\Experiment 4\ToFeudal")
+
+(load "Experimental\Experiment 5\Main")

@@ -1,0 +1,53 @@
+
+; Valkyrie Warriors
+; Written by Electricity117 and updated by Esty
+; http://aiscripters.net
+
+; Core Files
+
+(load "Valkyrie Warriors/Constants")
+(load "Valkyrie Warriors/Detection")
+(load "Valkyrie Warriors/Civilizations/Default")
+(load "Valkyrie Warriors/Civilizations/Aztecs")
+(load "Valkyrie Warriors/Civilizations/Incas")
+(load "Valkyrie Warriors/Civilizations/Indians")
+(load "Valkyrie Warriors/Civilizations/Mayans")
+(load "Valkyrie Warriors/Initialize")
+(load "Valkyrie Warriors/Personnality")
+(load "Valkyrie Warriors/Priority")
+(load "Valkyrie Warriors/Strategy")
+(load "Valkyrie Warriors/Escrow")
+(load "Valkyrie Warriors/Economy")
+(load "Valkyrie Warriors/Strategies/Monks/Economy")
+(load "Valkyrie Warriors/Strategies/MonksEagles/Economy")
+(load "Valkyrie Warriors/Research")
+(load "Valkyrie Warriors/Strategies/Monks/Research")
+(load "Valkyrie Warriors/Strategies/MonksEagles/Research")
+(load "Valkyrie Warriors/Training")
+(load "Valkyrie Warriors/Strategies/Monks/Training")
+(load "Valkyrie Warriors/Strategies/MonksEagles/Training")
+(load "Valkyrie Warriors/Building")
+(load "Valkyrie Warriors/Strategies/Monks/Building")
+(load "Valkyrie Warriors/Strategies/MonksEagles/Building")
+(load "Valkyrie Warriors/Macro")
+(load "Valkyrie Warriors/Micro")
+(load "Valkyrie Warriors/Strategies/Monks/Micro")
+(load "Valkyrie Warriors/Strategies/MonksEagles/Micro")
+(load "Valkyrie Warriors/Countering/Spearmen")
+(load "Valkyrie Warriors/Countering/Militian")
+(load "Valkyrie Warriors/Countering/Skirm")
+(load "Valkyrie Warriors/Countering/Mangonel")
+(load "Valkyrie Warriors/Countering/Ram")
+(load "Valkyrie Warriors/Trading")
+(load "Valkyrie Warriors/Allies")
+(load "Valkyrie Warriors/Chat")
+(load "Valkyrie Warriors/Resign")
+
+;*****************************************************
+;-----------------END OF TICKS------------------------
+(defrule
+	(up-pending-placement c: mining-camp)
+	(up-compare-goal building-point-x > 0)
+=>	(up-set-target-point building-point-x))
+
+;*****************************************************

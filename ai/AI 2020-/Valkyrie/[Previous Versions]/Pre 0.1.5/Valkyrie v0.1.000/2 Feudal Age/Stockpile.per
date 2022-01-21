@@ -1,0 +1,44 @@
+
+
+
+
+
+
+
+
+
+(defrule
+    (game-time >= FORCED_FOR_CASTLE_STOCKPILE_TIME)
+    (current-age == feudal-age)
+    (food-amount < 900)
+    (gold-amount < 300)
+=>
+    (set-goal GOAL_WE_ARE_STOCKPILING VALK_TRUE)
+    (disable-self)
+)
+
+
+
+
+
+
+
+(defrule
+
+(current-age == feudal-age)
+(goal GOAL_WE_ARE_STOCKPILING VALK_TRUE)
+
+=>
+
+(set-strategic-number sn-food-gatherer-percentage 40)
+(set-strategic-number sn-wood-gatherer-percentage 20)
+(set-strategic-number sn-gold-gatherer-percentage 30)
+(set-strategic-number sn-stone-gatherer-percentage 10)
+
+)
+
+
+
+
+
+

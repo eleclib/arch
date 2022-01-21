@@ -1,0 +1,72 @@
+
+(defrule ; Train Dark Age Villagers
+    (current-age == dark-age)
+    (up-can-train to-escrow c: villager)
+    (unit-type-count-total villager < 25)
+    =>
+    (up-train to-escrow c: villager)
+)
+
+(defrule ; Train Feudal Age Villagers
+    (current-age == feudal-age)
+    (up-can-train to-escrow c: villager)
+    (unit-type-count-total villager < 72)
+    (food-amount < 800)
+    (gold-amount < 200)
+    =>
+    (up-train to-escrow c: villager)
+)
+
+(defrule ; Train Castle Age Villagers
+    (current-age == castle-age)
+    (up-can-train to-escrow c: villager)
+    (unit-type-count-total villager < 120)
+    =>
+    (up-train to-escrow c: villager)
+)
+
+(defrule
+    (can-train skirmisher)
+    ;(unit-type-count skirmisher < 28)
+    ;(game-time < 1380)
+    (or
+        (game-time < 1380)
+        (up-research-status c: castle-age == research-pending)
+    )
+    =>
+    (train skirmisher)
+)
+
+(defrule
+    (or
+        (civ-selected aztec)
+        (civ-selected mayan)
+    )
+    (up-can-train to-escrow c: eagle-warrior)
+    (building-type-count barracks >= 1)
+    =>
+    (up-train to-escrow c: eagle-warrior)
+)
+
+(defrule
+    (up-can-train to-escrow c: knight)
+    (building-type-count stable >= 1)
+    =>
+    (up-train to-escrow c: knight)
+)
+
+(defrule
+    (up-can-train to-escrow c: mangonel)
+    (building-type-count siege-workshop >= 1)
+    =>
+    (up-train to-escrow c: mangonel)
+)
+
+(defrule
+
+    (up-can-train to-escrow c: battering-ram)
+    (building-type-count siege-workshop >= 1)
+    =>
+    (up-train to-escrow c: battering-ram)
+)
+

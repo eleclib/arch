@@ -1,0 +1,172 @@
+
+
+(defrule
+    (can-research ri-fortified-wall)
+    =>
+    (research ri-fortified-wall)
+)
+
+
+
+(defrule
+    (can-research ri-wheel-barrow)
+    =>
+    (research ri-wheel-barrow)
+)
+
+(defrule
+    (can-research ri-double-bit-axe)
+    =>
+    (research ri-double-bit-axe)
+)
+
+(defrule
+    (can-research ri-horse-collar)
+    =>
+    (research ri-horse-collar)
+)
+
+(defrule
+    (can-research ri-hand-cart)
+    =>
+    (research ri-hand-cart)
+)
+
+(defrule
+    (can-research ri-bow-saw)
+    =>
+    (research ri-bow-saw)
+)
+
+(defrule
+    (can-research ri-heavy-plow)
+    =>
+    (research ri-heavy-plow)
+)
+
+(defrule
+    (can-research ri-two-man-saw)
+    =>
+    (research ri-two-man-saw)
+)
+
+(defrule
+    (can-research ri-cartography)
+    =>
+    (research ri-cartography)
+)
+
+
+
+
+
+(defrule
+    (can-research ri-conscription)
+    =>
+    (research ri-conscription)
+)
+
+
+
+
+
+
+
+
+(defrule
+    (can-research my-unique-research)
+    =>
+    (research my-unique-research)
+)
+
+
+
+(defrule
+    (up-compare-goal gl-research-hussite-jump c:> -1)
+    (up-research-status c: my-unique-research != research-complete)
+    =>
+    (up-jump-direct g: gl-research-hussite-jump)
+)
+
+
+
+(defrule
+    (can-research ri-redemption)
+    =>
+    (research ri-redemption)
+)
+
+(defrule
+    (can-research ri-atonement)
+    =>
+    (research ri-atonement)
+)
+
+(defrule
+    (can-research ri-herbal-medicine)
+    =>
+    (research ri-herbal-medicine)
+)
+
+(defrule
+    (can-research ri-heresy)
+    =>
+    (research ri-heresy)
+)
+
+(defrule
+    (can-research ri-sanctity)
+    =>
+    (research ri-sanctity)
+)
+
+(defrule
+    (can-research ri-fervor)
+    =>
+    (research ri-fervor)
+)
+
+(defrule
+    (can-research ri-faith)
+    =>
+    (research ri-faith)
+)
+
+(defrule
+    (can-research ri-illumination)
+    =>
+    (research ri-illumination)
+)
+
+(defrule
+    (can-research ri-block-printing)
+    =>
+    (research ri-block-printing)
+)
+
+(defrule
+    (can-research ri-theocracy)
+    =>
+    (research ri-theocracy)
+)
+
+
+(defrule
+    (can-research ri-chemistry)
+    =>
+    (research ri-chemistry)
+)
+
+(defrule
+    (can-research ri-houfnice)
+    =>
+    (research ri-houfnice)
+)
+
+
+(defrule
+    (true)
+    =>
+    (up-get-rule-id gl-research-hussite-jump)
+    (disable-self)
+)

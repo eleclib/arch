@@ -1,0 +1,12 @@
+
+
+(defrule
+    ;(game-time > 840)
+    (current-age == feudal-age)
+    (building-type-count lumber-camp > 0)
+    (building-type-count watch-tower < 4) ; test watch-tower-line for infinite loop
+    (can-build watch-tower)
+    =>
+    (build watch-tower)
+)
+

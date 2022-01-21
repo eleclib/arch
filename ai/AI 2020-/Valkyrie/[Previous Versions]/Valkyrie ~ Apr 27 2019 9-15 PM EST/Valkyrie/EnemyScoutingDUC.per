@@ -1,0 +1,27 @@
+
+;(defrule
+;    (current-age <= feudal-age)
+;    =>
+;    (up-find-player enemy find-closest goal-focus-player)
+;    (up-modify-sn sn-focus-player-number g:= goal-focus-player)
+;    (up-full-reset-search)
+;    (up-find-remote c: building-class c: 1)
+;    (up-get-search-state goal-local-total)
+;)
+
+;(defrule
+;    (current-age <= feudal-age)
+;    (up-compare-goal goal-remote-total c:> 0)
+;    =>
+;    (up-set-target-object search-remote c: 0)
+;    (up-get-object-data object-data-distance goal-distance)
+;)
+
+;(defrule
+;    (current-age <= feudal-age)
+;    (up-compare-goal goal-distance c:> 5)
+;    =>
+;    (up-find-local c: scout-cavalry c: 1)
+;    (up-find-local c: eagle-warrior c: 1)
+;    (up-target-objects 0 action-move -1 -1)
+;)

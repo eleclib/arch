@@ -1,0 +1,211 @@
+
+
+
+
+
+
+(defrule
+    (up-research-status c: castle-age >= research-pending)
+    (current-age != castle-age)
+    =>
+    (up-modify-goal gl-total-skirms-trained c:= 0)
+)
+
+(defrule
+    (current-age == feudal-age)
+    (unit-type-count skirmisher-line < 20)
+    (can-train skirmisher-line)
+    (goal gl-under-attack 0)
+    =>
+    (up-gather-inside c: archery-range c: 1)
+)
+
+(defrule
+    (current-age == feudal-age)
+    (up-get-fact military-population 0 gl-up-get-fact)
+    (up-modify-goal gl-up-get-fact c:- 3)
+    (up-compare-goal gl-up-get-fact g:< gl-enemy-units-in-town)
+    (goal gl-under-attack 1)
+    =>
+    (up-gather-inside c: archery-range c: 1)
+)
+
+(defrule
+    (current-age == feudal-age)
+    (up-get-fact military-population 0 gl-up-get-fact)
+    (up-modify-goal gl-up-get-fact c:- 3)
+    (up-compare-goal gl-up-get-fact g:>= gl-enemy-units-in-town)
+    (goal gl-under-attack 1)
+    =>
+    (up-gather-inside c: archery-range c: 0)
+)
+
+(defrule
+    (current-age == feudal-age)
+    (unit-type-count spearman-line < 10)
+    (can-train-with-escrow spearman-line)
+    =>
+    (up-gather-inside c: barracks c: 1)
+)
+
+(defrule
+    (current-age == feudal-age)
+    (up-get-fact military-population 0 gl-up-get-fact)
+    (up-modify-goal gl-up-get-fact c:+ 2)
+    (up-compare-goal gl-up-get-fact g:>= gl-enemy-units-in-town)
+    =>
+    (up-gather-inside c: barracks c: 0)
+)
+
+
+(defrule
+    (current-age == castle-age)
+    =>
+    (up-gather-inside c: barracks c: 0)
+    (up-gather-inside c: archery-range c: 0)
+)
+
+
+
+
+
+(defrule
+    (current-age == feudal-age)
+    (goal gl-prepare-age-up 0)
+    (food-amount > 50)
+    (research-completed ri-fletching)
+    (up-compare-goal gl-total-skirms-trained c:<= 50)
+    (building-type-count-total archery-range >= 2)
+    (unit-type-count-total skirmisher-line < 37)
+    (can-train-with-escrow skirmisher-line)
+    =>
+    (up-modify-goal gl-total-skirms-trained c:+ 1)
+    (up-train gl-escrow-state c: skirmisher-line)
+)
+
+(defrule
+    (current-age == feudal-age)
+    (goal gl-prepare-age-up 1)
+    (food-amount > 50)
+    (research-completed ri-fletching)
+    (up-compare-goal gl-total-skirms-trained c:<= 50)
+    (building-type-count-total archery-range >= 2)
+    (unit-type-count-total skirmisher-line < 37)
+    (up-pending-objects c: skirmisher-line < 1)
+    (can-train-with-escrow skirmisher-line)
+    =>
+    (up-modify-goal gl-total-skirms-trained c:+ 1)
+    (up-train gl-escrow-state c: skirmisher-line)
+)
+
+(defrule
+    (up-research-status c: castle-age == research-pending)
+    (goal gl-prepare-age-up 0)
+    (food-amount > 50)
+    (up-compare-goal gl-total-skirms-trained c:<= 54)
+    (building-type-count-total archery-range >= 2)
+    (unit-type-count-total skirmisher-line < 34)
+    (can-train-with-escrow skirmisher-line)
+    =>
+    (up-modify-goal gl-total-skirms-trained c:+ 1)
+    (up-train gl-escrow-state c: skirmisher-line)
+)
+
+(defrule
+    (current-age == castle-age)
+    (goal gl-prepare-age-up 0)
+    (food-amount > 50)
+    (research-completed ri-elite-skirmisher)
+    (research-completed ri-bodkin-arrow)
+    (research-completed ri-leather-archer-armor)
+    (up-compare-goal gl-total-skirms-trained c:<= 64)
+    (building-type-count-total archery-range >= 2)
+    (unit-type-count-total skirmisher-line < 47)
+    (can-train-with-escrow skirmisher-line)
+    =>
+    (up-modify-goal gl-total-skirms-trained c:+ 1)
+    (up-train gl-escrow-state c: skirmisher-line)
+)
+
+
+(defrule
+    (current-age >= feudal-age)
+    (current-age != imperial-age)
+    (goal gl-prepare-age-up 0)
+    (players-unit-type-count any-enemy knight-line > 2)
+    (building-type-count-total barracks >= 2)
+    (up-compare-goal gl-total-pikes-trained c:<= 24)
+    (unit-type-count-total spearman-line < 12)
+    (research-completed ri-pikeman)
+    (research-completed ri-elite-skirmisher)
+    (can-train-with-escrow spearman-line)
+    =>
+    (up-modify-goal gl-total-pikes-trained c:+ 1)
+    (up-train gl-escrow-state c: spearman-line)
+)
+
+
+
+
+(defrule
+    (goal gl-attacking 1)
+    (unit-type-count-total battering-ram-line < 3)
+    (current-age-time < 780)
+    (can-train-with-escrow battering-ram-line)
+    =>
+    (up-train gl-escrow-state c: battering-ram-line)
+)
+
+(defrule
+    (goal gl-under-attack 1)
+    (unit-type-count-total scorpion-line < 14)
+    (current-age-time < 780)
+    (research-completed ri-pikeman)
+    (research-completed ri-elite-skirmisher)
+    (players-unit-type-count any-enemy skirmisher-line > 0)
+    (can-train scorpion-line)
+    =>
+    (train scorpion-line)
+)
+
+
+
+
+
+
+
+
+
+
+
+
+(defrule
+    (current-age == imperial-age)
+    (up-research-status c: my-unique-research == research-complete)
+    (can-train monk)
+    =>
+    (train monk)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (up-research-status c: my-unique-research == research-complete)
+    (up-get-fact unit-type-count-total monk gl-up-get-fact)
+    (up-modify-goal gl-up-get-fact c:/ 2)
+    (up-object-type-count-total c: houfnice g:< gl-up-get-fact)
+    (can-train houfnice)
+    =>
+    (train houfnice)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (up-research-status c: my-unique-research == research-complete)
+    (up-get-fact unit-type-count-total monk gl-up-get-fact)
+    (up-modify-goal gl-up-get-fact c:/ 2)
+    (up-object-type-count-total c: battering-ram-line g:< gl-up-get-fact)
+    (can-train battering-ram-line)
+    =>
+    (train battering-ram-line)
+)
+

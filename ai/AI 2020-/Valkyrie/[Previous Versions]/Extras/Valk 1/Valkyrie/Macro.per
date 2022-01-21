@@ -1,0 +1,19 @@
+
+(defrule
+    (up-object-type-count c: livestock-class > 0)
+    =>
+    (set-strategic-number sn-cap-civilian-explorers 0)
+    (disable-self)
+)
+
+(defrule
+    (military-population >= 34)
+    =>
+    (up-modify-sn sn-maximum-town-size c:+ 10)
+)
+
+(defrule
+    (military-population <= 17)
+    =>
+    (set-strategic-number sn-maximum-town-size 10)
+)

@@ -1,0 +1,49 @@
+
+;(defconst GaiaSheep 41)
+;(defconst PlayerSheep 42)
+
+;(defrule
+;    (true)
+;    =>
+;    (up-get-fact unit-type-count livestock-class PlayerSheep)
+;    (set-strategic-number sn-focus-player-number 0)
+;    (up-full-reset-search)
+;)
+
+;(defrule
+;    (up-find-remote c: livestock-class c: 1)
+;    =>
+;    (up-full-reset-search)
+;    (up-find-local c: scout-cavalry c: 1)
+;    (up-find-local c: eagle-warrior c: 1)
+;    (up-find-remote c: livestock-class c: 1)
+;    (up-target-objects 0 action-move -1 -1)
+;    (set-goal ScoutReset True)
+;    (up-full-reset-search)
+;)
+
+;(defrule
+;    (goal ScoutReset True)
+;    (not(up-find-remote c: livestock-class c: 1))
+;    =>
+;    (set-goal ScoutReset False)
+;    (up-reset-scouts)
+;)
+
+(defrule
+    (true)
+    =>
+    (up-get-fact unit-type-count livestock-class PlayerSheep)
+    (set-strategic-number sn-focus-player-number 0)
+    (up-full-reset-search)
+)
+
+(defrule
+    (up-gaia-type-count c: livestock-class g:> PlayerSheep)
+    =>
+    (up-full-reset-search)
+    (up-find-local c: scout-cavalry c: 1)
+    (up-find-local c: eagle-warrior c: 1)
+    (up-find-remote c: livestock-class c: 1)
+    (up-target-objects 0 action-move -1 -1)
+)

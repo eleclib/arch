@@ -1,0 +1,27 @@
+
+; start of script
+
+
+
+;(defrule
+;    (up-compare-goal gl-backbone-override-jump c:> -1)
+;    =>
+;    (up-jump-direct g: gl-backbone-override-jump)
+;)
+
+(defconst cn-backbone1-id 1)
+(defconst cn-backbone2-id 2)
+
+(defconst gl-backbone-picker 400)
+
+
+(defrule
+    (true)
+    =>
+    (set-goal gl-backbone-picker cn-backbone2-id)
+    (disable-self)
+)
+
+
+
+; to   backbone.per

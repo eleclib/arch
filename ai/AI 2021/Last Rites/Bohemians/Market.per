@@ -1,0 +1,23 @@
+
+(defrule
+    (current-age >= castle-age)
+    (building-type-count-total market < 1)
+    (can-build market)
+    =>
+    (build market)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (wood-amount > 4000)
+    =>
+    (sell-commodity wood)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (food-amount < 2000)
+    (gold-amount > 4000)
+    =>
+    (buy-commodity food)
+)

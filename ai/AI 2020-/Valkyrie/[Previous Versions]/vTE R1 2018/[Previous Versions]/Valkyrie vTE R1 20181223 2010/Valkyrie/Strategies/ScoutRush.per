@@ -1,0 +1,8 @@
+
+(defrule
+    (current-age == feudal-age)
+    (up-object-type-count-total c: scout-cavalry-line < 9)
+    =>
+    (up-train 0 c: scout-cavalry)
+)
+

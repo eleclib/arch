@@ -1,0 +1,57 @@
+
+(defrule
+    (current-age == castle-age)
+    =>
+    (up-find-player enemy find-closest goal-found-player)
+    (up-modify-sn sn-focus-player-number g:= goal-found-player)
+    (up-modify-sn sn-target-player-number g:= goal-found-player)
+)
+
+(defrule
+    (goal goal-castle-strategy castle-push)
+    (unit-type-count battering-ram >= castle-ram-count-to-rush)
+    =>
+    (up-full-reset-search)
+    (up-filter-exclude -1 actionid-move -1 -1)
+    (up-find-local c: battering-ram c: 30)
+    (up-remove-objects search-local object-data-action == actionid-attack)
+    (up-find-remote c: town-center c: 1)
+    (up-find-remote c: watch-tower c: 1)
+    (up-find-remote c: building-class c: 1)
+    (up-set-target-object search-remote c: 0)
+    (up-target-objects 1 action-default -1 -1)
+)
+
+(defrule
+    (goal goal-castle-strategy castle-push)
+    (or
+        (unit-type-count knight >= castle-eagle-knight-count-to-rush)
+        (unit-type-count eagle-warrior >= castle-eagle-knight-count-to-rush)
+    )
+    =>
+    (up-full-reset-search)
+    (up-filter-exclude -1 actionid-move -1 -1)
+    (up-find-local c: knight c: 30)
+    (up-find-local c: eagle-warrior c: 30)
+    (up-remove-objects search-local object-data-action == actionid-attack)
+    (up-find-remote c: town-center c: 1)
+    (up-find-remote c: watch-tower c: 1)
+    (up-find-remote c: building-class c: 1)
+    (up-set-target-object search-remote c: 0)
+    (up-target-objects 1 action-default -1 -1)
+)
+
+(defrule
+    (goal goal-castle-strategy castle-push)
+    (unit-type-count spearman-line >= castle-spearman-count-to-rush)
+    =>
+    (up-full-reset-search)
+    (up-filter-exclude -1 actionid-move -1 -1)
+    (up-find-local c: spearman-line c: 60)
+    (up-remove-objects search-local object-data-action == actionid-attack)
+    (up-find-remote c: town-center c: 1)
+    (up-find-remote c: watch-tower c: 1)
+    (up-find-remote c: building-class c: 1)
+    (up-set-target-object search-remote c: 0)
+    (up-target-objects 1 action-default -1 -1)
+)

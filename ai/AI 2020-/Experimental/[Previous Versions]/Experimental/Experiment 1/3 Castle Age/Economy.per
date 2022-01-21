@@ -1,0 +1,9 @@
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 1)
+    (player-in-game any-ally)
+    (current-age == castle-age)
+    (up-object-type-count-total c: trade-cart < 15)
+    =>
+    (up-train 0 c: trade-cart)
+)

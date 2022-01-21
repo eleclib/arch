@@ -1,0 +1,98 @@
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 1)
+    (current-age == castle-age)
+    (up-pending-objects c: my-unique-unit-line < 1)
+    (up-can-train 0 c: my-unique-unit-line)
+    =>
+    ; Affects Stone Only
+    (up-modify-goal WoodVillagers c:+ 10)
+    (up-modify-goal FoodVillagers c:+ 10)
+    (up-modify-goal GoldVillagers c:+ 10)
+    (up-train 0 c: my-unique-unit-line)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 1)
+    (current-age == castle-age)
+    (up-pending-objects c: knight-line < 1)
+    (up-can-train 0 c: knight-line)
+    =>
+    (up-modify-goal FoodVillagers c:+ 1)
+    (up-modify-goal GoldVillagers c:+ 1)
+    (up-train 0 c: knight-line)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 1)
+    (current-age == castle-age)
+    (up-pending-objects c: archer-line < 1)
+    (up-can-train 0 c: archer-line)
+    =>
+    (up-modify-goal WoodVillagers c:+ 1)
+    (up-modify-goal GoldVillagers c:+ 1)
+    (up-train 0 c: archer-line)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 1)
+    (current-age == castle-age)
+    (up-pending-objects c: skirmisher-line < 1)
+    (up-can-train 0 c: skirmisher-line)
+    =>
+    (up-modify-goal WoodVillagers c:+ 1)
+    (up-modify-goal FoodVillagers c:+ 1)
+    (up-train 0 c: skirmisher-line)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 1)
+    (current-age == castle-age)
+    (up-pending-objects c: battering-ram-line < 1)
+    (up-can-train 0 c: battering-ram-line)
+    =>
+    (up-modify-goal WoodVillagers c:+ 2)
+    (up-modify-goal GoldVillagers c:+ 1)
+    (up-train 0 c: battering-ram-line)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 1)
+    (current-age == castle-age)
+    (up-pending-objects c: spearman-line < 1)
+    (up-can-train 0 c: spearman-line)
+    =>
+    (up-modify-goal WoodVillagers c:+ 1)
+    (up-modify-goal FoodVillagers c:+ 1)
+    (up-train 0 c: spearman-line)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 1)
+    (current-age == castle-age)
+    (military-population >= 75)
+=>
+    (set-strategic-number sn-maximum-town-size 255)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 1)
+    (current-age == castle-age)
+    (military-population <= 15)
+=>
+    (set-strategic-number sn-maximum-town-size 25)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 1)
+    (current-age == castle-age)
+    (up-compare-sn sn-maximum-town-size == 255)
+    (or
+        (up-timer-status GarrisonTimer == timer-disabled)
+        (up-timer-status GarrisonTimer == timer-triggered)
+    )
+    =>
+    (up-garrison battering-ram c: infantry-class)
+    (up-garrison battering-ram c: archery-class)
+    (up-set-timer c: GarrisonTimer c: 30)
+)

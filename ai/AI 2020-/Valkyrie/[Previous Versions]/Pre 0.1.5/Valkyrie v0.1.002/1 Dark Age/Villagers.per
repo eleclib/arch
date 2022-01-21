@@ -1,0 +1,20 @@
+
+(defrule
+    (current-age == dark-age)
+=>
+    (set-strategic-number sn-enable-boar-hunting 1)
+    (set-strategic-number sn-minimum-boar-lure-group-size 1)
+    (set-strategic-number sn-minimum-number-hunters 1)
+    (up-request-hunters c: 7)
+    (disable-self)
+)
+
+(defrule
+    (current-age == dark-age)
+    (up-can-train 0 c: villager)
+    (up-pending-objects c: villager < 1)
+=>
+    (up-train 0 c: villager)
+)
+
+

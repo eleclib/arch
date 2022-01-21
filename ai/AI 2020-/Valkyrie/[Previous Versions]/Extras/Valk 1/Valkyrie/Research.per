@@ -1,0 +1,81 @@
+
+
+(defrule
+    (unit-type-count-total villager >= 6)
+    (up-research-status c: ri-loom < research-pending)
+    =>
+    (set-strategic-number sn-enable-training-queue 0)
+)
+
+(defrule
+    (can-research ri-loom)
+    (unit-type-count villager >= 6)
+    (up-pending-objects c: villager == 0)
+    =>
+    (research ri-loom)
+    (set-strategic-number sn-enable-training-queue 1)
+)
+
+(defrule
+    (can-research feudal-age)
+    =>
+    (research feudal-age)
+)
+
+(defrule
+    (can-research ri-horse-collar)
+    =>
+    (research ri-horse-collar)
+)
+
+(defrule
+    (can-research ri-fletching)
+    =>
+    (research ri-fletching)
+)
+
+(defrule
+    (can-research ri-padded-archer-armor)
+    =>
+    (research ri-padded-archer-armor)
+)
+
+(defrule
+    (can-research castle-age)
+    =>
+    (research castle-age)
+)
+
+(defrule
+    (can-research ri-elite-skirmisher)
+    =>
+    (research ri-elite-skirmisher)
+)
+
+(defrule
+    (current-age == castle-age)
+    (can-research ri-scale-barding)
+    =>
+    (research ri-scale-barding)
+)
+
+(defrule
+    (current-age == castle-age)
+    (can-research ri-chain-barding)
+    =>
+    (research ri-chain-barding)
+)
+
+(defrule
+    (current-age == castle-age)
+    (can-research ri-forging)
+    =>
+    (research ri-forging)
+)
+
+(defrule
+    (current-age == castle-age)
+    (can-research ri-iron-casting)
+    =>
+    (research ri-iron-casting)
+)

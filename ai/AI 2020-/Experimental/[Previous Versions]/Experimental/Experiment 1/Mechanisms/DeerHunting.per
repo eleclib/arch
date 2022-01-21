@@ -1,0 +1,70 @@
+
+(defrule 
+    (up-compare-goal ExperimentNumber c:== 1)
+    (current-age == dark-age)
+    (up-object-type-count c: villager >= 9)
+    =>
+    (set-goal HunterCount 5)
+    (set-goal TargetDeerOnceDone False)
+    (disable-self)
+)
+
+(defrule 
+    (up-compare-goal ExperimentNumber c:== 1)
+    (current-age == dark-age)
+    =>
+    (up-full-reset-search)
+)
+
+(defrule 
+    (up-compare-goal ExperimentNumber c:== 1)
+    (current-age == dark-age)
+    (up-set-target-by-id g: CurrentDeerId)
+    =>
+    (up-get-object-data object-data-carry CurrentDeerFood)
+    (up-get-object-data object-data-point-x DeerIdXPos)
+    (up-get-object-data object-data-point-y DeerIdYPos)
+    (up-find-local c: 109 c: 1) ; Town Center
+    (up-get-object-data object-data-point-x TownCenterX)
+    (up-get-object-data object-data-point-y TownCenterY)
+    (up-get-point-distance TownCenterX DeerIdXPos PointDistance)
+)
+
+; Target Deer
+(defrule 
+    (up-compare-goal ExperimentNumber c:== 1)
+    (current-age == dark-age)
+    (up-compare-goal PointDistance c:<= 30)
+    (goal TargetDeerOnceDone False)
+    (up-compare-goal CurrentDeerFood c:>= 140)
+    =>
+    (up-full-reset-search)
+    (up-find-local c: villager-class g: HunterCount)
+    (up-add-object-by-id search-remote g: CurrentDeerId)
+    (up-target-objects 0 action-default -1 -1)
+
+    (set-goal TargetDeerOnceDone True)
+
+    (up-full-reset-search)
+)
+
+(defrule 
+    (up-compare-goal ExperimentNumber c:== 1)
+    (current-age == dark-age)
+    (up-compare-goal CurrentDeerFood <= 3)
+    =>
+    (set-goal TargetDeerOnceDone False)
+)
+
+; Find Deer
+(defrule 
+    (up-compare-goal ExperimentNumber c:== 1)
+    (current-age == dark-age)
+    (not(up-set-target-by-id g: CurrentDeerId))
+    (up-find-remote c: 65 c: 1)
+    =>
+    (up-full-reset-search)
+    (up-find-remote c: 65 c: 1) ; Deer
+    (up-set-target-object search-remote c: 0)
+    (up-get-object-data object-data-id CurrentDeerId)
+)

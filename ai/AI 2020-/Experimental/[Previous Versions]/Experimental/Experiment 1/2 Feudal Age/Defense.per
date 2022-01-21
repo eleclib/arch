@@ -1,0 +1,11 @@
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 1)
+    (current-age >= feudal-age)
+    (up-can-build 0 c: watch-tower-line)
+    =>
+    (up-modify-goal WoodVillagers c:+ 1)
+    (up-modify-goal StoneVillagers c:+ 2)
+    (up-set-placement-data my-player-number lumber-camp c: 0)
+    (up-build place-control 0 c: watch-tower-line)
+)

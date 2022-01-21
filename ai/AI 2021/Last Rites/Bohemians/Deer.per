@@ -1,0 +1,50 @@
+
+; lure deer
+
+(defrule
+    (current-age == dark-age)
+    (unit-type-count villager >= 18)
+    =>
+    (up-modify-sn sn-focus-player-number c:= 0)
+    (up-full-reset-search)
+    (up-get-point position-self gl-pos)
+    (up-set-target-point gl-pos)
+    (up-filter-distance c: -1 c: 60)
+)
+
+(defrule
+    (current-age == dark-age)
+    (unit-type-count villager >= 18)
+    (up-find-remote c: prey-animal-class c: 40)
+    =>
+    (up-remove-objects search-remote object-data-resource != 0) ; food
+    (up-reset-filters)
+    (up-find-local c: scout-cavalry-line c: 1)
+    (up-get-point position-self gl-pos)
+    (up-set-target-object search-remote c: 0)
+    (up-get-point position-object gl-pos2)
+    (up-lerp-percent gl-pos gl-pos2 c: 110)
+    (up-target-point gl-pos action-move -1 -1)
+)
+
+; kill deer
+
+(defrule
+    (current-age == dark-age)
+    (unit-type-count villager >= 18)
+    =>
+    (up-modify-sn sn-focus-player-number c:= 0)
+    (up-full-reset-search)
+    (up-get-point position-self gl-pos)
+    (up-set-target-point gl-pos)
+    (up-filter-distance c: -1 c: 7)
+)
+
+(defrule
+    (current-age == dark-age)
+    (unit-type-count villager >= 18)
+    (up-find-remote c: prey-animal-class c: 40)
+    =>
+    (up-find-local c: villager-class c: 7)
+    (up-target-objects 0 action-default -1 -1)
+)

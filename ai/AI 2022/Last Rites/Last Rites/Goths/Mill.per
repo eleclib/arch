@@ -1,0 +1,99 @@
+
+
+
+(defrule
+    (true)
+    =>
+    (up-full-reset-search)
+    (set-strategic-number sn-focus-player-number 0)
+    (up-filter-status c: status-resource c: list-active)
+    (up-find-resource c: forage-class c: 1)
+    (up-get-search-state gl-search-state)
+)
+
+
+
+(defrule
+    (current-age == dark-age)
+    (building-type-count-total mill < 1)
+    (or
+        (and
+            (unit-type-count-total livestock-class > 0)
+            (unit-type-count-total livestock-class < 4)
+            ;(up-object-type-count-total c: livestock-class > 0)
+            ;(up-object-type-count-total c: livestock-class < 4)
+        )
+        (unit-type-count villager > 17)
+    )
+    (up-compare-goal gl-search-state-3 > 0)
+    (can-build mill)
+    =>
+    (set-strategic-number sn-preferred-mill-placement 0)
+    (build mill)
+)
+
+
+
+
+
+
+(defrule
+    (true)
+    =>
+    (up-full-reset-search)
+    (set-strategic-number sn-focus-player-number 0)
+    (up-filter-status c: status-ready c: list-active)
+    (up-find-resource c: prey-animal-class c: 1)
+    (up-get-search-state gl-search-state)
+)
+
+
+(defrule
+    (current-age == dark-age)
+    (building-type-count-total mill < 1)
+    (or
+        (and
+            (unit-type-count-total livestock-class > 0)
+            (unit-type-count-total livestock-class < 4)
+            ;(up-object-type-count-total c: livestock-class > 0)
+            ;(up-object-type-count-total c: livestock-class < 4)
+        )
+        (unit-type-count villager > 17)
+    )
+    (up-compare-goal gl-search-state-3 > 0)
+    (can-build mill)
+    =>
+    (set-strategic-number sn-preferred-mill-placement 1)
+    (build mill)
+)
+
+
+
+
+
+
+; something fishy going on here
+; up-object-type-count-total acts like it doesnt account for
+; pending objects in the build queue
+
+(defrule
+    (current-age > dark-age)
+    (building-type-count-total mill >= 1)
+    (up-get-fact building-type-count-total farm gl-temp)
+    (up-modify-goal gl-temp c:/ 4)
+    (up-modify-goal gl-temp c:+ 1)
+    ;(up-object-type-count-total c: mill g:< gl-temp) ; broke atm - no pending (confirmed)
+    ; broken except -lines and villagers and 
+    ;(up-object-type-count c: mill g:< gl-temp)
+    (building-type-count-total mill g:< gl-temp)
+    ;(up-pending-objects c: mill < 1) ; extra check until bug is fixed
+    (can-build mill)
+    =>
+    ;(up-chat-data-to-all "Mills; gl-temp result is: %d" g: gl-temp)
+    (set-strategic-number sn-preferred-mill-placement 0)
+    (build mill)
+)
+
+
+
+

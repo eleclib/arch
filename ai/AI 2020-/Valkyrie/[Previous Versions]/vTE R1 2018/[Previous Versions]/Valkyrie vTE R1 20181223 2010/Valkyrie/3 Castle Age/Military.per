@@ -1,0 +1,49 @@
+
+(defrule
+    (current-age == castle-age)
+    (game-time < 1800)
+    =>
+    (up-train 0 c: knight-line)
+)
+
+(defrule
+    (current-age == castle-age)
+    (game-time < 1800)
+    =>
+    (up-train 0 c: archer-line)
+)
+
+(defrule
+    (current-age == castle-age)
+    (game-time < 1800)
+    =>
+    (up-train 0 c: skirmisher-line)
+)
+
+(defrule
+    (current-age == castle-age)
+    (game-time < 1800)
+    =>
+    (up-train 0 c: battering-ram-line)
+)
+
+(defrule
+    (current-age == castle-age)
+    (game-time < 1800)
+    =>
+    (up-train 0 c: spearman-line)
+)
+
+(defrule
+    (current-age == castle-age)
+    (military-population >= 40)
+=>
+    (set-strategic-number sn-maximum-town-size 255)
+)
+
+(defrule
+    (current-age == castle-age)
+    (military-population <= 15)
+=>
+    (set-strategic-number sn-maximum-town-size 20)
+)

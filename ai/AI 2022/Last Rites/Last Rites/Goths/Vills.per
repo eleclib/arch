@@ -1,0 +1,66 @@
+
+(defrule
+    (true)
+    =>
+    (set-strategic-number sn-allow-civilian-offense 1)
+    (set-strategic-number sn-allow-civilian-defense 0)
+    (set-strategic-number sn-number-civilian-militia 0)
+    (set-strategic-number sn-disable-villager-garrison 3)
+    (disable-self)
+)
+
+
+
+
+(defrule
+    ;(up-object-type-count-total c: villager g:< gl-vills-total)
+    (unit-type-count-total villager g:< gl-vills-total)
+    (can-train villager)
+    =>
+    (train villager)
+)
+
+
+
+
+
+
+(defrule
+    (current-age == dark-age)
+    =>
+    (set-goal gl-vills-total 35)
+    (disable-self)
+)
+
+
+(defrule
+    (current-age == feudal-age)
+    =>
+    (set-goal gl-vills-total 52)
+    (disable-self)
+)
+
+
+
+
+
+
+(defrule
+    (current-age == castle-age)
+    =>
+    (set-goal gl-vills-total 72)
+    (disable-self)
+)
+
+
+
+
+
+
+
+(defrule
+    (current-age == imperial-age)
+    =>
+    (set-goal gl-vills-total 120)
+    (disable-self)
+)

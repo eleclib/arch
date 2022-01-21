@@ -1,0 +1,533 @@
+
+
+(defrule
+    (true)
+    =>
+    (up-get-point position-map-size gl-map-size)
+    (disable-self)
+)
+
+(defrule
+    (true)
+    =>
+    (up-get-point position-self gl-my-pos)
+    (disable-self)
+)
+
+(defrule
+    (true)
+    =>
+    (up-copy-point gl-map-center gl-map-size)
+    (up-modify-goal gl-map-center-x c:/ 2)
+    (up-modify-goal gl-map-center-y c:/ 2)
+    (disable-self)
+)
+
+(defrule
+    (up-compare-goal gl-my-pos-x g:< gl-map-center-x)
+    (up-compare-goal gl-my-pos-y g:< gl-map-center-y)
+    =>
+    (set-goal gl-my-quadrant 1)
+    (disable-self)
+)
+
+(defrule
+    (up-compare-goal gl-my-pos-x g:> gl-map-center-x)
+    (up-compare-goal gl-my-pos-y g:< gl-map-center-y)
+    =>
+    (set-goal gl-my-quadrant 2)
+    (disable-self)
+)
+
+(defrule
+    (up-compare-goal gl-my-pos-x g:> gl-map-center-x)
+    (up-compare-goal gl-my-pos-y g:> gl-map-center-y)
+    =>
+    (set-goal gl-my-quadrant 3)
+    (disable-self)
+)
+
+(defrule
+    (up-compare-goal gl-my-pos-x g:< gl-map-center-x)
+    (up-compare-goal gl-my-pos-y g:> gl-map-center-y)
+    =>
+    (set-goal gl-my-quadrant 4)
+    (disable-self)
+)
+
+
+
+
+
+
+(defrule
+    (up-compare-goal gl-run-tree-check == -1)
+    =>
+    (up-jump-rule 28)
+)
+
+(defrule
+    (true)
+    =>
+    (up-full-reset-search)
+    (up-find-local c: town-center c: 1)
+)
+
+(defrule
+    (true)
+    =>
+    (up-modify-goal gl-current-tree-search-count c:= 0)
+)
+
+    (defrule
+        (up-compare-goal gl-current-tree-search-count >= cn-tree-searches-of-40-to-complete)
+        =>
+        (up-jump-rule 13)
+    )
+
+            (defrule
+                (true)
+                =>
+                (up-set-target-point gl-my-pos)
+                (up-filter-status c: status-ready c: list-active)
+                (up-find-resource c: wood c: 40)
+                (up-clean-search search-remote object-data-distance search-order-asc)
+                (up-get-search-state gl-search-state)
+            )
+
+            (defrule
+                ;(true)
+                (up-compare-goal gl-tree-filter-option == cn-filter-ahead)
+                =>
+                (up-modify-goal gl-current-tree-index g:= gl-search-state-3)
+                (up-modify-goal gl-current-tree-index c:- 1)
+                (up-jump-rule 1)
+            )
+
+            (defrule
+                (true)
+                =>
+                (set-goal gl-current-tree-index -1)
+            )
+
+                    (defrule
+                        (up-compare-goal gl-current-tree-index < 0)
+                        =>
+                        (up-jump-rule 3)
+                    )
+
+                            (defrule
+                                (true)
+                                =>
+                                (up-set-target-point gl-map-center)
+                                (up-set-target-object search-local c: 0)
+                                (up-get-object-data object-data-distance gl-temp-x)
+                                (up-set-target-object search-remote g: gl-current-tree-index)
+                                (up-get-object-data object-data-distance gl-temp-y)
+                            )
+
+                            (defrule
+                                (up-modify-goal gl-temp-y c:- cn-tree-extra-distance)
+                                (up-compare-goal gl-temp-x g:>= gl-temp-y)
+                                =>
+                                (up-remove-objects search-remote object-data-index g:== gl-current-tree-index)
+                            )
+
+                            (defrule
+                                (true)
+                                =>
+                                (up-modify-goal gl-current-tree-index c:- 1)
+                                (up-jump-rule -4)
+                            )
+
+            (defrule
+                (true)
+                =>
+                (up-get-search-state gl-search-state)
+                (up-modify-goal gl-copy-results-iterator g:= gl-search-state-3)
+                (up-modify-goal gl-copy-results-iterator c:- 1)
+            )
+
+                    (defrule
+                        (up-compare-goal gl-copy-results-iterator < 0)
+                        =>
+                        (up-jump-rule 2)
+                    )
+
+                            (defrule
+                                (true)
+                                =>
+                                (up-set-target-object search-remote g: gl-copy-results-iterator)
+                                (up-get-object-data object-data-id gl-up-get-object-data)
+                                (up-add-object-by-id search-local g: gl-up-get-object-data)
+                            )
+
+                            (defrule
+                                (true)
+                                =>
+                                (up-modify-goal gl-copy-results-iterator c:- 1)
+                                (up-jump-rule -3)
+                            )
+
+            (defrule
+                (true)
+                =>
+                (up-clean-search search-local cn-remove-duplicates search-order-asc)
+                (up-reset-search 0 0 0 1)
+                (up-reset-filters)
+
+            )
+
+            (defrule
+                (true)
+                =>
+                (up-modify-goal gl-current-tree-search-count c:+ 1)
+                (up-jump-rule -14)
+            )
+
+(defrule
+    (true)
+    =>
+    (up-remove-objects search-local object-data-index == 0)
+)
+
+(defrule
+    (true)
+    =>
+    (up-set-target-point gl-my-pos)
+    (up-remove-objects search-local object-data-distance < 11)
+    (up-clean-search search-local cn-remove-duplicates search-order-asc)
+    (up-set-target-object search-local c: 0)
+    (up-get-point position-object gl-closest1-tree-clump)
+    (up-set-target-point gl-closest1-tree-clump)
+    (up-remove-objects search-local object-data-distance < 20)
+    (up-clean-search search-local cn-remove-duplicates search-order-asc)
+    (up-set-target-object search-local c: 0)
+    (up-get-point position-object gl-closest2-tree-clump)
+    (up-set-target-point gl-closest2-tree-clump)
+    (up-remove-objects search-local object-data-distance < 20)
+    (up-clean-search search-local cn-remove-duplicates search-order-asc)
+    (up-set-target-object search-local c: 0)
+    (up-get-point position-object gl-closest3-tree-clump)
+)
+
+(defrule
+    (up-compare-goal gl-closest1-tree-clump != -1)
+    =>
+    (up-full-reset-search)
+    (up-set-target-point gl-closest1-tree-clump)
+    (up-filter-distance c: -1 c: 7)
+    (up-filter-status c: status-ready c: list-active)
+    (up-find-resource c: wood c: 40)
+    (up-get-search-state gl-search-state)
+)
+
+(defrule
+    (up-compare-goal gl-search-state-3 < 10)
+    =>
+    (set-goal gl-closest1-tree-clump-x -1)
+    (set-goal gl-closest1-tree-clump-y -1)
+)
+
+(defrule
+    (up-compare-goal gl-closest2-tree-clump != -1)
+    =>
+    (up-full-reset-search)
+    (up-set-target-point gl-closest2-tree-clump)
+    (up-filter-distance c: -1 c: 7)
+    (up-filter-status c: status-ready c: list-active)
+    (up-find-resource c: wood c: 40)
+    (up-get-search-state gl-search-state)
+)
+
+(defrule
+    (up-compare-goal gl-search-state-3 < 10)
+    =>
+    (set-goal gl-closest2-tree-clump-x -1)
+    (set-goal gl-closest2-tree-clump-y -1)
+)
+
+(defrule
+    (up-compare-goal gl-closest3-tree-clump != -1)
+    =>
+    (up-full-reset-search)
+    (up-set-target-point gl-closest3-tree-clump)
+    (up-filter-distance c: -1 c: 7)
+    (up-filter-status c: status-ready c: list-active)
+    (up-find-resource c: wood c: 40)
+    (up-get-search-state gl-search-state)
+)
+
+(defrule
+    (up-compare-goal gl-search-state-3 < 10)
+    =>
+    (set-goal gl-closest3-tree-clump-x -1)
+    (set-goal gl-closest3-tree-clump-y -1)
+)
+
+(defrule
+    (up-compare-goal gl-closest1-tree-clump-x == -1)
+    (up-compare-goal gl-closest2-tree-clump-x != -1)
+    =>
+    (up-copy-point gl-closest1-tree-clump gl-closest2-tree-clump)
+    (set-goal gl-closest2-tree-clump-x -1)
+    (set-goal gl-closest2-tree-clump-y -1)
+)
+
+(defrule
+    (up-compare-goal gl-closest2-tree-clump-x == -1)
+    (up-compare-goal gl-closest3-tree-clump-x != -1)
+    =>
+    (up-copy-point gl-closest2-tree-clump gl-closest3-tree-clump)
+    (set-goal gl-closest3-tree-clump-x -1)
+    (set-goal gl-closest3-tree-clump-y -1)
+)
+
+(defrule
+    (up-compare-goal gl-closest1-tree-clump-x == -1)
+    (up-compare-goal gl-closest2-tree-clump-x == -1)
+    (up-compare-goal gl-closest3-tree-clump-x != -1)
+    =>
+    (up-copy-point gl-closest1-tree-clump gl-closest3-tree-clump)
+    (set-goal gl-closest3-tree-clump-x -1)
+    (set-goal gl-closest3-tree-clump-y -1)
+)
+
+;(defrule
+;    (true)
+;    =>
+;     (up-send-flare gl-closest1-tree-clump)
+;     (up-send-flare gl-closest2-tree-clump)
+;     (up-send-flare gl-closest3-tree-clump)
+;)
+
+(defrule
+    (true)
+    =>
+    (set-goal gl-run-tree-check 0)
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+(defrule
+    (up-compare-goal gl-run-stone-gold-check == -1)
+    =>
+    (up-jump-rule 23)
+)
+
+(defrule
+    (true)
+    =>
+    (up-full-reset-search)
+    (up-find-local c: town-center c: 1)
+)
+
+(defrule
+    (true)
+    =>
+    (up-modify-goal gl-current-stone-gold-search-count c:= 0)
+)
+
+    (defrule
+        (up-compare-goal gl-current-stone-gold-search-count >= cn-stone-gold-searches-of-40-to-complete)
+        =>
+        (up-jump-rule 14)
+    )
+
+            (defrule
+                (or
+                    (goal gl-check-resource-type stone)
+                    (goal gl-check-resource-type gold)
+                )
+                =>
+                (up-set-target-point gl-my-pos)
+                (up-filter-status c: status-resource c: list-active)
+                (up-find-resource g: gl-check-resource-type c: 40)
+                (up-clean-search search-remote object-data-distance search-order-asc)
+                (up-get-search-state gl-search-state)
+                (up-jump-rule 1)
+            )
+
+            (defrule
+                (true)
+                =>
+                (up-chat-data-to-self "Crash averted! gl-check-resource-type was %d !!" g: gl-check-resource-type)
+                (up-jump-rule 18)
+            )
+
+            (defrule
+                ;(true)
+                (up-compare-goal gl-stone-gold-filter-option == cn-filter-ahead)
+                =>
+                (up-modify-goal gl-current-stone-gold-index g:= gl-search-state-3)
+                (up-modify-goal gl-current-stone-gold-index c:- 1)
+                (up-jump-rule 1)
+            )
+
+            (defrule
+                (true)
+                =>
+                (set-goal gl-current-stone-gold-index -1)
+            )
+
+                    (defrule
+                        (up-compare-goal gl-current-stone-gold-index < 0)
+                        =>
+                        (up-jump-rule 3)
+                    )
+
+                            (defrule
+                                (true)
+                                =>
+                                (up-set-target-point gl-map-center)
+                                (up-set-target-object search-local c: 0)
+                                (up-get-object-data object-data-distance gl-temp-x)
+                                (up-set-target-object search-remote g: gl-current-stone-gold-index)
+                                (up-get-object-data object-data-distance gl-temp-y)
+                            )
+
+                            (defrule
+                                (up-compare-goal gl-temp-x g:>= gl-temp-y)
+                                =>
+                                (up-remove-objects search-remote object-data-index g:== gl-current-stone-gold-index)
+                            )
+
+                            (defrule
+                                (true)
+                                =>
+                                (up-modify-goal gl-current-stone-gold-index c:- 1)
+                                (up-jump-rule -4)
+                            )
+
+            (defrule
+                (true)
+                =>
+                (up-get-search-state gl-search-state)
+                (up-modify-goal gl-copy-results-iterator g:= gl-search-state-3)
+                (up-modify-goal gl-copy-results-iterator c:- 1)
+            )
+
+                    (defrule
+                        (up-compare-goal gl-copy-results-iterator < 0)
+                        =>
+                        (up-jump-rule 2)
+                    )
+
+                            (defrule
+                                (true)
+                                =>
+                                (up-set-target-object search-remote g: gl-copy-results-iterator)
+                                (up-get-object-data object-data-id gl-up-get-object-data)
+                                (up-add-object-by-id search-local g: gl-up-get-object-data)
+                            )
+
+                            (defrule
+                                (true)
+                                =>
+                                (up-modify-goal gl-copy-results-iterator c:- 1)
+                                (up-jump-rule -3)
+                            )
+
+            (defrule
+                (true)
+                =>
+                (up-clean-search search-local cn-remove-duplicates search-order-asc)
+                (up-reset-search 0 0 0 1)
+                (up-reset-filters)
+
+            )
+
+            (defrule
+                (true)
+                =>
+                (up-modify-goal gl-current-stone-gold-search-count c:+ 1)
+                (up-jump-rule -15)
+            )
+
+(defrule
+    (true)
+    =>
+    (up-remove-objects search-local object-data-index == 0)
+)
+
+(defrule
+    (true)
+    =>
+    (up-set-target-point gl-my-pos)
+    (up-remove-objects search-local object-data-distance < 4)
+    (up-clean-search search-local cn-remove-duplicates search-order-asc)
+    (up-set-target-object search-local c: 0)
+    (up-get-point position-object gl-closest1-stone-gold-clump)
+    (up-set-target-point gl-closest1-stone-gold-clump)
+    (up-remove-objects search-local object-data-distance < 4)
+    (up-clean-search search-local cn-remove-duplicates search-order-asc)
+    (up-set-target-object search-local c: 0)
+    (up-get-point position-object gl-closest2-stone-gold-clump)
+    (up-set-target-point gl-closest2-stone-gold-clump)
+    (up-remove-objects search-local object-data-distance < 4)
+    (up-clean-search search-local cn-remove-duplicates search-order-asc)
+    (up-set-target-object search-local c: 0)
+    (up-get-point position-object gl-closest3-stone-gold-clump)
+)
+
+(defrule
+    (up-compare-goal gl-closest1-stone-gold-clump-x == -1)
+    (up-compare-goal gl-closest2-stone-gold-clump-x != -1)
+    =>
+    (up-copy-point gl-closest1-stone-gold-clump gl-closest2-stone-gold-clump)
+    (set-goal gl-closest2-stone-gold-clump-x -1)
+    (set-goal gl-closest2-stone-gold-clump-y -1)
+)
+
+(defrule
+    (up-compare-goal gl-closest2-stone-gold-clump-x == -1)
+    (up-compare-goal gl-closest3-stone-gold-clump-x != -1)
+    =>
+    (up-copy-point gl-closest2-stone-gold-clump gl-closest3-stone-gold-clump)
+    (set-goal gl-closest3-stone-gold-clump-x -1)
+    (set-goal gl-closest3-stone-gold-clump-y -1)
+)
+
+(defrule
+    (up-compare-goal gl-closest1-stone-gold-clump-x == -1)
+    (up-compare-goal gl-closest2-stone-gold-clump-x == -1)
+    (up-compare-goal gl-closest3-stone-gold-clump-x != -1)
+    =>
+    (up-copy-point gl-closest1-stone-gold-clump gl-closest3-stone-gold-clump)
+    (set-goal gl-closest3-stone-gold-clump-x -1)
+    (set-goal gl-closest3-stone-gold-clump-y -1)
+)
+
+;(defrule
+;    (true)
+;    =>
+;    (up-send-flare gl-closest1-stone-gold-clump)
+;    (up-send-flare gl-closest2-stone-gold-clump)
+;    (up-send-flare gl-closest3-stone-gold-clump)
+;)
+
+(defrule
+    (true)
+    =>
+    (set-goal gl-run-stone-gold-check 0)
+)
+

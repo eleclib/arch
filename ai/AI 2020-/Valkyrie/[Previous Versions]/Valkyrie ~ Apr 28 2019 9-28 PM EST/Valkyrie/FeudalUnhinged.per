@@ -1,0 +1,138 @@
+
+(defrule
+    (current-age == feudal-age)
+    =>
+    (up-modify-sn sn-wood-gatherer-percentage c:- 5)
+    (up-modify-sn sn-food-gatherer-percentage c:- 3)
+    (up-modify-sn sn-gold-gatherer-percentage c:+ 8)
+    (disable-self)
+)
+
+(defrule
+    (current-age == feudal-age)
+    (goal goal-feudal-strategy feudal-unhinged)
+    (unit-type-count-total villager < 31)
+    =>
+    (up-modify-escrow food c:+ 50)
+)
+
+(defrule
+    (current-age == feudal-age)
+    (goal goal-feudal-strategy feudal-unhinged)
+    (unit-type-count-total villager < 31)
+    (up-can-train goal-using-escrow c: villager)
+    =>
+    (up-train goal-using-escrow c: villager)
+)
+
+(defrule
+    (current-age == feudal-age)
+    (goal goal-feudal-strategy feudal-unhinged)
+    (building-type-count-total market < 1)
+    =>
+    (up-modify-escrow wood c:+ 175)
+)
+
+(defrule
+    (current-age == feudal-age)
+    (goal goal-feudal-strategy feudal-unhinged)
+    (building-type-count-total market < 1)
+    (up-can-build goal-using-escrow c: market)
+    =>
+    (up-build place-normal goal-using-escrow c: market)
+)
+
+(defrule
+    (current-age == feudal-age)
+    (goal goal-feudal-strategy feudal-unhinged)
+    (building-type-count-total blacksmith < 1)
+    =>
+    (up-modify-escrow wood c:+ 150)
+)
+
+(defrule
+    (current-age == feudal-age)
+    (goal goal-feudal-strategy feudal-unhinged)
+    (building-type-count-total blacksmith < 1)
+    (up-can-build goal-using-escrow c: blacksmith)
+    =>
+    (up-build place-normal goal-using-escrow c: blacksmith)
+)
+
+(defrule
+    (current-age == feudal-age)
+    (goal goal-feudal-strategy feudal-unhinged)
+    (building-type-count-total barracks < 2)
+    =>
+    (up-modify-escrow wood c:+ 175)
+)
+
+(defrule
+    (current-age == feudal-age)
+    (goal goal-feudal-strategy feudal-unhinged)
+    (building-type-count-total barracks < 2)
+    (up-can-build goal-using-escrow c: barracks)
+    =>
+    (up-build place-normal goal-using-escrow c: barracks)
+)
+
+(defrule
+    (current-age == feudal-age)
+    (goal goal-feudal-strategy feudal-unhinged)
+    (building-type-count-total archery-range < 1)
+    =>
+    (up-modify-escrow wood c:+ 175)
+)
+
+(defrule
+    (current-age == feudal-age)
+    (goal goal-feudal-strategy feudal-unhinged)
+    (building-type-count-total archery-range < 1)
+    (up-can-build goal-using-escrow c: archery-range)
+    =>
+    (up-build place-normal goal-using-escrow c: archery-range)
+)
+
+(defrule
+    (current-age == feudal-age)
+    (goal goal-feudal-strategy feudal-unhinged)
+    (building-type-count-total stable < 1)
+    =>
+    (up-modify-escrow wood c:+ 175)
+)
+
+(defrule
+    (current-age == feudal-age)
+    (goal goal-feudal-strategy feudal-unhinged)
+    (building-type-count-total stable < 1)
+    (up-can-build goal-using-escrow c: stable)
+    =>
+    (up-build place-normal goal-using-escrow c: stable)
+)
+
+(defrule
+    (current-age == feudal-age)
+    (goal goal-feudal-strategy feudal-unhinged)
+    (current-age-time < 720)
+    (can-train spearman-line)
+    =>
+    (train spearman-line)
+)
+
+(defrule
+    (current-age == feudal-age)
+    (goal goal-feudal-strategy feudal-unhinged)
+    (current-age-time < 720)
+    (can-train skirmisher-line)
+    =>
+    (train skirmisher-line)
+)
+
+(defrule
+    (current-age == feudal-age)
+    (goal goal-feudal-strategy feudal-unhinged)
+    (current-age-time < 720)
+    (can-train scout-cavalry-line)
+    =>
+    (train scout-cavalry-line)
+)

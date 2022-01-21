@@ -1,0 +1,55 @@
+
+(defrule ; Dark Age Start
+    (true)
+    =>
+    (set-strategic-number sn-wood-gatherer-percentage 0)
+    (set-strategic-number sn-food-gatherer-percentage 100)
+    (set-strategic-number sn-gold-gatherer-percentage 0)
+    (set-strategic-number sn-stone-gatherer-percentage 0)
+    (set-strategic-number sn-maximum-wood-drop-distance 10)
+    (set-strategic-number sn-maximum-food-drop-distance 10)
+    (set-strategic-number sn-maximum-hunt-drop-distance 30)
+    (set-strategic-number sn-maximum-gold-drop-distance 10)
+    (set-strategic-number sn-maximum-stone-drop-distance 10)
+    (disable-self)
+)
+
+(defrule ; Dark Age - Gather Wood
+    (or
+        (building-type-count house >= 1)
+        (civ-selected hun)
+    )
+    (building-type-count mill == 1)
+    (unit-type-count villager-class >= 10)
+    =>
+    (up-modify-sn sn-wood-gatherer-percentage c:+ 30)
+    (up-modify-sn sn-food-gatherer-percentage c:- 30)
+    (disable-self)
+)
+
+(defrule ; Dark Age - Gather Wood
+    ;(unit-type-count villager-class >= 17)
+    (up-research-status c: feudal-age == research-pending)
+    =>
+    (up-modify-sn sn-wood-gatherer-percentage c:+ 35)
+    (up-modify-sn sn-food-gatherer-percentage c:- 35)
+    (disable-self)
+)
+
+
+(defrule ; Feudal Age - Gather Gold
+    (current-age == feudal-age)
+    =>
+    (up-modify-sn sn-gold-gatherer-percentage c:+ 8)
+    (up-modify-sn sn-wood-gatherer-percentage c:- 8)
+    (disable-self)
+)
+
+(defrule ; Castle Age - Less Gold
+    (current-age == castle-age)
+    =>
+    (up-modify-sn sn-gold-gatherer-percentage c:- 4)
+    (up-modify-sn sn-wood-gatherer-percentage c:- 8)
+    (up-modify-sn sn-food-gatherer-percentage c:+ 12)
+    (disable-self)
+)

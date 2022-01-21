@@ -1,0 +1,48 @@
+
+(defrule
+    (current-age == imperial-age)
+=>
+    (up-set-offense-priority c: villager c: 11)
+    (disable-self)
+)
+
+(defrule
+    (current-age == imperial-age)
+;;;;(up-object-type-count-total c: knight-line < 30)
+    =>
+    (up-train 0 c: knight-line)
+)
+
+(defrule
+    (current-age == imperial-age)
+;;;;(up-object-type-count-total c: archer-line < 20)
+    =>
+    (up-train 0 c: archer-line)
+)
+
+(defrule
+    (current-age == imperial-age)
+;;;;(up-object-type-count-total c: trebuchet < 10)
+    =>
+    (up-train 0 c: trebuchet)
+)
+
+(defrule
+    (current-age == imperial-age)
+    
+;;;;(or
+        (or
+            (up-timer-status TIMER_Attacking == timer-disabled)
+            (timer-triggered TIMER_Attacking)
+        )
+;;;;(up-object-type-count-total c: knight-line >= 30)
+;;;;)
+
+;;;;(up-object-type-count-total c: trebuchet >= 10)
+
+=>
+    (attack-now)
+    (disable-timer TIMER_Attacking)
+    (enable-timer TIMER_Attacking 1200)
+)
+

@@ -1,0 +1,33 @@
+
+
+(defrule
+    (building-type-count-total watch-tower < 3)
+    (building-type-count-total archery-range >= 2)
+    (can-build watch-tower)
+    =>
+    (set-strategic-number sn-placement-zone-size 4)
+    (set-strategic-number sn-placement-fail-delta 1)
+    (up-set-placement-data my-player-number lumber-camp c: 2)
+    (up-build place-control 0 c: watch-tower)
+)
+
+
+(defrule
+    (building-type-count-total watch-tower >= 1)
+    (building-type-count-total watch-tower < 5)
+    (can-build watch-tower)
+    =>
+    (set-strategic-number sn-placement-zone-size 8)
+    (set-strategic-number sn-placement-fail-delta 1)
+    (up-set-placement-data my-player-number town-center c: 0)
+    (up-build place-control 0 c: watch-tower)
+)
+
+
+(defrule
+    (up-pending-objects c: watch-tower > 0)
+    =>
+    (up-assign-builders c: watch-tower c: 7)
+    (set-strategic-number sn-placement-zone-size 20)
+    (set-strategic-number sn-placement-fail-delta 0)
+)

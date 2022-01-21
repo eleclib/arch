@@ -1,0 +1,10 @@
+
+
+(defrule
+
+(current-age == dark-age)
+    (up-object-type-count-total c: lumber-camp >= 1)
+    (up-object-type-count-total c: farm < DARK_TOTAL_FARMS)
+=>
+    (up-build place-normal 0 c: farm)
+)

@@ -1,0 +1,32 @@
+
+
+
+(defrule
+    (current-age == dark-age)
+    (or
+        (up-object-type-count-total c: house >= 2)
+        (civ-selected hun)
+    )
+
+    (up-object-type-count-total c: mill < 1)
+    (up-gaia-type-count-total c: food >= 6)
+=>
+    (up-build place-normal 0 c: mill)
+)
+
+
+
+(defrule
+    (current-age == dark-age)
+    (or
+        (up-object-type-count-total c: house >= 4)
+        (civ-selected hun)
+    )
+    (up-object-type-count-total c: mill >= 1)
+    (up-object-type-count-total c: lumber-camp < 1)
+=>
+    (up-build place-normal 0 c: lumber-camp)
+)
+
+
+

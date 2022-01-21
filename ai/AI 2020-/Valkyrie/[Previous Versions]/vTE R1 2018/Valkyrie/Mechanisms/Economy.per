@@ -1,0 +1,288 @@
+
+(defrule
+    (current-age == dark-age)
+    =>
+    (up-modify-goal WoodVillagers c:= 0)
+    (up-modify-goal FoodVillagers c:= 0)
+    (up-modify-goal GoldVillagers c:= 0)
+    (up-modify-goal StoneVillagers c:= 0)
+    (set-strategic-number sn-wood-gatherer-percentage 25)
+    (set-strategic-number sn-food-gatherer-percentage 25)
+    (set-strategic-number sn-gold-gatherer-percentage 25)
+    (set-strategic-number sn-stone-gatherer-percentage 25)
+    (disable-self)
+)
+
+(defrule
+    (current-age == feudal-age)
+    =>
+    (up-modify-goal WoodVillagers c:= 0)
+    (up-modify-goal FoodVillagers c:= 0)
+    (up-modify-goal GoldVillagers c:= 0)
+    (up-modify-goal StoneVillagers c:= 0)
+    (set-strategic-number sn-wood-gatherer-percentage 25)
+    (set-strategic-number sn-food-gatherer-percentage 25)
+    (set-strategic-number sn-gold-gatherer-percentage 25)
+    (set-strategic-number sn-stone-gatherer-percentage 25)
+    (disable-self)
+)
+
+(defrule
+    (current-age == castle-age)
+    =>
+    (up-modify-goal WoodVillagers c:= 0)
+    (up-modify-goal FoodVillagers c:= 0)
+    (up-modify-goal GoldVillagers c:= 0)
+    (up-modify-goal StoneVillagers c:= 0)
+    (set-strategic-number sn-wood-gatherer-percentage 25)
+    (set-strategic-number sn-food-gatherer-percentage 25)
+    (set-strategic-number sn-gold-gatherer-percentage 25)
+    (set-strategic-number sn-stone-gatherer-percentage 25)
+    (disable-self)
+)
+
+(defrule
+    (current-age == imperial-age)
+    =>
+    (up-modify-goal WoodVillagers c:= 0)
+    (up-modify-goal FoodVillagers c:= 0)
+    (up-modify-goal GoldVillagers c:= 0)
+    (up-modify-goal StoneVillagers c:= 0)
+    (set-strategic-number sn-wood-gatherer-percentage 25)
+    (set-strategic-number sn-food-gatherer-percentage 25)
+    (set-strategic-number sn-gold-gatherer-percentage 25)
+    (set-strategic-number sn-stone-gatherer-percentage 25)
+    (disable-self)
+)
+
+(defrule
+    (current-age >= feudal-age)
+    (or
+        (up-timer-status GoldStoneEconomyTimer == timer-disabled)
+        (up-timer-status GoldStoneEconomyTimer == timer-triggered)
+    )
+    (not(up-can-research 0 c: castle-age))
+    =>
+    (up-modify-goal GoldVillagers c:+ 2)
+    (up-modify-goal StoneVillagers c:+ 1)
+    (up-set-timer c: GoldStoneEconomyTimer c: 90)
+)
+
+;(defrule
+;    (true)
+;    =>
+;    (up-get-fact wood-amount 0 WoodTotal)
+;    (up-get-fact food-amount 0 FoodTotal)
+;    (up-get-fact gold-amount 0 GoldTotal)
+;    (up-get-fact stone-amount 0 StoneTotal)
+;)
+
+;(defrule
+;    (or
+;        (up-timer-status EconomyUpdateTimer == timer-disabled)
+;        (up-timer-status EconomyUpdateTimer == timer-triggered)
+;    )
+;    (up-compare-goal WoodTotal g:> FoodTotal) ; (up-compare-goal WoodTotal g:> FoodTotal)
+;    (up-compare-goal WoodTotal g:> GoldTotal) ; (up-compare-goal WoodTotal g:> GoldTotal)
+;    (up-compare-goal FoodTotal g:> GoldTotal) ; (up-compare-goal FoodTotal g:> GoldTotal)
+;    =>
+;    (up-modify-goal WoodVillagers c:- 2)
+;    (up-modify-goal FoodVillagers c:- 1)
+;    (up-modify-goal GoldVillagers c:+ 3)
+;   (up-modify-goal StoneVillagers c:+ 0)
+;    (chat-local-to-self "Eco Rule 1")
+;    (up-jump-rule 5)
+;)
+
+;(defrule
+;    (or
+;        (up-timer-status EconomyUpdateTimer == timer-disabled)
+;        (up-timer-status EconomyUpdateTimer == timer-triggered)
+;    )
+;    (up-compare-goal FoodTotal g:> WoodTotal) ; (up-compare-goal FoodTotal g:> WoodTotal)
+;    (up-compare-goal FoodTotal g:> GoldTotal)
+;    (up-compare-goal WoodTotal g:> GoldTotal)
+;    =>
+;    (up-modify-goal WoodVillagers c:- 1)
+;    (up-modify-goal FoodVillagers c:- 2)
+;    (up-modify-goal GoldVillagers c:+ 3)
+;   (up-modify-goal StoneVillagers c:+ 0)
+;    (chat-local-to-self "Eco Rule 2")
+;    (up-jump-rule 4)
+;)
+
+;(defrule
+;    (or
+;        (up-timer-status EconomyUpdateTimer == timer-disabled)
+;        (up-timer-status EconomyUpdateTimer == timer-triggered)
+;    )
+;    (up-compare-goal GoldTotal g:> WoodTotal) ; (up-compare-goal GoldTotal g:> WoodTotal)
+;    (up-compare-goal GoldTotal g:> FoodTotal) ; (up-compare-goal GoldTotal g:> FoodTotal)
+;    (up-compare-goal WoodTotal g:> FoodTotal)
+;    =>
+;    (up-modify-goal WoodVillagers c:- 1)
+;    (up-modify-goal FoodVillagers c:+ 3)
+;    (up-modify-goal GoldVillagers c:- 2)
+;   (up-modify-goal StoneVillagers c:+ 0)
+;    (chat-local-to-self "Eco Rule 3")
+;    (up-jump-rule 3)
+;)
+
+;(defrule
+;    (or
+;        (up-timer-status EconomyUpdateTimer == timer-disabled)
+;        (up-timer-status EconomyUpdateTimer == timer-triggered)
+;    )
+;    (up-compare-goal WoodTotal g:> FoodTotal)
+;    (up-compare-goal WoodTotal g:> GoldTotal)
+;    (up-compare-goal FoodTotal g:< GoldTotal) ; (up-compare-goal FoodTotal g:> GoldTotal)
+;    =>
+;    (up-modify-goal WoodVillagers c:- 2)
+;    (up-modify-goal FoodVillagers c:+ 3)
+;    (up-modify-goal GoldVillagers c:- 1)
+;   (up-modify-goal StoneVillagers c:+ 0)
+;    (chat-local-to-self "Eco Rule 4")
+;    (up-jump-rule 2)
+;)
+
+;(defrule
+;    (or
+;        (up-timer-status EconomyUpdateTimer == timer-disabled)
+;        (up-timer-status EconomyUpdateTimer == timer-triggered)
+;    )
+;    (up-compare-goal FoodTotal g:> WoodTotal)
+;    (up-compare-goal FoodTotal g:> GoldTotal)
+;    (up-compare-goal WoodTotal g:< GoldTotal) ; (up-compare-goal WoodTotal g:> GoldTotal)
+;    =>
+;    (up-modify-goal WoodVillagers c:+ 3)
+;    (up-modify-goal FoodVillagers c:- 2)
+;    (up-modify-goal GoldVillagers c:- 1)
+;   (up-modify-goal StoneVillagers c:+ 0)
+;    (chat-local-to-self "Eco Rule 5")
+;    (up-jump-rule 1)
+;)
+
+;(defrule
+;    (or
+;        (up-timer-status EconomyUpdateTimer == timer-disabled)
+;        (up-timer-status EconomyUpdateTimer == timer-triggered)
+;    )
+;    (up-compare-goal GoldTotal g:> WoodTotal)
+;    (up-compare-goal GoldTotal g:> FoodTotal)
+;    (up-compare-goal WoodTotal g:< FoodTotal) ; (up-compare-goal WoodTotal g:> FoodTotal)
+;    =>
+;    (up-modify-goal WoodVillagers c:+ 3)
+;    (up-modify-goal FoodVillagers c:- 1)
+;    (up-modify-goal GoldVillagers c:- 2)
+;   (up-modify-goal StoneVillagers c:+ 0)
+;    (chat-local-to-self "Eco Rule 6")
+;)
+
+;(defrule
+;    (true)
+;    =>
+;    (disable-self)
+;)
+
+;(defrule
+;    (up-compare-goal WoodVillagers < 0)
+;    =>
+;    (up-modify-goal WoodVillagers c:= 0)
+;)
+
+;(defrule
+;    (up-compare-goal FoodVillagers < 0)
+;    =>
+;    (up-modify-goal FoodVillagers c:= 0)
+;)
+
+;(defrule
+;    (up-compare-goal GoldVillagers < 0)
+;    =>
+;    (up-modify-goal GoldVillagers c:= 0)
+;)
+
+;(defrule
+;    (up-compare-goal StoneVillagers < 0)
+;    =>
+;    (up-modify-goal StoneVillagers c:= 0)
+;)
+
+; Set Villager Gatherer Percentages
+
+(defrule
+    (true)
+    (up-get-fact civilian-population 0 FactCheckGoalA)
+;   (up-compare-goal FactCheckGoalA c:>= 9)
+    =>
+    (up-modify-goal MathGoalA g:= WoodVillagers) ; Wood
+    (up-modify-goal MathGoalB g:= FoodVillagers) ; Food
+    (up-modify-goal MathGoalC g:= GoldVillagers) ; Gold
+    (up-modify-goal MathGoalD g:= StoneVillagers) ; Stone
+)
+
+(defrule
+    (true)
+;   (up-get-fact civilian-population 0 FactCheckGoalA)
+;   (up-compare-goal FactCheckGoalA c:>= 9)
+    =>
+    (up-modify-goal MathGoalE g:= WoodVillagers)
+    (up-modify-goal MathGoalE g:+ FoodVillagers)
+    (up-modify-goal MathGoalE g:+ GoldVillagers)
+    (up-modify-goal MathGoalE g:+ StoneVillagers)
+)
+
+(defrule
+    (true)
+;   (up-get-fact civilian-population 0 FactCheckGoalA)
+;   (up-compare-goal FactCheckGoalA c:>= 9)
+    =>
+    (up-modify-goal MathGoalA c:* 100)
+    (up-modify-goal MathGoalB c:* 100)
+    (up-modify-goal MathGoalC c:* 100)
+    (up-modify-goal MathGoalD c:* 100)
+)
+
+(defrule
+    (true)
+    =>
+    (up-modify-goal MathGoalA g:/ MathGoalE)
+    (up-modify-goal MathGoalB g:/ MathGoalE)
+    (up-modify-goal MathGoalC g:/ MathGoalE)
+    (up-modify-goal MathGoalD g:/ MathGoalE)
+)
+
+(defrule
+    (true)
+    =>
+    (up-modify-sn sn-wood-gatherer-percentage g:= MathGoalA)
+    (up-modify-sn sn-food-gatherer-percentage g:= MathGoalB)
+    (up-modify-sn sn-gold-gatherer-percentage g:= MathGoalC)
+    (up-modify-sn sn-stone-gatherer-percentage g:= MathGoalD)
+)
+
+; FactCheckGoalA --> Free
+; MathGoalA, MathGoalB, MathGoalC, MathGoalD --> Free
+
+(defrule
+    (game-time > 1)
+    (or
+        (up-timer-status EconomyUpdateTimer == timer-disabled)
+        (up-timer-status EconomyUpdateTimer == timer-triggered)
+    )
+    =>
+    (up-set-timer c: EconomyUpdateTimer c: 5)
+
+    ; Debug
+
+    (up-chat-data-to-self "WoodSNPct:  %d" s: sn-wood-gatherer-percentage)
+    (up-chat-data-to-self "FoodSNPct:  %d" s: sn-food-gatherer-percentage)
+    (up-chat-data-to-self "GoldSNPct:  %d" s: sn-gold-gatherer-percentage)
+    (up-chat-data-to-self "StoneSNPct: %d" s: sn-stone-gatherer-percentage)
+
+    (up-chat-data-to-self "WoodVills:  %d" g: WoodVillagers)
+    (up-chat-data-to-self "FoodVills:  %d" g: FoodVillagers)
+    (up-chat-data-to-self "GoldVills:  %d" g: GoldVillagers)
+    (up-chat-data-to-self "StoneVills: %d" g: StoneVillagers)
+
+)

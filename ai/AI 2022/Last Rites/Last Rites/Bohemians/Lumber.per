@@ -1,0 +1,187 @@
+
+
+(defrule
+    (current-age == dark-age)
+    (goal gl-run-tree-check -1)
+    (up-timer-status tm-detection-timer <= timer-triggered)
+    (building-type-count-total lumber-camp < 1)
+    (unit-type-count villager >= 17)
+    (can-build lumber-camp)
+    =>
+    (set-goal gl-tree-filter-option cn-filter-ahead)
+    (set-goal gl-run-tree-check 1)
+    (enable-timer tm-detection-timer 180)
+)
+
+
+
+(defrule
+    (current-age == dark-age)
+    (goal gl-run-tree-check 0)
+    (building-type-count-total lumber-camp < 1)
+    (unit-type-count villager >= 17)
+    (can-build lumber-camp)
+    (up-compare-goal gl-closest1-tree-clump != -1)
+    =>
+    (up-full-reset-search)
+    (up-find-local c: town-center c: 1)
+    (up-set-target-object search-local c: 0)
+    (up-set-target-point gl-closest1-tree-clump)
+    (up-get-object-data object-data-distance gl-up-get-object-data)
+    (up-modify-sn sn-lumber-camp-max-distance g:= gl-up-get-object-data)
+    (set-strategic-number sn-placement-zone-size 4)
+    (up-build place-point 0 c: lumber-camp)
+)
+
+
+
+
+
+
+(defrule
+    (current-age == dark-age)
+    (goal gl-run-tree-check -1)
+    (up-timer-status tm-detection-timer <= timer-triggered)
+    (building-type-count-total lumber-camp < 1)
+    (unit-type-count villager >= 24)
+    (can-build lumber-camp)
+    =>
+    (set-goal gl-tree-filter-option cn-filter-ahead)
+    (set-goal gl-run-tree-check 1)
+    (enable-timer tm-detection-timer 180)
+)
+
+
+
+(defrule
+    (current-age == dark-age)
+    (goal gl-run-tree-check 0)
+    (building-type-count-total lumber-camp < 1)
+    (unit-type-count villager >= 24)
+    (can-build lumber-camp)
+    (up-compare-goal gl-closest2-tree-clump != -1)
+    =>
+    (up-full-reset-search)
+    (up-find-local c: town-center c: 1)
+    (up-set-target-object search-local c: 0)
+    (up-set-target-point gl-closest2-tree-clump)
+    (up-get-object-data object-data-distance gl-up-get-object-data)
+    (up-modify-sn sn-lumber-camp-max-distance g:= gl-up-get-object-data)
+    (set-strategic-number sn-placement-zone-size 4)
+    (up-build place-point 0 c: lumber-camp)
+)
+
+
+
+
+
+
+
+
+
+
+(defrule
+    (current-age == castle-age)
+    (up-timer-status tm-detection-timer <= timer-triggered)
+    (goal gl-run-tree-check -1)
+    (dropsite-min-distance wood >= cn-refresh-camp-min-distance)
+    (can-build lumber-camp)
+    =>
+    (set-goal gl-tree-filter-option cn-filter-none)
+    (set-goal gl-run-tree-check 1)
+    (enable-timer tm-detection-timer 180)
+)
+
+
+
+
+
+(defrule
+    (current-age == castle-age)
+    (goal gl-run-tree-check 0)
+    (dropsite-min-distance wood >= cn-refresh-camp-min-distance)
+    (up-gaia-type-count-total c: wood > 0)
+    (can-build lumber-camp)
+
+    (up-compare-goal gl-closest1-tree-clump != -1)
+    =>
+    (up-full-reset-search)
+    (up-find-local c: town-center c: 1)
+    (up-set-target-object search-local c: 0)
+    (up-set-target-point gl-closest1-tree-clump)
+    (up-get-object-data object-data-distance gl-up-get-object-data)
+    (up-modify-sn sn-lumber-camp-max-distance g:= gl-up-get-object-data)
+    (set-strategic-number sn-placement-zone-size 4)
+    (up-build place-point 0 c: lumber-camp)
+)
+
+
+
+
+(defrule
+    (current-age == imperial-age)
+    (goal gl-run-tree-check -1)
+    (up-timer-status tm-detection-timer <= timer-triggered)
+    (dropsite-min-distance wood >= cn-refresh-camp-min-distance)
+    (up-gaia-type-count-total c: wood > 0)
+    (can-build lumber-camp)
+    =>
+    (set-goal gl-tree-filter-option cn-filter-none)
+    (set-goal gl-run-tree-check 1)
+    (enable-timer tm-detection-timer 45)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (goal gl-run-tree-check 0)
+    (dropsite-min-distance wood >= cn-refresh-camp-min-distance)
+    (up-gaia-type-count-total c: wood > 0)
+    (can-build lumber-camp)
+
+    (up-compare-goal gl-closest1-tree-clump != -1)
+    =>
+    (up-full-reset-search)
+    (up-find-local c: town-center c: 1)
+    (up-set-target-object search-local c: 0)
+    (up-set-target-point gl-closest1-tree-clump)
+    (up-get-object-data object-data-distance gl-up-get-object-data)
+    (up-modify-sn sn-lumber-camp-max-distance g:= gl-up-get-object-data)
+    (set-strategic-number sn-placement-zone-size 4)
+    (up-build place-point 0 c: lumber-camp)
+)
+
+
+
+
+
+
+
+(defrule
+    (goal gl-run-tree-check 0)
+    (goal gl-closest1-tree-clump -1)
+    (can-build lumber-camp)
+    =>
+    (up-modify-sn sn-lumber-camp-max-distance c:= 24)
+    (build lumber-camp)
+)
+
+
+
+(defrule
+    (goal gl-run-tree-check 0)
+    =>
+    (set-goal gl-run-tree-check -1)
+)
+
+
+
+(defrule
+    (up-pending-objects c: lumber-camp > 0)
+    =>
+    (set-strategic-number sn-placement-zone-size 20)
+)
+
+
+
+
+

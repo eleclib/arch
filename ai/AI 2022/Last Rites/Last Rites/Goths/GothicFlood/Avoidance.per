@@ -1,0 +1,28 @@
+
+
+(defrule
+    (goal gl-attacking 1)
+    (unit-type-count militiaman-line > 0)
+    =>
+    (up-full-reset-search)
+    (up-find-player enemy find-closest gl-player)
+    (up-modify-sn sn-focus-player-number g:= gl-player)
+    (up-find-remote c: town-center c: 1)
+)
+
+(defrule
+    (goal gl-attacking 1)
+    (unit-type-count militiaman-line > 0)
+    (up-set-target-object search-remote c: 0)
+    =>
+    (up-get-point position-object gl-temp)
+    (up-set-target-point gl-temp)
+    (up-filter-distance c: -1 c: 10)
+    (up-find-local c: infantry-class c: 240)
+    (up-remove-objects search-local object-data-action == actionid-move)
+    (up-get-point position-center gl-temp2)
+    (up-lerp-tiles gl-temp gl-temp2 c: 10)
+    (up-cross-tiles gl-temp gl-temp2 c: 10)
+    (up-target-point gl-temp action-move -1 -1)
+)
+

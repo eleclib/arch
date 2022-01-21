@@ -1,0 +1,43 @@
+
+(defrule
+    (current-age == imperial-age)
+    (goal goal-imperial-strategy imperial-mass)
+    (unit-type-count-total villager < 100)
+    (can-train villager)
+    =>
+    (train villager)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (goal goal-imperial-strategy imperial-mass)
+    (building-type-count-total siege-workshop < 3)
+    (can-build siege-workshop)
+    =>
+    (build siege-workshop)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (goal goal-imperial-strategy imperial-mass)
+    (building-type-count-total stable < 4)
+    (can-build stable)
+    =>
+    (build stable)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (goal goal-imperial-strategy imperial-mass)
+    (can-train battering-ram)
+    =>
+    (train battering-ram)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (goal goal-imperial-strategy imperial-mass)
+    (can-train knight)
+    =>
+    (train knight)
+)

@@ -1,0 +1,112 @@
+
+(defrule
+    (unit-type-count villager >= 9)
+    =>
+    (set-strategic-number sn-enable-training-queue 0)
+    (disable-self)
+)
+
+(defrule
+    (can-research ri-loom)
+    (unit-type-count villager >= 9)
+    =>
+    (research ri-loom)
+)
+
+(defrule
+    (up-research-status c: ri-loom == research-complete)
+    =>
+    (set-strategic-number sn-enable-training-queue 1)
+    (disable-self)
+)
+
+(defrule
+    (up-compare-const is-pocket == 0)
+    (unit-type-count villager >= 23)
+    (can-research feudal-age)
+    =>
+    (research feudal-age)
+)
+
+(defrule
+    (up-compare-const is-pocket == 1)
+    (unit-type-count villager >= 26)
+    (can-research feudal-age)
+    =>
+    (research feudal-age)
+)
+
+(defrule
+    (can-research ri-padded-archer-armor)
+    =>
+    (research ri-padded-archer-armor)
+)
+
+(defrule
+    (can-research ri-fletching)
+    =>
+    (research ri-fletching)
+)
+
+(defrule
+    (can-research ri-forging)
+    =>
+    (research ri-forging)
+)
+
+(defrule
+    (can-research ri-scale-barding)
+    =>
+    (research ri-scale-barding)
+)
+
+(defrule
+    (food-amount >= 800)
+    (gold-amount >= 200)
+    =>
+    (set-strategic-number sn-enable-training-queue 0)
+    (disable-self)
+)
+
+(defrule
+    (can-research castle-age)
+    =>
+    (research castle-age)
+)
+
+(defrule
+    (can-research ri-elite-skirmisher)
+    =>
+    (research ri-elite-skirmisher)
+)
+
+(defrule
+    (can-research ri-bodkin-arrow)
+    =>
+    (research ri-bodkin-arrow)
+)
+
+(defrule
+    (can-research ri-leather-archer-armor)
+    =>
+    (research ri-leather-archer-armor)
+)
+
+(defrule
+    (can-research ri-iron-casting)
+    =>
+    (research ri-iron-casting)
+)
+
+(defrule
+    (can-research ri-chain-barding)
+    =>
+    (research ri-chain-barding)
+)
+
+(defrule
+    (can-research imperial-age)
+    =>
+    (research imperial-age)
+)
+

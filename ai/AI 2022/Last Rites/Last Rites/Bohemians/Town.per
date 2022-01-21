@@ -1,0 +1,36 @@
+
+
+
+(defrule
+    (building-type-count-total town-center < 6)
+    (can-build town-center)
+    =>
+    (build town-center)
+)
+
+
+
+
+
+(defrule
+    (current-age == feudal-age)
+    =>
+    (set-strategic-number sn-maximum-town-size 14)
+    (disable-self)
+)
+
+
+(defrule
+    (current-age == castle-age)
+    =>
+    (set-strategic-number sn-maximum-town-size 23)
+    (disable-self)
+)
+
+
+(defrule
+    (current-age == imperial-age)
+    =>
+    (set-strategic-number sn-maximum-town-size 42)
+    (disable-self)
+)

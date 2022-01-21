@@ -1,0 +1,88 @@
+
+(defrule
+    (true)
+    =>
+    (up-full-reset-search)
+)
+
+(defrule
+    (not(up-set-target-by-id g: CurrentBoarId))
+    =>
+    (up-modify-goal CurrentBoarId c:= -1)
+)
+
+; Find Boar Type 1
+(defrule
+    (not(up-set-target-by-id g: CurrentBoarId))
+    (up-find-remote c: 48 c: 1)
+    =>
+    (up-full-reset-search)
+    (up-find-remote c: 48 c: 1)
+    (up-set-target-object search-remote c: 0)
+    (up-get-object-data object-data-id CurrentBoarId)
+)
+
+; Find Boar Type 2
+(defrule
+    (not(up-set-target-by-id g: CurrentBoarId))
+    (up-find-remote c: 822 c: 1)
+    =>
+    (up-full-reset-search)
+    (up-find-remote c: 822 c: 1)
+    (up-set-target-object search-remote c: 0)
+    (up-get-object-data object-data-id CurrentBoarId)
+)
+
+; Find Single Villager
+(defrule
+    (not(up-set-target-by-id g: CurrentVillagerId))
+    =>
+    (up-full-reset-search)
+    (set-strategic-number sn-focus-player-number my-player-number)
+    (up-find-remote c: villager-class c: 1)
+    (up-set-target-object search-remote c: 0)
+    (up-get-object-data object-data-id CurrentVillagerId)
+    (set-strategic-number sn-focus-player-number 0) ; Gaia
+)
+
+; Villager Count Met and Id Valid
+(defrule
+    (or
+        (up-timer-status BoarClickTimer == timer-disabled)
+        (up-timer-status BoarClickTimer == timer-triggered)
+    )
+    (up-object-type-count c: villager >= 10)
+    (up-compare-goal CurrentVillagerId >= 0)
+    (up-compare-goal CurrentBoarId >= 0)
+    =>
+    (up-full-reset-search)
+    (up-add-object-by-id search-local g: CurrentVillagerId)
+    (up-add-object-by-id search-remote g: CurrentBoarId)
+    (up-target-objects 0 action-default -1 -1)
+    (up-set-timer c: BoarClickTimer c: 10)
+    (up-set-timer c: BoarAssistTimer c: 10)
+)
+
+; Request Hunters By Timer
+(defrule
+    (up-timer-status BoarAssistTimer == timer-triggered)
+    (up-object-type-count-total c: villager >= 14)
+    (up-set-target-by-id g: CurrentBoarId)
+    =>
+    (up-full-reset-search)
+    (up-find-local c: villager-class c: 10)
+    (up-add-object-by-id search-remote g: CurrentBoarId)
+    (up-target-objects 0 action-default -1 -1)
+)
+
+;(defrule
+;    (game-time > 2)
+;    (or
+;        (up-timer-status DebugTimer == timer-disabled)
+;        (up-timer-status DebugTimer == timer-triggered)
+;    )
+;    =>
+;    (up-chat-data-to-self "VillId: %d" g: CurrentVillagerId)
+;    (up-chat-data-to-self "BoarId: %d" g: CurrentBoarId)
+;    (up-set-timer c: DebugTimer c: 15)
+;)

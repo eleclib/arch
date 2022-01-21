@@ -1,0 +1,111 @@
+
+(defrule
+    (current-age == imperial-age)
+    (idle-farm-count == 0)
+=>
+    (up-build place-normal 0 c: farm)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (up-can-build 0 c: house)
+    (housing-headroom < 5)
+    (up-pending-objects c: house < 1)
+=>
+    (up-build place-normal 0 c: house)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (not(up-object-type-count-total c: town-center < 1))
+=>
+    (up-build place-normal 0 c: bombard-tower)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (up-object-type-count-total c: town-center < 3)
+    (up-pending-objects c: town-center < 3)
+=>
+    (up-build place-normal 0 c: town-center)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (not(up-object-type-count-total c: town-center-foundation < 1))
+    (up-object-type-count-total c: market < 1)
+    (up-pending-objects c: market < 1)
+    (up-can-build 0 c: market)
+=>
+    (up-build place-normal 0 c: market)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (not(up-object-type-count-total c: town-center-foundation < 1))
+    (up-object-type-count-total c: market > 0)
+    (up-object-type-count-total c: barracks < 1)
+    (up-can-build 0 c: barracks)
+=>
+    (up-build place-normal 0 c: barracks)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (not(up-object-type-count-total c: town-center < 1))
+    (up-object-type-count-total c: stable < 1)
+    (up-pending-objects c: stable < 1)
+    (up-can-build 0 c: stable)
+=>
+    (up-build place-normal 0 c: stable)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (not(up-object-type-count-total c: town-center < 1))
+    (up-object-type-count-total c: archery-range < 1)
+    (up-pending-objects c: archery-range < 1)
+    (up-can-build 0 c: archery-range)
+=>
+    (up-build place-normal 0 c: archery-range)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (not(up-object-type-count-total c: town-center < 1))
+    (up-object-type-count-total c: siege-workshop < 1)
+    (up-pending-objects c: siege-workshop < 1)
+    (up-can-build 0 c: siege-workshop)
+=>
+    (up-build place-normal 0 c: siege-workshop)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (not(up-object-type-count-total c: town-center < 1))
+    (up-object-type-count-total c: castle < 1)
+    (up-pending-objects c: castle < 1)
+    (up-can-build 0 c: castle)
+=>
+    (up-build place-normal 0 c: castle)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (not(up-object-type-count-total c: town-center < 1))
+    (up-object-type-count-total c: monastery < 1)
+    (up-pending-objects c: monastery < 1)
+    (up-can-build 0 c: monastery)
+=>
+    (up-build place-normal 0 c: monastery)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (not(up-object-type-count-total c: town-center < 1))
+    (up-object-type-count-total c: university < 1)
+    (up-pending-objects c: university < 1)
+    (up-can-build 0 c: university)
+=>
+    (up-build place-normal 0 c: university)
+)

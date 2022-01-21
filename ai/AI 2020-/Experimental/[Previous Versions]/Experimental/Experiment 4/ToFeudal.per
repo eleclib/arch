@@ -1,0 +1,106 @@
+(defrule
+	(up-compare-goal ExperimentNumber c:== 4)
+	=>
+	(up-change-name "Experiment 4")
+	(set-strategic-number sn-enable-new-building-system 1)
+	(set-strategic-number sn-enable-training-queue 1)
+	(set-strategic-number sn-percent-exploration-required 0)
+	(set-strategic-number sn-cap-civilian-explorers 0)
+	(set-strategic-number sn-cap-civilian-builders 3)
+	(set-strategic-number sn-number-explore-groups 1)
+	(set-strategic-number sn-blot-exploration-map 0)
+	(set-strategic-number sn-food-gatherer-percentage 100)
+	(up-modify-goal Turn c:= 0)
+	(up-modify-goal TrainVillagers c:= 1)
+	(disable-self)
+	)
+
+; Non Turn Based Recruitment
+(defrule
+	(up-compare-goal ExperimentNumber c:== 4)
+	(up-compare-goal TrainVillagers c:== 1)
+	(up-pending-objects c: villager < 2)
+	=>
+	(up-train 0 c: villager)
+	)
+
+; Turn Based Construction
+(defrule
+	(up-compare-goal ExperimentNumber c:== 4)
+	(up-compare-goal Turn c:== 0)
+	(up-object-type-count c: house < 2)
+	(up-pending-objects c: house < 1)
+	=>
+	(up-build place-normal 0 c: house) ; -60 wood ; at 140 wood
+	)
+
+(defrule
+	(up-compare-goal ExperimentNumber c:== 4)
+	(up-compare-goal Turn c:== 0)
+	=>
+	(up-assign-builders c: house c: 3)
+	(disable-self)
+	)
+
+(defrule
+	(up-compare-goal ExperimentNumber c:== 4)
+	(up-object-type-count c: house == 2)
+	=>
+	(up-modify-goal Turn c:+ 1)
+	(disable-self)
+	)
+
+(defrule
+	(up-compare-goal ExperimentNumber c:== 4)
+	(up-compare-goal Turn c:== 1)
+	(up-gaia-type-count-total c: wood >= 20)
+	(up-object-type-count c: lumber-camp < 1)
+	(up-pending-objects c: lumber-camp < 1)
+	=>
+	(up-build place-normal 0 c: lumber-camp) ; -100 wood ; at 40 wood
+	)
+
+(defrule
+	(up-compare-goal ExperimentNumber c:== 4)
+	(up-object-type-count c: lumber-camp == 1)
+	=>
+	(up-assign-builders c: lumber-camp c: 2)
+	(up-modify-goal Turn c:+ 1)
+	(disable-self)
+	)
+
+(defrule
+	(up-compare-goal ExperimentNumber c:== 4)
+	(up-compare-goal Turn c:== 2)
+	(up-gaia-type-count-total c: forage-class > 0)
+	(up-object-type-count-total c: livestock-class < 3)
+	(up-object-type-count c: mill < 1)
+	(up-pending-objects c: mill < 1)
+	=>
+	(up-build 0 place-normal c: mill)
+	)
+
+(defrule
+	(up-compare-goal ExperimentNumber c:== 4)
+	(up-object-type-count c: mill == 1)
+	=>
+	(up-assign-builders c: mill c: 2)
+	(up-modify-goal Turn c:+ 1)
+	(disable-self)
+	)
+
+(defrule
+	(up-compare-goal ExperimentNumber c:== 4)
+	(up-compare-goal Turn c:== 3)
+	=>
+	(up-modify-goal TrainVillagers c:= 0)
+	(up-research 0 c: ri-loom)
+	)
+
+(defrule
+	(up-compare-goal ExperimentNumber c:== 4)
+	(up-research-status c: ri-loom == research-complete)
+	=>
+	(up-modify-goal TrainVillagers c:= 1)
+	(up-modify-goal Turn c:+ 1)
+	)

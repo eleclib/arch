@@ -1,0 +1,8 @@
+
+(defrule
+    (player-in-game any-ally)
+    (unit-type-count-total trade-cart < 30)
+    (can-train trade-cart)
+    =>
+    (train trade-cart)
+)

@@ -1,0 +1,687 @@
+
+(defrule
+	(up-research-status c: imperial-age < research-pending)
+	(can-build town-center)
+	(resource-found wood)
+	(building-type-count-total town-center < 3)
+	(up-pending-objects c: town-center < 2)
+=>	(up-assign-builders c: 621 c: 4)
+	(set-strategic-number sn-allow-adjacent-dropsites 1)
+	(set-strategic-number sn-town-center-placement lumber-camp)
+	(build town-center))
+
+(defrule
+	(up-research-status c: imperial-age >= research-pending)
+	(can-build town-center)
+	(resource-found wood)
+	(building-type-count-total town-center < 5)
+=>	(up-assign-builders c: 621 c: 4)
+	(set-strategic-number sn-allow-adjacent-dropsites 1)
+	(set-strategic-number sn-town-center-placement lumber-camp)
+	(build town-center))
+
+(defrule
+	(building-type-count town-center > 2)
+	(current-age == castle-age)
+	(can-build siege-workshop)
+	(building-type-count siege-workshop < 1)
+	(up-pending-objects c: siege-workshop < 1)
+=>	(up-set-placement-data my-player-number -1 c: -3)
+	(set-strategic-number sn-placement-zone-size 10)
+	(up-build place-control 0 c: siege-workshop))
+
+(defrule
+	(building-type-count town-center > 2)
+	(current-age == castle-age)
+	(can-build monastery)
+	(building-type-count monastery < 1)
+	(up-pending-objects c: monastery < 1)
+=>	(up-set-placement-data my-player-number -1 c: -3)
+	(set-strategic-number sn-placement-zone-size 10)
+	(up-build place-control 0 c: monastery))
+
+
+(defrule
+    (true)
+    =>
+    (up-set-placement-data my-player-number villager-class c: 0)
+    (up-build place-control 0 c: house)
+    (disable-self)
+)
+
+(defrule
+    (current-age == dark-age)
+    (building-type-count house >= 1)
+    (housing-headroom < 4)
+    (can-build house)
+    (up-pending-objects c: house < 1)
+    =>
+    (build house)
+)
+
+(defrule
+    (current-age == feudal-age)
+    (housing-headroom < 8)
+    (can-build house)
+    (up-pending-objects c: house < 1)
+    =>
+    (build house)
+)
+
+(defrule
+    (current-age == castle-age)
+    (housing-headroom < 10)
+    (can-build house)
+    (up-pending-objects c: house < 2)
+    =>
+    (build house)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (housing-headroom < 15)
+    (can-build house)
+    (up-pending-objects c: house < 2)
+    =>
+    (build house)
+)
+(defrule
+    (up-pending-objects c: house == 1)
+    (building-type-count house == 0)
+    =>
+    (up-assign-builders c: house c: 2)
+)
+
+(defrule
+    (up-pending-objects c: house == 0)
+    =>
+    (up-assign-builders c: house c: -1)
+)
+
+(defrule 
+    (can-build mill)
+    (building-type-count mill < 1)
+    (or(building-type-count house >= 2)
+    (civ-selected hun))
+    (up-gaia-type-count c: forage-bush > 0)
+    (up-object-type-count c: livestock-class < 3)
+    (up-pending-objects c: mill < 1)
+    =>
+    (set-strategic-number sn-preferred-mill-placement 0)
+    (build mill)
+)
+
+(defrule 
+    (up-compare-const is-pocket == 1)
+    (can-build mill)
+    (building-type-count mill < 2)
+    (or(building-type-count house >= 2)
+    (civ-selected hun))
+    (building-type-count-total lumber-camp >= 1)
+    (up-gaia-type-count c: forage-bush > 0)
+    (up-object-type-count c: livestock-class < 3)
+    (up-pending-objects c: mill < 1)
+    =>
+    (set-strategic-number sn-preferred-mill-placement 1)
+    (build mill)
+)
+
+(defrule
+    (building-type-count lumber-camp < 1)
+    (building-type-count-total mill >= 1)
+    (up-pending-objects c: lumber-camp < 1)
+    (up-can-build to-escrow c: lumber-camp)
+    (up-gaia-type-count c: wood >= 30)
+    =>
+    (up-build place-normal to-escrow c: lumber-camp)
+)
+
+(defrule
+    (building-type-count lumber-camp < 2)
+    (unit-type-count villager >= 28)
+    (up-pending-objects c: lumber-camp < 1)
+    (can-build lumber-camp)
+    (up-gaia-type-count c: wood >= 30)
+    =>
+    (build lumber-camp)
+)
+
+(defrule
+    (current-age >= castle-age)
+    (building-type-count town-center > 0)
+    (dropsite-min-distance wood > 3)
+    (up-pending-objects c: lumber-camp < 1)
+    (can-build lumber-camp)
+    (up-gaia-type-count c: wood >= 30)
+    =>
+    (build lumber-camp)
+)
+
+(defrule
+    (up-compare-const is-pocket == 0)
+    (can-build barracks)
+    (building-type-count-total barracks < 1)
+    (building-type-count-total lumber-camp >= 1)
+    (up-pending-objects c: barracks < 1)
+=>	(up-assign-builders c: barracks c: 1)
+	(up-set-placement-data my-player-number -1 c: 2)
+	(set-strategic-number sn-placement-zone-size 3)
+	(up-build place-control 0 c: barracks))
+
+(defrule
+    (up-compare-const is-pocket == 1)
+    (up-research-status c: feudal-age >= research-pending)
+    (can-build barracks)
+    (building-type-count-total barracks < 1)
+    (up-pending-objects c: barracks < 1)
+=>	(up-assign-builders c: barracks c: 1)
+	(up-set-placement-data my-player-number -1 c: 3)
+	(set-strategic-number sn-placement-zone-size 3)
+	(up-build place-control 0 c: barracks))
+
+(defrule
+    (up-compare-const is-pocket == 1)
+	(or	(civ-selected aztec)
+	(or	(civ-selected mayan)
+		(civ-selected incan)))
+    (up-research-status c: castle-age >= research-pending)
+    (can-build barracks)
+    (building-type-count-total barracks < 2)
+    (up-pending-objects c: barracks < 1)
+=>	(up-assign-builders c: barracks c: 1)
+	(up-set-placement-data my-player-number -1 c: 3)
+	(set-strategic-number sn-placement-zone-size 3)
+	(up-build place-control 0 c: barracks))
+
+(defrule
+    (up-research-status c: imperial-age > research-pending)
+    (can-build barracks)
+    (building-type-count stable > 3)
+    (building-type-count-total barracks < 4)
+    (up-pending-objects c: barracks < 2)
+=>	(up-assign-builders c: barracks c: 1)
+	(up-set-placement-data my-player-number -1 c: 3)
+	(set-strategic-number sn-placement-zone-size 15)
+	(up-build place-control 0 c: barracks))
+
+(defrule
+    (up-research-status c: imperial-age > research-pending)
+    (can-build barracks)
+    (or		(civ-selected aztec)
+		(or	(civ-selected mayan)
+			(civ-selected incan)))
+    (building-type-count-total barracks < 4)
+    (up-pending-objects c: barracks < 2)
+=>	(up-assign-builders c: barracks c: 1)
+	(up-set-placement-data my-player-number -1 c: -2)
+	(set-strategic-number sn-placement-zone-size 15)
+	(up-build place-control 0 c: barracks))
+
+(defrule
+    (current-age == dark-age)
+    (can-build farm)
+    (idle-farm-count < 1)
+    (building-type-count-total farm < 3)
+    (building-type-count lumber-camp >= 1)
+    (up-object-type-count c: livestock-class < 2)
+    =>
+    (build farm)
+)
+
+(defrule
+    (current-age == dark-age)
+    (up-research-status c: feudal-age < research-pending)
+    (wood-amount > 200)
+    (building-type-count lumber-camp > 0)
+    (can-build farm)
+    (idle-farm-count < 1)
+    (building-type-count-total farm < 6)
+    (building-type-count lumber-camp >= 1)
+    =>
+    (build farm)
+)
+
+(defrule ; Farm Fact Check And Math
+    (can-build farm)
+    =>
+    (up-get-fact civilian-population 0 math1)
+    (up-modify-goal math2 s:= sn-food-gatherer-percentage)
+    (up-modify-goal math1 g:%* math2)
+)
+
+(defrule
+    (up-compare-const is-pocket == 0)
+    (building-type-count-total farm >= 10)
+    (up-research-status c: castle-age == research-pending)
+    (building-type-count-total stable < 2)
+    (not (civ-selected aztec))
+    (not (civ-selected mayan))
+    (not (civ-selected incan))
+=>	(up-jump-rule 6))
+
+(defrule
+    (up-compare-const is-pocket == 1)
+    (building-type-count-total farm >= 12)
+=>	(up-jump-rule 5))
+
+(defrule
+    (up-compare-const is-pocket == 0)
+    (wood-amount < 210)
+    (building-type-count-total blacksmith > 0)
+    (building-type-count-total farm >= 15)
+    (building-type-count-total market < 1)
+=>	(up-jump-rule 4))
+
+(defrule
+    (up-compare-const is-pocket == 0)
+    (wood-amount < 210)
+    (or    (and    (building-type-count-total farm >= 10)
+           (and    (building-type-count-total blacksmith < 1)
+                   (building-type-count-total mining-camp < 1)))
+           (and    (building-type-count-total mining-camp < 1)
+                   (or    (unit-type-count female-gold-miner > 0)
+                          (unit-type-count male-gold-miner > 0))))
+=>	(up-jump-rule 1))
+
+(defrule ; Farm Building
+    (current-age == feudal-age)
+    (can-build farm)
+    (building-type-count-total archery-range >= 2)
+    (up-object-type-count-total c: farm g:< math1)
+    =>
+    (build farm)
+)
+
+(defrule
+    (up-compare-const is-pocket == 0)
+     (building-type-count-total mining-camp < 1)
+     (or    (unit-type-count female-gold-miner > 0)
+            (unit-type-count male-gold-miner > 0))
+=>	(up-jump-rule 1))
+
+(defrule ; Farm Building
+    (current-age == feudal-age)
+    (can-build farm)
+    (building-type-count-total blacksmith >= 1)
+    (or	(building-type-count-total market >= 1)
+	(building-type-count-total stable >= 1))
+    (up-object-type-count-total c: farm g:< math1)
+    =>
+    (build farm)
+)
+
+(defrule
+    (up-compare-const is-pocket == 1)
+    (building-type-count-total farm >= 35)
+    (building-type-count-total town-center < 3)
+=>	(up-jump-rule 3))
+
+(defrule
+    (up-compare-const is-pocket == 1)
+    (building-type-count-total farm >= 16)
+    (building-type-count-total town-center < 2)
+=>	(up-jump-rule 2))
+
+(defrule
+    (up-compare-const is-pocket == 1)
+    (building-type-count-total farm >= 12)
+    (building-type-count-total stable < 2)
+    (building-type-count-total barracks < 2)
+=>	(up-jump-rule 1))
+
+(defrule ; Farm Building
+    (current-age == castle-age)
+    (can-build farm)
+    (idle-farm-count < 1)
+    (up-object-type-count-total c: farm g:< math1)
+    =>
+    (build farm)
+)
+
+(defrule ; Farm Building
+    (current-age == imperial-age)
+    (can-build farm)
+    (idle-farm-count < 1)
+    (up-object-type-count-total c: farm g:< math1)
+    =>
+    (build farm)
+)
+
+(defrule
+    (up-compare-const is-pocket == 0)
+    (current-age >= feudal-age)
+    (can-build archery-range)
+    (up-pending-objects c: archery-range < 2)
+    (building-type-count archery-range < 2)
+=>	(up-assign-builders c: archery-range c: 2)
+	(up-set-placement-data my-player-number -1 c: 2)
+	(set-strategic-number sn-placement-zone-size 5)
+	(up-build place-control 0 c:  archery-range))
+
+(defrule
+    (up-compare-const is-pocket == 1)
+    (current-age >= feudal-age)
+    (can-build stable)
+    (or	(and	(building-type-count-total stable < 2)
+		(up-research-status c: castle-age >= research-pending))
+	(building-type-count-total stable < 1))
+=>	(up-assign-builders c: stable c: 2)
+	(up-set-placement-data my-player-number -1 c: 3)
+	(set-strategic-number sn-placement-zone-size 5)
+	(up-build place-control 0 c:  stable))
+
+(defrule
+    (up-compare-const is-pocket == 0)
+    (current-age >= feudal-age)
+    (can-build blacksmith)
+    (or(building-type-count-total archery-range >= 2)
+    (building-type-count-total stable >= 2))
+    (building-type-count blacksmith < 1)
+    (up-pending-objects c: blacksmith < 1)
+=>	(up-assign-builders c: blacksmith c: 1)
+	(up-set-placement-data my-player-number -1 c: -2)
+	(set-strategic-number sn-placement-zone-size 5)
+	(up-build place-control 0 c:  blacksmith))
+
+(defrule
+    (up-compare-const is-pocket == 1)
+    (current-age >= feudal-age)
+    (can-build blacksmith)
+    (building-type-count blacksmith < 1)
+    (up-pending-objects c: blacksmith < 1)
+=>	(up-assign-builders c: blacksmith c: 1)
+	(up-set-placement-data my-player-number -1 c: -2)
+	(set-strategic-number sn-placement-zone-size 5)
+	(up-build place-control 0 c:  blacksmith))
+
+;----------------------MINING-CAMP---------------------->
+
+(defrule
+	(current-age >= feudal-age)
+	(can-build mining-camp)
+	(building-type-count-total barracks >= 2)
+	(building-type-count-total mining-camp < 1)
+	(resource-found gold)
+=>	(set-strategic-number sn-focus-player-number 0)
+	(up-full-reset-search)
+	(up-set-target-point my-tc-x)
+	(up-filter-distance c: -1 c: 28)
+	(up-find-remote c: gold-mine c: 40)
+	(up-clean-search search-remote object-data-distance search-order-asc)
+	(up-set-target-object search-remote c: 0)
+	(set-goal split-rule-goal 232))
+
+(defrule
+	(current-age >= feudal-age)
+	(can-build mining-camp)
+	(or	(building-type-count-total archery-range >= 2)
+		(building-type-count-total stable >= 2))
+	(building-type-count blacksmith >= 1)
+	(building-type-count-total mining-camp < 1)
+	(resource-found gold)
+=>	(set-strategic-number sn-focus-player-number 0)
+	(up-full-reset-search)
+	(up-set-target-point my-tc-x)
+	(up-filter-distance c: -1 c: 28)
+	(up-find-remote c: gold-mine c: 40)
+	(up-clean-search search-remote object-data-distance search-order-asc)
+	(up-set-target-object search-remote c: 0)
+	(set-goal split-rule-goal 232))
+(defrule
+	(goal split-rule-goal 232)
+	(up-set-target-object search-remote c: 0)
+	(resource-found gold)
+	(building-type-count-total mining-camp < 1)
+	(can-build mining-camp)
+	(up-pending-objects c: mining-camp < 1)
+=>	(set-strategic-number sn-allow-adjacent-dropsites 0)
+	(set-strategic-number sn-placement-zone-size 3)
+	(up-get-point position-object building-point-x)
+	(up-set-target-point building-point-x)
+	(up-build place-point 0 c: mining-camp))
+
+(defrule
+	(current-age >= feudal-age)
+	(can-build mining-camp)
+	(or	(building-type-count-total archery-range >= 2)
+		(building-type-count-total stable >= 2))
+	(building-type-count blacksmith >= 1)
+	(building-type-count-total mining-camp < 1)
+	(resource-found gold)
+=>	(up-get-point position-self building-point-x)
+	(set-strategic-number sn-focus-player-number 0)
+	(up-set-target-point building-point-x)
+	(up-reset-search 1 1 1 1)
+	(up-reset-filters)
+	(up-filter-distance c: -1 c: 30)
+	(up-find-remote c: gold-mine c: 1)
+	(set-goal split-rule-goal 231))
+(defrule
+	(goal split-rule-goal 231)
+	(current-age >= feudal-age)
+	(or	(building-type-count-total archery-range >= 2)
+		(building-type-count-total stable >= 2))
+	(building-type-count blacksmith >= 1)
+	(building-type-count-total mining-camp < 1)
+	(resource-found gold)
+	(up-set-target-object search-remote c: 0)
+	(can-build mining-camp)
+	(up-pending-objects c: mining-camp < 1)
+=>	(set-strategic-number sn-allow-adjacent-dropsites 0)
+	(set-strategic-number sn-placement-zone-size 5)
+	(up-get-point position-object building-point-x)
+	(up-set-target-point building-point-x)
+	(up-build place-point 0 c: mining-camp))
+
+(defrule
+	(up-research-status c: feudal-age >= research-pending)
+	(can-build mining-camp)
+	(up-compare-const is-pocket == 1)
+	(building-type-count-total mining-camp < 1)
+	(resource-found gold)
+=>	(set-strategic-number sn-focus-player-number 0)
+	(up-full-reset-search)
+	(up-get-point position-self my-tc-x)
+	(up-set-target-point my-tc-x)
+	(up-filter-distance c: -1 c: 28)
+	(up-find-remote c: gold-mine c: 40)
+	(up-clean-search search-remote object-data-distance search-order-asc)
+	(up-set-target-object search-remote c: 0)
+	(set-goal split-rule-goal 233))
+(defrule
+	(goal split-rule-goal 233)
+	(up-compare-const is-pocket == 1)
+	(up-set-target-object search-remote c: 0)
+	(resource-found gold)
+	(building-type-count-total mining-camp < 1)
+	(up-pending-objects c: mining-camp < 1)
+	(can-build mining-camp)
+=>	(set-strategic-number sn-allow-adjacent-dropsites 0)
+	(set-strategic-number sn-placement-zone-size 2)
+	(up-get-point position-object building-point-x)
+	(up-set-target-point building-point-x)
+	(up-build place-point 0 c: mining-camp))
+
+(defrule
+	(current-age >= feudal-age)
+	(can-build mining-camp)
+	(building-type-count blacksmith >= 1)
+	(stone-amount < 200)
+	(building-type-count-total mining-camp == 1)
+	(resource-found stone)
+=>	(set-strategic-number sn-focus-player-number 0)
+	(up-full-reset-search)
+	(up-get-point position-self my-tc-x)
+	(up-set-target-point my-tc-x)
+	(up-filter-distance c: -1 c: 26)
+	(up-find-remote c: stone-mine c: 40)
+	(up-clean-search search-remote object-data-distance search-order-asc)
+	(up-set-target-object search-remote c: 0)
+	(set-goal split-rule-goal 234))
+(defrule
+	(goal split-rule-goal 234)
+	(up-set-target-object search-remote c: 0)
+	(resource-found stone)
+	(building-type-count-total mining-camp == 1)
+	(can-build mining-camp)
+	(up-pending-objects c: mining-camp < 1)
+=>	(set-strategic-number sn-allow-adjacent-dropsites 0)
+	(set-strategic-number sn-placement-zone-size 3)
+	(up-get-point position-object building-point-x)
+	(up-set-target-point building-point-x)
+	(up-build place-point 0 c: mining-camp))
+
+;--------------------------------------------------------------------
+
+(defrule
+    (up-compare-const is-meso-civ == 0)
+    (up-compare-const is-pocket == 0)
+    (or    (and    (up-compare-goal military-advantage < 5)
+                   (building-type-count-total stable < 2))
+           (building-type-count town-center > 2))
+    (up-research-status c: castle-age >= research-pending)
+    (can-build stable)
+    (building-type-count-total stable < 3)
+    (up-pending-objects c: stable < 1)
+=>	(up-assign-builders c: stable c: 2)
+	(up-set-placement-data my-player-number -1 c: 3)
+	(set-strategic-number sn-placement-zone-size 5)
+	(up-build place-control 0 c:  stable))
+
+(defrule
+    (up-compare-const is-meso-civ == 0)
+    (building-type-count town-center > 2)
+    (current-age >= castle-age)
+    (can-build stable)
+    (building-type-count-total stable < 3)
+    (up-pending-objects c: stable < 1)
+=>	(up-assign-builders c: stable c: 2)
+	(up-set-placement-data my-player-number -1 c: 3)
+	(set-strategic-number sn-placement-zone-size 5)
+	(up-build place-control 0 c:  stable))
+
+(defrule
+    (up-compare-const is-meso-civ == 0)
+    (building-type-count town-center > 2)
+    (up-research-status c: imperial-age >= research-pending)
+    (can-build stable)
+    (building-type-count-total stable < 5)
+    (up-pending-objects c: stable < 1)
+=>	(up-assign-builders c: stable c: 2)
+	(up-set-placement-data my-player-number -1 c: 3)
+	(set-strategic-number sn-placement-zone-size 12)
+	(up-build place-control 0 c:  stable))
+
+(defrule
+    (up-compare-const is-pocket == 0)
+    (current-age >= feudal-age)
+    (can-build market)
+    (building-type-count-total market < 1)
+    (building-type-count-total archery-range >= 2)
+    (building-type-count-total blacksmith >= 1)
+    (up-pending-objects c: market < 1)
+    =>
+    (build market)
+)
+
+(defrule
+    (up-compare-const is-pocket == 1)
+	(or	(civ-selected aztec)
+	(or	(civ-selected mayan)
+		(civ-selected incan)))
+    (current-age >= feudal-age)
+    (can-build market)
+    (building-type-count market < 1)
+    (up-pending-objects c: market < 1)
+=>	(up-assign-builders c: market c: 2)
+	(up-set-placement-data my-player-number -1 c: -3)
+	(set-strategic-number sn-placement-zone-size 15)
+	(up-build place-control 0 c:  market))
+
+(defrule
+    (up-compare-const is-pocket == 1)
+	(or	(building-type-count town-center > 2)
+		(game-time > 1500))
+    (current-age >= feudal-age)
+    (can-build market)
+    (building-type-count market < 1)
+    (up-pending-objects c: market < 1)
+=>	(up-assign-builders c: market c: 2)
+	(up-set-placement-data my-player-number -1 c: -3)
+	(set-strategic-number sn-placement-zone-size 15)
+	(up-build place-control 0 c:  market))
+
+(defrule
+    (can-build castle)
+    =>
+    (up-set-placement-data my-player-number town-center c: 25)
+    (up-build place-control 0 c: castle)
+)
+
+(defrule
+    (up-pending-objects c: castle > 0)
+    =>
+    (up-assign-builders c: castle c: 4)
+)
+
+(defrule
+    (up-pending-objects c: castle == 0)
+    =>
+    (up-assign-builders c: castle c: -1)
+)
+
+;===============================================================
+;-----------BUILD WATCH TOWER IN FRONT OF THE ENEMY-------------
+;===============================================================
+
+
+(defrule
+    (up-compare-const is-pocket == 0)
+	(up-compare-goal threat-source-goal == archery-class)
+	(or	(up-compare-goal threat-target-goal == villager-class)
+		(up-compare-goal threat-target-goal == building-class))
+=>	(up-find-player enemy find-attacker attacking-enemy-goal)
+	(up-modify-sn sn-focus-player-number g:= attacking-enemy-goal)
+	(up-full-reset-search)
+	(up-find-remote c: archery-class c: 40)
+	(up-remove-objects search-remote object-data-tasks-count <= 0)
+	(up-set-target-object search-remote c: 0)
+	(up-get-point position-object threat-point-x)
+	(set-goal split-rule-goal 10))
+
+(defrule
+	(up-compare-const is-pocket == 0)
+	(up-compare-goal threat-source-goal == cavalry-class)
+	(or	(up-compare-goal threat-target-goal == villager-class)
+		(up-compare-goal threat-target-goal == building-class))
+=>	(up-find-player enemy find-attacker attacking-enemy-goal)
+	(up-modify-sn sn-focus-player-number g:= attacking-enemy-goal)
+	(up-full-reset-search)
+	(up-find-remote c: cavalry-class c: 40)
+	(up-remove-objects search-remote object-data-tasks-count <= 0)
+	(up-set-target-object search-remote c: 0)
+	(up-get-point position-object threat-point-x)
+	(set-goal split-rule-goal 10))
+
+(defrule
+	(goal split-rule-goal 10)
+	(building-type-count-total watch-tower <= 0)
+	(or	(up-point-contains threat-point-x c: archery-class)
+		(up-point-contains threat-point-x c: cavalry-class))
+	(up-point-distance threat-point-x my-tc-x <= 16)
+	(can-build watch-tower)
+=>	(chat-to-player my-player-number "Defensive tower needed")
+	(up-assign-builders c: watch-tower c: 4)
+	(up-set-target-object search-local c: 0)
+	(up-set-target-point threat-point-x)
+	(up-lerp-tiles threat-point-x my-tc-x c: 8)
+	(up-build-line threat-point-x my-tc-x c: watch-tower))
+
+;*****************************************************
+;-----------------END OF TICKS------------------------
+(defrule
+	(up-pending-placement c: mining-camp)
+	(up-compare-goal building-point-x > 0)
+=>	(up-set-target-point building-point-x))
+
+;*****************************************************

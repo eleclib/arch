@@ -1,0 +1,87 @@
+
+(defrule
+    (current-age == imperial-age)
+=>
+    (up-set-offense-priority c: villager c: 11)
+    (disable-self)
+)
+
+(defrule
+    (current-age == imperial-age)
+    =>
+    (up-train 0 c: knight-line)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (or
+        (up-object-type-count-total c: knight-line >= 20)
+        (or
+            (civ-selected mayan)
+            (civ-selected aztec)
+        )
+    )
+    =>
+    (up-train 0 c: trebuchet)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (or
+        (up-object-type-count-total c: knight-line >= 20)
+        (or
+            (civ-selected mayan)
+            (civ-selected aztec)
+        )
+    )
+    =>
+    (up-train 0 c: battering-ram-line)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (or
+        (up-object-type-count-total c: knight-line >= 20)
+        (or
+            (civ-selected mayan)
+            (civ-selected aztec)
+        )
+    )
+    =>
+    (up-train 0 c: archer-line)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (or
+        (up-object-type-count-total c: knight-line >= 20)
+        (or
+            (civ-selected mayan)
+            (civ-selected aztec)
+        )
+    )
+    =>
+    (up-train 0 c: skirmisher-line)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (or
+        (up-object-type-count-total c: knight-line >= 40)
+        (up-object-type-count-total c: battering-ram-line >= 20)
+    )
+=>
+    (set-strategic-number sn-maximum-town-size 255)
+    (disable-self)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (or
+        (up-object-type-count-total c: knight-line <= 10)
+        (up-object-type-count-total c: battering-ram-line <= 5)
+    )
+=>
+    (set-strategic-number sn-maximum-town-size 25)
+    (disable-self)
+)

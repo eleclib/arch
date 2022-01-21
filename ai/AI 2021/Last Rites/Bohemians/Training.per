@@ -1,0 +1,144 @@
+
+(defrule
+    (up-research-status c: castle-age >= research-pending)
+    =>
+    (up-modify-goal gl-total-skirms-trained c:= 0)
+)
+
+(defrule
+    (unit-type-count skirmisher-line < 18)
+    (can-train skirmisher-line)
+    =>
+    (up-gather-inside c: archery-range c: 1)
+)
+
+(defrule
+    (or
+        (unit-type-count skirmisher-line >= 23)
+        (and
+            (up-compare-goal gl-under-attack == 1)
+            (unit-type-count skirmisher-line >= 15)
+        )
+    )
+    =>
+    (up-gather-inside c: archery-range c: 0)
+)
+
+(defrule
+    (unit-type-count spearman-line < 10)
+    (can-train spearman-line)
+    =>
+    (up-gather-inside c: barracks c: 1)
+)
+
+(defrule
+    (or
+        (unit-type-count spearman-line >= 12)
+        (and
+            (up-compare-goal gl-under-attack == 1)
+            (unit-type-count spearman-line >= 6)
+        )
+    )
+    =>
+    (up-gather-inside c: barracks c: 0)
+)
+
+(defrule
+    (current-age == feudal-age)
+    (up-compare-goal gl-total-skirms-trained c:<= 50)
+    (building-type-count-total archery-range >= 2)
+    (unit-type-count-total skirmisher-line < 32)
+    (food-amount > 51)
+    ;(current-age-time < 500)
+    (can-train skirmisher-line)
+    =>
+    (up-modify-goal gl-total-skirms-trained c:+ 1)
+    (train skirmisher-line)
+)
+
+(defrule
+    (up-research-status c: castle-age == research-pending)
+    (up-compare-goal gl-total-skirms-trained c:<= 50)
+    (building-type-count-total archery-range >= 2)
+    (unit-type-count-total skirmisher-line < 30)
+    (can-train skirmisher-line)
+    =>
+    (up-modify-goal gl-total-skirms-trained c:+ 1)
+    (train skirmisher-line)
+)
+
+(defrule
+    (current-age == castle-age)
+    (research-completed ri-elite-skirmisher)
+    (up-compare-goal gl-total-skirms-trained c:<= 50)
+    (building-type-count-total archery-range >= 2)
+    (unit-type-count-total skirmisher-line < 30)
+    (can-train skirmisher-line)
+    =>
+    (up-modify-goal gl-total-skirms-trained c:+ 1)
+    (train skirmisher-line)
+)
+
+
+(defrule
+    (players-unit-type-count any-enemy knight-line > 2)
+    (building-type-count-total barracks >= 2)
+    (up-compare-goal gl-total-pikes-trained c:<= 24)
+    (unit-type-count-total spearman-line < 12)
+    ;(food-amount > 65)
+    (current-age-time < 780)
+    (can-train spearman-line)
+    =>
+    (up-modify-goal gl-total-pikes-trained c:+ 1)
+    (train spearman-line)
+)
+
+(defrule
+    (unit-type-count-total battering-ram-line < 3)
+    (can-train battering-ram-line)
+    =>
+    (train battering-ram-line)
+)
+
+(defrule
+    (unit-type-count-total scorpion-line < 14)
+    (can-train scorpion-line)
+    =>
+    (train scorpion-line)
+)
+
+;(defrule ; no hussite reforms yet - spending gold !!!
+;    (current-age == imperial-age)
+;    (unit-type-count-total monk < 14)
+;    (can-train monk)
+;    =>
+;    (train monk)
+;)
+
+
+
+
+
+
+
+
+
+(defrule
+    (current-age == imperial-age)
+    (up-research-status c: my-unique-research == research-complete)
+    (can-train monk)
+    =>
+    (train monk)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (up-research-status c: my-unique-research == research-complete)
+    (up-get-fact unit-type-count-total monk gl-up-get-fact)
+    (up-modify-goal gl-up-get-fact c:/ 2)
+    (up-object-type-count-total c: houfnice g:< gl-up-get-fact)
+    (can-train houfnice)
+    =>
+    (train houfnice)
+)
+

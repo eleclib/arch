@@ -1,0 +1,81 @@
+
+
+(defconst ri-herbal-medicine 441)
+(defconst ri-houfnice 787)
+
+(defconst houfnice 1709)
+
+
+(defconst gl-research-imp-jump 100)
+(defconst gl-research-hussite-jump 101)
+
+
+; Throwing All Research into Imperial Age
+
+(defrule
+    (up-compare-goal gl-research-imp-jump g:> -1)
+    (current-age != imperial-age)
+    =>
+    (up-jump-direct g: gl-research-imp-jump)
+)
+
+; Nothing in Dark Age
+
+; Loom is already done in BackBone.per
+
+; Feudal Age
+
+(defrule
+    (can-research ri-wheel-barrow)
+    =>
+    (research ri-wheel-barrow)
+)
+
+(defrule
+    (can-research ri-double-bit-axe)
+    =>
+    (research ri-double-bit-axe)
+)
+
+(defrule
+    (can-research ri-horse-collar)
+    =>
+    (research ri-horse-collar)
+)
+
+; Castle Age
+
+(defrule
+    (can-research ri-hand-cart)
+    =>
+    (research ri-hand-cart)
+)
+
+(defrule
+    (can-research ri-bow-saw)
+    =>
+    (research ri-bow-saw)
+)
+
+(defrule
+    (can-research ri-heavy-plow)
+    =>
+    (research ri-heavy-plow)
+)
+
+; Imperial Age
+
+(defrule
+    (can-research ri-two-man-saw)
+    =>
+    (research ri-two-man-saw)
+)
+
+; Jump Rule Direct
+
+(defrule
+    (true)
+    =>
+    (up-get-rule-id gl-research-imp-jump)
+    (disable-self)
+)

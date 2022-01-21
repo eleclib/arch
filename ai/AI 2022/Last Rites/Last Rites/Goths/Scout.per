@@ -1,0 +1,41 @@
+
+
+
+
+
+(defrule
+    (game-time > 180)
+    =>
+    (up-send-scout group-type-land-explore position-opposite)
+    (disable-self)
+)
+
+(defrule
+    (game-time > 245)
+    =>
+    (up-get-point position-opposite gl-temp)
+    (up-get-point position-center gl-temp2)
+    (up-lerp-tiles gl-temp2 gl-temp c: 40)
+    (up-bound-point gl-temp2 gl-temp2)
+    (up-cross-tiles gl-temp gl-temp2 c: 21)
+    (up-full-reset-search)
+    (up-find-local c: scout-cavalry c: 1)
+    (up-target-point gl-temp action-move -1 -1)
+    (disable-self)
+)
+
+
+(defrule
+    (game-time > 335)
+    =>
+    (up-get-point position-opposite gl-temp)
+    (up-get-point position-center gl-temp2)
+    (up-lerp-tiles gl-temp2 gl-temp c: 40)
+    (up-bound-point gl-temp2 gl-temp2)
+    (up-cross-tiles gl-temp gl-temp2 c: -21)
+    (up-full-reset-search)
+    (up-find-local c: scout-cavalry c: 1)
+    (up-target-point gl-temp action-move -1 -1)
+    (disable-self)
+)
+

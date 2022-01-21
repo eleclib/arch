@@ -1,0 +1,33 @@
+
+(defrule
+    (current-age == dark-age)
+    (unit-type-count villager >= 10)
+    (up-timer-status tm-boar-timer <= timer-triggered)
+    =>
+    (up-modify-sn sn-focus-player-number c:= 0)
+    (up-full-reset-search)
+    (up-get-point position-self gl-pos)
+    (up-set-target-point gl-pos)
+    (up-filter-distance c: -1 c: 30)
+)
+
+(defrule
+    (current-age == dark-age)
+    (unit-type-count villager >= 10)
+    (up-timer-status tm-boar-timer <= timer-triggered)
+    (up-find-remote c: predator-animal-class c: 40)
+    ;(or
+        ;(up-find-remote c: cn-wild-boar c: 1)
+        ;(up-find-remote c: cn-javelina c: 1)
+    ;)
+    =>
+    (up-remove-objects search-remote object-data-resource != 0) ; food
+    (up-reset-filters)
+    (up-find-local c: villager-class c: 3)
+    (up-set-target-object search-local c: 0)
+    (up-get-object-data object-data-maxhp gl-up-get-object-data)
+    (up-remove-objects search-local object-data-hitpoints g:< gl-up-get-object-data)
+    (up-set-target-object search-remote c: 0)
+    (up-target-objects 1 action-default -1 -1)
+    (enable-timer tm-boar-timer 145)
+)

@@ -1,0 +1,211 @@
+/* T_Alliances */
+/* Written by Electricity (Thaldren) */
+/* Very Late December, 2021 */
+
+
+<PLAYER_SETUP>
+grouped_by_team
+ai_info_map_type ARABIA 0 0 0
+behavior_version 1
+
+
+<LAND_GENERATION>
+base_terrain GRASS
+
+create_player_lands {
+    terrain_type GRASS3
+    base_size 18
+    land_percent 0
+    circle_radius 37 0
+}
+
+create_land {
+    terrain_type GRASS2
+    land_percent 100
+    other_zone_avoidance_distance 7
+}
+
+
+<TERRAIN_GENERATION>
+color_correction CC_NIGHT
+
+create_terrain FOREST {
+    base_terrain GRASS2
+    land_percent 36
+    number_of_clumps 42
+    set_avoid_player_start_areas
+}
+
+<CONNECTION_GENERATION>
+create_connect_teams_lands {
+    replace_terrain GRASS ROAD
+    replace_terrain GRASS2 ROAD
+    replace_terrain GRASS3 ROAD
+    replace_terrain FOREST ROAD
+}
+
+
+<OBJECTS_GENERATION>
+create_object TOWN_CENTER {
+    set_place_for_every_player
+    max_distance_to_players 0
+}
+
+create_object OAKTREE {
+    number_of_objects 14
+    min_distance_to_players 6
+    max_distance_to_players 14
+    set_place_for_every_player
+    set_gaia_object_only
+}
+
+create_object VILLAGER {
+    set_place_for_every_player
+    min_distance_to_players 6
+    max_distance_to_players 6
+}
+
+create_object SCOUT {
+    set_place_for_every_player
+    max_distance_to_players 7
+}
+
+create_object SHEEP {
+    number_of_groups 1
+    number_of_objects 4
+    min_distance_to_players 7
+    max_distance_to_players 9
+    set_gaia_object_only
+    set_place_for_every_player
+    min_distance_group_placement 4
+}
+
+create_object SHEEP {
+    number_of_groups 2
+    number_of_objects 2
+    min_distance_to_players 17
+    max_distance_to_players 21
+    set_gaia_object_only
+    set_place_for_every_player
+    min_distance_group_placement 4
+}
+
+create_object FORAGE {
+    number_of_objects 6
+    number_of_groups 1
+    min_distance_to_players 9
+    max_distance_to_players 13
+    set_gaia_object_only
+    set_place_for_every_player
+    set_tight_grouping
+    min_distance_group_placement 4
+}
+
+create_object GOLD {
+    number_of_objects 7
+    group_placement_radius 3
+    set_tight_grouping
+    set_gaia_object_only
+    set_place_for_every_player
+    min_distance_to_players 10
+    max_distance_to_players 17
+    min_distance_group_placement 4
+    max_distance_to_other_zones 7
+}
+
+create_object GOLD {
+    number_of_objects 4
+    group_placement_radius 3
+    set_tight_grouping
+    set_gaia_object_only
+    set_place_for_every_player
+    min_distance_to_players 15
+    max_distance_to_players 22
+    min_distance_group_placement 4
+    max_distance_to_other_zones 7
+}
+
+create_object GOLD {
+    number_of_groups 2
+    number_of_objects 4
+    group_placement_radius 3
+    set_tight_grouping
+    set_gaia_object_only
+    set_place_for_every_player
+    min_distance_to_players 20
+    max_distance_to_players 31
+    min_distance_group_placement 4
+    max_distance_to_other_zones 7
+}
+
+create_object STONE {
+    number_of_objects 6
+    group_placement_radius 2
+    set_tight_grouping 
+    set_gaia_object_only
+    set_place_for_every_player
+    min_distance_to_players 12
+    max_distance_to_players 22
+    min_distance_group_placement 4
+    max_distance_to_other_zones 7
+}
+
+create_object STONE {
+    number_of_groups 2
+    number_of_objects 4
+    group_placement_radius 2
+    set_tight_grouping 
+    set_gaia_object_only
+    set_place_for_every_player
+    min_distance_to_players 20
+    max_distance_to_players 28
+    min_distance_group_placement 4
+    max_distance_to_other_zones 7
+}
+
+create_object BOAR {
+    number_of_groups 2
+    number_of_objects 1
+    set_loose_grouping
+    set_gaia_object_only
+    set_place_for_every_player
+    min_distance_to_players 16
+    max_distance_to_players 22
+}
+
+create_object DEER {
+    number_of_groups 2
+    number_of_objects 4
+    min_distance_group_placement 10
+    set_place_for_every_player
+    min_distance_to_players 16
+    max_distance_to_players 21
+    set_gaia_object_only
+    min_distance_group_placement 5
+}
+
+create_object RELIC
+{
+    number_of_objects 1
+    temp_min_distance_group_placement 17
+    set_gaia_object_only
+    set_place_for_every_player
+    min_distance_to_players 17
+    max_distance_to_players 31
+}
+
+create_object RELIC
+{
+    number_of_objects 1
+    number_of_groups 3
+    set_tight_grouping
+    temp_min_distance_group_placement 17
+    set_gaia_object_only
+    set_place_for_every_player
+    min_distance_to_players 21
+}
+
+create_object HAWK {
+    number_of_objects 17
+}
+

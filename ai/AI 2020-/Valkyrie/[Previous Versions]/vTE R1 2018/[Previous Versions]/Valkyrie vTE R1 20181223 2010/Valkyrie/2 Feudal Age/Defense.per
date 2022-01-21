@@ -1,0 +1,9 @@
+
+(defrule
+    (current-age >= feudal-age)
+    (up-can-build 0 c: watch-tower-line)
+    (up-object-type-count-total c: watch-tower-line < 3)
+    =>
+    (up-set-placement-data my-player-number lumber-camp c: 3)
+    (up-build place-control 0 c: watch-tower-line)
+)

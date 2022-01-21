@@ -1,0 +1,733 @@
+; ***************************************
+; Force food gatherers on sheeps
+; ***************************************
+
+(defrule
+	(game-time < 200)
+	(building-type-count mill < 1)
+	(up-object-data object-data-id g:!= sheep-target)
+	(unit-type-count sheep > 0)
+=>	(up-full-reset-search)
+	(up-set-target-point tc-x)
+	(up-filter-distance c: -1 c: 6)
+	(up-find-local c: sheep c: 1)
+	(up-get-object-data object-data-id sheep-target))
+
+(defrule
+	(unit-type-count sheep > 0)
+	(building-type-count mill < 1)
+	(game-time < 200)
+	(up-compare-goal sheep-target != -1)
+	(up-set-target-by-id g: sheep-target)
+	(or	(unit-type-count male-shepherd > 0)
+		(unit-type-count female-shepherd > 0))
+	(or 	(unit-type-count male-forager > 0)
+		(unit-type-count female-forager > 0))
+=>	(up-full-reset-search)
+	(up-find-local c: female-forager c: 5)
+	(up-find-local c: male-forager c: 5)
+	(up-set-target-by-id g: sheep-target)
+	(up-target-objects 1 action-default -1 -1))
+
+; -----------------------------Boar Hunting------------------------------
+
+(defrule ; Boar Hunting
+	(dropsite-min-distance boar-hunting < 33)
+    (current-age == dark-age)
+    (unit-type-count villager >= 12)
+    (goal villager-sent-boar -1)
+    =>
+    (set-strategic-number sn-focus-player-number 0)
+    (up-full-reset-search)
+    (up-set-target-point tc-x)
+    (up-filter-distance c: -1 c: 32)
+)
+
+(defrule ; Boar Hunting
+    (current-age == dark-age)
+    (unit-type-count villager >= 12)
+    (goal villager-sent-boar -1)
+    (or(up-find-remote c: javelina c: 1)
+    (up-find-remote c: wild-boar c: 1))
+    =>
+    (up-set-target-object search-remote c: 0)
+    (up-get-object-data object-data-id boar-id)
+    (up-get-object-data object-data-hitpoints boar-health)
+    (up-find-local c: villager-class c: 23)
+    (up-remove-objects search-local object-data-action == actionid-builder)
+    (up-remove-objects search-local object-data-hitpoints < 25)
+    (up-remove-objects search-local -1 > 0)
+    (up-target-objects 0 action-default -1 -1)
+    (set-goal villager-sent-boar 1)
+    (chat-local-to-self "Sending Villager to Boar Hunt")
+)
+
+(defrule ; Boar Hunting - Get TC Pos and Boar Pos
+    (current-age == dark-age)
+    (unit-type-count villager >= 12)
+    (goal villager-sent-boar 1)
+    (goal boar-gather-tasked -1)
+    =>
+    (up-find-local c: town-center c: 1)
+    (up-set-target-object search-local c: 0)
+    (up-get-object-data object-data-point-x tc-x)
+    (up-get-object-data object-data-point-y tc-y)
+    (up-set-target-point tc-x)
+    (up-full-reset-search)
+    (up-add-object-by-id search-remote g: boar-id)
+    (up-set-target-object search-remote c: 0)
+    (up-get-object-data object-data-distance boar-distance)
+)
+
+(defrule
+    (current-age == dark-age)
+    (unit-type-count villager >= 12)
+    (up-compare-goal boar-distance c:<= 7)
+    (goal villager-sent-boar 1)
+    (goal boar-gather-tasked-1 -1)
+    =>
+    (up-full-reset-search)
+    (up-get-object-data object-data-hitpoints boar-health)
+    (up-find-local c: villager-class c: 23)
+    (up-remove-objects search-local object-data-action == actionid-builder)
+    (up-remove-objects search-local -1 > 0)
+    (up-add-object-by-id search-remote g: boar-id)
+    (up-target-objects 1 action-default -1 -1)
+    (set-goal boar-gather-tasked-1 1)
+    (chat-local-to-self "Tasking Villagers to Boar")
+)
+
+(defrule
+    (current-age == dark-age)
+    (unit-type-count villager >= 12)
+    (up-compare-goal boar-distance c:<= 5)
+    (goal villager-sent-boar 1)
+    (goal boar-gather-tasked -1)
+    =>
+    (up-full-reset-search)
+    (up-get-object-data object-data-hitpoints boar-health)
+    (up-find-local c: villager-class c: 23)
+    (up-remove-objects search-local object-data-action == actionid-builder)
+    (up-remove-objects search-local -1 > 9)
+    (up-add-object-by-id search-remote g: boar-id)
+    (up-target-objects 1 action-default -1 -1)
+    (set-goal boar-gather-tasked 1)
+    (chat-local-to-self "Tasking Villagers to Boar")
+)
+
+(defrule ; Boar Hunting
+    (current-age == dark-age)
+    (unit-type-count villager >= 12)
+    (goal villager-sent-boar 1)
+    =>
+    (enable-timer boar-timer-check 40)
+)
+
+(defrule ; Boar Hunting
+    (goal villager-sent-boar 1)
+    =>
+    (up-full-reset-search)
+    (up-set-target-by-id g: boar-id)
+    (up-get-object-data object-data-carry boar-carry)
+)
+
+(defrule ; Boar Hunting
+    (goal villager-sent-boar 1)
+    (up-compare-goal boar-carry c:<= 130)
+    =>
+    (set-goal villager-sent-boar -1)
+    (set-goal boar-gather-tasked -1)
+    (chat-local-to-self "Resetting Boar Hunt")
+)
+
+(defrule ; Boar Hunting
+    (goal villager-sent-boar 1)
+    (timer-triggered boar-timer-check)
+    (up-compare-goal boar-health c:>= 75)
+    ;(up-compare-goal boar-carry c:>= 340)
+    =>
+    (set-goal villager-sent-boar -1)
+    (set-goal boar-gather-tasked -1)
+    (chat-local-to-self "Resetting Boar Hunt")
+    (disable-timer boar-timer-check)
+)
+
+; -----------------------------GETTING SHEEPS-----------------------------
+
+(defrule
+    (current-age == dark-age)
+    =>
+    (up-full-reset-search)
+    (up-find-local c: town-center c: 1)
+    (up-set-target-object search-local c: 0)
+    (up-get-object-data object-data-point-x tc-x)
+    (up-get-object-data object-data-point-y tc-y)
+    (set-strategic-number sn-focus-player-number 0)
+    (up-full-reset-search)
+    (up-find-remote c: livestock-class c: 1)
+    (up-set-target-object search-remote c: 0)
+    (up-get-object-data object-data-point-x sheep-x)
+    (up-get-object-data object-data-point-y sheep-y)
+)
+
+(defrule
+    (current-age == dark-age)
+    (up-point-distance tc-x sheep-x < 30)
+    =>
+    (up-full-reset-search)
+    (set-strategic-number sn-focus-player-number 0)
+)
+
+(defrule ; Sheep Scouting
+    (current-age == dark-age)
+    (up-find-remote c: livestock-class c: 1)
+    (up-point-distance tc-x sheep-x < 30)
+    =>
+    (up-find-local c: scout-cavalry-line c: 1)
+    (up-find-local c: eagle-warrior-line c: 1)
+    (up-target-objects 0 action-move -1 -1)
+    (set-goal scout-to-reset 1)
+    (up-full-reset-search)
+)
+
+(defrule
+    (up-point-distance tc-x sheep-x < 30)
+    (current-age == dark-age)
+    (goal scout-to-reset 1)
+    (not(up-find-remote c: livestock-class c: 1))
+    =>
+    (up-reset-scouts)
+    (set-goal scout-to-reset -1)
+)
+
+(defrule
+    (up-compare-const is-pocket == 0)
+    (up-pending-objects c: villager < 2)
+    (unit-type-count villager < 24)
+    (up-research-status c: ri-loom != research-pending)
+    (up-research-status c: feudal-age != research-pending)
+    =>
+    (up-drop-resources forage-bush c: 5)
+    (up-drop-resources livestock-class c: 5)
+    (up-drop-resources food c: 10)
+)
+
+(defrule
+    (up-compare-const is-pocket == 1)
+    (up-pending-objects c: villager < 2)
+    (unit-type-count villager < 29)
+    (up-research-status c: ri-loom != research-pending)
+    (up-research-status c: feudal-age != research-pending)
+    =>
+    (up-drop-resources forage-bush c: 5)
+    (up-drop-resources livestock-class c: 5)
+    (up-drop-resources food c: 10)
+)
+
+
+; -----------------------------Deer Luring------------------------------
+(defrule
+	(up-research-status c: feudal-age >= research-pending)
+=>	(up-jump-rule 7))
+
+(defrule
+    (game-time > 360)
+    (current-age == dark-age)
+    (goal villager-sent-boar -1)
+    =>
+    (up-full-reset-search)
+)
+
+(defrule ; Deer Luring
+    (game-time > 360)
+    (current-age == dark-age)
+    (up-find-remote c: deer c: 1)
+    (goal villager-sent-boar -1)
+    =>
+    (up-find-local c: town-center c: 1)
+    (up-set-target-object search-local c: 0)
+    (up-get-object-data object-data-point-x tc-x)
+    (up-get-object-data object-data-point-y tc-y)
+    (up-full-reset-search)
+    (up-find-remote c: deer c: 1)
+    (up-set-target-object search-remote c: 0)
+    (up-get-object-data object-data-point-x deer-x)
+    (up-get-object-data object-data-point-y deer-y)
+    (up-get-object-data object-data-id deer-id)
+    (up-get-object-data object-data-hitpoints deer-health)
+    (up-get-object-data object-data-carry deer-carry)
+)
+
+(defrule
+    (goal deer-tasked 1)
+    (goal villager-sent-boar -1)
+    (up-compare-goal deer-health c:< 5)
+    (up-compare-goal deer-carry c:< 25)
+    =>
+    (set-goal deer-tasked -1)
+)
+
+(defrule
+    (game-time > 360)
+    (current-age == dark-age)
+    (up-find-remote c: deer c: 1)
+    (goal deer-tasked -1)
+    (goal villager-sent-boar -1)
+    (up-point-distance tc-x deer-x <= 30)
+    =>
+    (up-full-reset-search)
+    (up-lerp-tiles deer-x tc-x c: -1)
+    (up-find-local c: scout-cavalry-line c: 1)
+    (up-find-local c: eagle-warrior-line c: 1)
+    (up-target-point deer-x action-move -1 -1)
+    (set-goal deer-tasked 1)
+    ;(chat-local-to-self "Tasking Scout to Lure Deer")
+)
+
+(defrule
+    (game-time > 360)
+    (current-age == dark-age)
+    (up-find-remote c: deer c: 1)
+    (goal villager-sent-boar -1)
+    =>
+    (up-full-reset-search)
+    (up-find-local c: scout-cavalry-line c: 1)
+    (up-find-local c: eagle-warrior-line c: 1)
+    (up-set-target-object search-local c: 0)
+    (up-get-object-data object-data-point-x scout-x)
+    (up-get-object-data object-data-point-y scout-y)
+)
+
+(defrule
+    (game-time > 360)
+    (current-age == dark-age)
+    (up-find-remote c: deer c: 1)
+    (up-point-distance scout-x deer-x <= 30)
+    (goal villager-sent-boar -1)
+    (up-point-distance tc-x deer-x <= 30)
+    =>
+    (up-full-reset-search)
+    (up-lerp-tiles deer-x tc-x c: -1)
+    (up-find-local c: scout-cavalry-line c: 1)
+    (up-find-local c: eagle-warrior-line c: 1)
+    (up-target-point deer-x action-move -1 -1)
+    ;(chat-local-to-self "Tasking Scout to Lure Deer")
+    (up-full-reset-search)
+)
+
+(defrule
+    (game-time > 360)
+    (current-age == dark-age)
+    (up-find-remote c: deer c: 1)
+    (up-point-distance tc-x deer-x <= 7)
+    (goal villager-sent-boar -1)
+    =>
+    (up-find-local c: villager-class c: 23)
+    (up-remove-objects search-local object-data-action == actionid-builder)
+    (up-remove-objects search-local -1 > 7)
+    (up-target-objects 0 action-default -1 -1)
+)
+
+; ----------------------SKIRMISHERS RETREATING-----------------------
+
+(defrule
+    (unit-type-count skirmisher > 0)
+    =>
+    (up-get-fact unit-type-count skirmisher skirmisher-count)
+)
+
+(defrule
+    (up-compare-goal skirmisher-count g:!= last-skirmisher-count)
+    (up-compare-sn sn-maximum-town-size c:<= 36)
+    (not(town-under-attack))
+    =>
+    (up-full-reset-search)
+    (up-find-local c: town-center c: 1)
+    (up-set-target-object search-local c: 0)
+    (up-get-object-data object-data-point-x tc-x)
+    (up-get-object-data object-data-point-y tc-y)
+    (up-find-local c: skirmisher-line c: 240)
+    (up-target-point tc-x action-move -1 -1)
+    (up-modify-goal last-skirmisher-count g:= skirmisher-count)
+)
+
+; -------------------------------------------------------------------
+
+(defrule
+    (true)
+    =>
+    (up-full-reset-search)
+)
+
+(defrule
+    (goal attacking 0)
+    (not(town-under-attack))
+    =>
+    (up-find-local c: town-center c: 1)
+    (up-set-target-object search-local c: 0)
+    (up-get-object-data object-data-point-x tc-x)
+    (up-get-object-data object-data-point-y tc-y)
+    (up-full-reset-search)
+    (up-find-local c: skirmisher-line c: 120)
+    (up-find-local c: spearman-line c: 120)
+    (up-target-point tc-x action-move -1 -1)
+)
+
+(defrule
+    (not (up-point-contains tc-x c: town-center))
+    (building-type-count town-center > 0)
+    =>
+    (up-full-reset-search)
+    (up-find-local c: town-center c: 1)
+    (up-set-target-object search-local c: 0)
+    (up-get-point position-object tc-x))
+
+;======================Retreating cavalry from enemy's TC=============================
+
+(defrule
+	(or	(and	(unit-type-count cavalry-class >= 12)
+			(up-research-status c: ri-scale-barding > research-pending))
+		(or	(and	(unit-type-count battering-ram-line >= 2)
+				(military-population > 14))
+			(or	(and	(unit-type-count cavalry-class >= 10)
+					(up-research-status c: ri-chain-barding > research-pending))
+				(current-age > castle-age))))
+=>	(up-jump-rule 1))
+
+(defrule
+	(up-projectile-detected projectile-town-center c:< 2000)
+	(up-projectile-target projectile-town-center != building-class)
+	(up-projectile-target projectile-town-center != villager-class)
+=>	(up-get-projectile-player projectile-town-center threat-player-goal)
+	(up-modify-sn sn-focus-player-number g:= threat-player-goal)
+	(up-full-reset-search)
+	(up-find-remote c: town-center c: 6)
+	(up-remove-objects search-remote object-data-action != actionid-attack)
+	(up-set-target-object search-remote c: 0)
+	(up-get-point position-object object-point-x)
+	(up-set-target-point object-point-x)
+	(up-filter-distance c: -1 c: 10)
+	(set-goal split-rule-goal 21))
+(defrule
+	(goal split-rule-goal 21)
+	(or	(up-find-local c: cavalry-class c: 1)
+		(or	(up-find-local c: infantry-class c: 1)
+			(up-find-local c: archery-class c: 1)))
+=>	(up-full-reset-search)
+	(up-set-target-point object-point-x)
+	(up-filter-distance c: -1 c: 16)
+	(up-filter-include cmdid-military -1 -1 -1)
+	(up-find-local c: -1 c: 240)
+	(up-target-point tc-x action-move formation-line no-attack)
+	(enable-timer retreating-timer 6))
+
+
+;======================Retreating units from enemy's Tower============================
+
+
+(defrule
+	(or	(unit-type-count cavalry-class >= 3)
+		(or	(unit-type-count eagle-warrior-line >= 5)
+			(or	(unit-type-count archery-class >= 12)
+				(or	(up-research-status c: ri-elite-skirmisher > research-pending)
+					(goal attacking-tower 1)))))
+=>	(up-jump-rule 1))
+
+(defrule
+	(up-projectile-detected projectile-watch-tower c:< 2000)
+	(or	(up-projectile-target projectile-watch-tower == archery-class)
+		(up-projectile-target projectile-watch-tower == infantry-class))
+=>	(up-get-projectile-player projectile-watch-tower threat-player-goal)
+	(up-modify-sn sn-focus-player-number g:= threat-player-goal)
+	(up-full-reset-search)
+	(up-find-remote c: watch-tower c: 10)
+	(up-remove-objects search-remote object-data-action != actionid-attack)
+	(up-set-target-object search-remote c: 0)
+	(up-get-point position-object tower-point-x)
+	(up-set-target-point tower-point-x)
+	(up-filter-distance c: -1 c: 10)
+	(up-filter-include cmdid-military -1 -1 -1)
+	(set-goal split-rule-goal 22))
+
+(defrule
+	(goal split-rule-goal 22)
+	(up-find-local c: -1 c: 1)
+=>	(up-full-reset-search)
+	(up-set-target-point tower-point-x)
+	(up-filter-distance c: -1 c: 13)
+	(up-find-local c: ranged-unit-class c: 240)
+	(up-find-local c: infantry-class c: 240)
+	(up-find-local c: scout-cavalry-class c: 240)
+	(up-target-point tc-x action-move formation-line no-attack)
+	(enable-timer retreating-timer 5))
+
+;======================Retreating units from enemy's Castle============================
+
+(defrule
+	(or	(and	(unit-type-count cavalry-class >= 18)
+			(up-research-status c: ri-chain-barding > research-pending))
+		(or	(and	(unit-type-count eagle-warrior-line >= 22)
+				(up-research-status c: ri-elite-eagle-warrior > research-pending))
+			(or	(unit-type-count battering-ram-line > 2)
+				(military-population > 30))))
+=>	(up-jump-rule 1))
+
+(defrule
+	(up-projectile-detected projectile-castle c:< 2000)
+	(up-projectile-target projectile-castle != building-class)
+	(up-projectile-target projectile-castle != villager-class)
+=>	(up-get-projectile-player projectile-castle threat-player-goal)
+	(up-modify-sn sn-focus-player-number g:= threat-player-goal)
+	(up-full-reset-search)
+	(up-find-remote c: castle c: 6)
+	(up-remove-objects search-remote object-data-action != actionid-attack)
+	(up-set-target-object search-remote c: 0)
+	(up-get-point position-object object-point-x)
+	(up-set-target-point object-point-x)
+	(up-filter-distance c: -1 c: 13)
+	(set-goal split-rule-goal 23))
+(defrule
+	(goal split-rule-goal 23)
+	(or	(up-find-local c: cavalry-class c: 1)
+		(or	(up-find-local c: infantry-class c: 1)
+			(up-find-local c: archery-class c: 1)))
+=>	(up-full-reset-search)
+	(up-set-target-point object-point-x)
+	(up-filter-distance c: -1 c: 16)
+	(up-filter-include cmdid-military -1 -1 -1)
+	(up-find-local c: -1 c: 240)
+	(up-target-point tc-x action-move formation-line no-attack)
+	(enable-timer retreating-timer 8))
+
+;======================Attacking the enemie's Tower============================
+
+(defrule
+	(up-compare-goal attacking-tower != 0)
+=>	(set-goal attacking-tower 0)
+	(up-set-attack-stance -1 c: stance-aggressive))
+
+(defrule
+	(players-unit-type-count target-player knight-line > 0)
+	(military-population < 14)
+=>	(up-jump-rule 3))
+
+(defrule
+	(military-population < 16)
+	(up-compare-goal threat-time-goal < 6000)
+	(or	(up-compare-goal threat-source-goal == cavalry-class)
+		(up-compare-goal threat-source-goal == infantry-class))
+	(up-compare-goal threat-target-goal == infantry-class)
+=>	(up-jump-rule 2))
+
+
+(defrule
+	(not	(up-point-contains tower-point-x c: watch-tower))
+	(up-projectile-detected projectile-watch-tower c:< 2000)
+	(or	(up-projectile-target projectile-watch-tower == archery-class)
+		(up-projectile-target projectile-watch-tower == infantry-class))
+=>	(up-get-projectile-player projectile-watch-tower threat-player-goal)
+	(up-modify-sn sn-focus-player-number g:= threat-player-goal)
+	(up-full-reset-search)
+	(up-find-remote c: watch-tower c: 10)
+	(up-remove-objects search-remote object-data-action != actionid-attack)
+	(up-set-target-object search-remote c: 0)
+	(up-get-point position-object tower-point-x))
+
+(defrule
+	(up-point-contains tower-point-x c: watch-tower)
+	(players-unit-type-count target-player archer-line < 1)
+	(military-population >= 8)
+	(unit-type-count infantry-class >= 4)
+	(players-military-population target-player <= 5)
+	(unit-type-count battering-ram-line <= 0)
+=>	(up-modify-sn sn-focus-player-number s:= sn-target-player-number)
+	(up-full-reset-search)
+	(up-find-remote c: watch-tower c: 10)
+	(up-set-target-object search-remote c: 0)
+	(up-set-target-point tower-point-x)
+	(up-filter-distance c: -1 c: 15)
+	(up-find-local c: infantry-class c: 20)
+	(up-target-objects 1 action-default -1 stand-ground)
+	(set-goal attacking-tower 1)
+	(enable-timer attacking-tower-timer 25))
+
+
+; ------------------------Getting units from tower-------------------------
+
+#load-if-not-defined UP-POCKET-POSITION
+(defrule
+	(or	(current-age > castle-age)
+		(military-population > 25))
+=>	(up-jump-rule 2))
+
+(defrule
+	(up-timer-status attacking-tower-timer != timer-running)
+	(players-military-population target-player > 6)
+	(up-point-contains tower-point-x c: watch-tower)
+	(players-building-type-count target-player watch-tower > 0)
+=>	(up-modify-sn sn-focus-player-number c:= my-player-number)
+	(up-full-reset-search)
+	(up-set-target-point tower-point-x)
+	(up-filter-distance c: -1 c: 10)
+	(up-filter-include cmdid-military -1 -1 -1)
+	(set-goal split-rule-goal 47))
+
+(defrule
+	(goal split-rule-goal 47)
+	(up-point-contains tower-point-x c: watch-tower)
+	(or	(up-find-local c: infantry-class c: 1)
+		(up-find-local c: archery-class c: 1))
+	(up-set-target-object search-local c: 0)
+=>	(chat-to-player my-player-number "retreating units from tower")
+	(up-set-target-object search-local c: 0)
+	(up-get-point position-object object-point-x)
+	(up-lerp-tiles object-point-x tower-point-x c: -5)
+	(up-cross-tiles object-point-x tower-point-x c: 9)
+	(up-bound-point object-point-x object-point-x)
+	(up-set-target-point object-point-x)
+	(enable-timer retreating-timer 5)
+	(set-goal split-rule-goal 48))
+
+(defrule
+	(goal split-rule-goal 48)
+=>	(up-full-reset-search)
+	(up-set-target-point tower-point-x)
+	(up-filter-distance c: -1 c: 11)
+	(up-filter-include cmdid-military -1 -1 -1)
+	(up-find-local c: -1 c: 50)
+	(up-target-point object-point-x action-move formation-line no-attack)
+	(enable-timer split-stance-timer 5))
+#end-if
+
+;======================FIND THE MINE without camp============================
+
+;-------------------------------------- on gold
+(defrule
+	(or	(building-type-count mining-camp > 0)
+		(game-time > 1500))
+	(or	(unit-type-count male-gold-miner >= 3)
+		(unit-type-count female-gold-miner >= 3))
+=>	(up-full-reset-search)
+	(up-get-point position-self my-tc-x)
+	(up-set-target-point my-tc-x)
+	(up-find-local c: female-gold-miner c: 80)
+	(up-find-local c: male-gold-miner c: 80)
+	(up-clean-search search-local object-data-distance search-order-desc)
+	(up-set-target-object search-local c: 0)
+	(up-get-point position-object g-miner-point-x))
+(defrule
+	(or	(building-type-count mining-camp > 0)
+		(game-time > 1500))
+	(or	(unit-type-count male-gold-miner >= 3)
+		(unit-type-count female-gold-miner >= 3))
+	(up-point-contains g-miner-point-x c: villager-class)
+=>	(set-strategic-number sn-focus-player-number 0)
+	(up-full-reset-search)
+	(up-set-target-point g-miner-point-x)
+	(up-filter-distance c: 1 c: 3)
+	(up-find-remote c: gold-mine c: 5)
+	(up-remove-objects search-remote object-data-tasks-count <= 0)
+	(up-set-target-object search-remote c: 0)
+	(up-get-point position-object building-point-x)
+	(set-goal split-rule-goal 300))
+(defrule 
+	(goal split-rule-goal 300)
+	(up-point-contains g-miner-point-x c: villager-class)
+	(up-point-contains building-point-x c: gold-mine)
+	(up-set-target-object search-remote c: 0)
+=>	(up-modify-sn sn-focus-player-number c:= my-player-number)
+	(up-full-reset-search)
+	(up-set-target-point g-miner-point-x)
+	(up-filter-distance c: -1 c: 10)
+	(up-find-local c: mining-camp c: 1)
+	(up-set-target-object search-local c: 0)
+	(up-get-search-state local-total-goal)
+	(set-goal split-rule-goal 302))
+
+(defrule 
+	(goal split-rule-goal 302)
+	(up-compare-goal local-total-goal <= 0)
+	(can-build mining-camp)
+	(up-pending-objects c: mining-camp < 1)
+=>	(set-strategic-number sn-allow-adjacent-dropsites 0)
+	(set-strategic-number sn-placement-zone-size 3)
+	(up-set-target-point building-point-x)
+	(up-build place-point 0 c: mining-camp)
+	(set-goal split-rule-goal 303))
+
+;-------------------------------------- on stone
+(defrule
+	(building-type-count mining-camp > 0)
+	(up-compare-goal split-rule-goal != 303)
+	(or	(unit-type-count male-stone-miner >= 3)
+		(unit-type-count female-stone-miner >= 3))
+=>	(up-full-reset-search)
+	(up-get-point position-self my-tc-x)
+	(up-set-target-point my-tc-x)
+	(up-find-local c: female-stone-miner c: 80)
+	(up-find-local c: male-stone-miner c: 80)
+	(up-clean-search search-local object-data-distance search-order-desc)
+	(up-set-target-object search-local c: 0)
+	(up-get-point position-object s-miner-point-x))
+(defrule
+	(building-type-count mining-camp > 0)
+	(or	(unit-type-count male-stone-miner >= 3)
+		(unit-type-count female-stone-miner >= 3))
+	(up-compare-goal split-rule-goal != 303)
+	(up-point-contains s-miner-point-x c: villager-class)
+=>	(set-strategic-number sn-focus-player-number 0)
+	(up-full-reset-search)
+	(up-set-target-point s-miner-point-x)
+	(up-filter-distance c: 1 c: 3)
+	(up-find-remote c: stone-mine c: 1)
+	(up-remove-objects search-remote object-data-tasks-count <= 0)
+	(up-set-target-object search-remote c: 0)
+	(up-get-point position-object building-point-x)
+	(set-goal split-rule-goal 301))
+(defrule 
+	(goal split-rule-goal 301)
+	(up-point-contains s-miner-point-x c: villager-class)
+	(up-point-contains building-point-x c: stone-mine)
+	(up-set-target-object search-remote c: 0)
+=>	(up-modify-sn sn-focus-player-number c:= my-player-number)
+	(up-full-reset-search)
+	(up-set-target-point s-miner-point-x)
+	(up-filter-distance c: -1 c: 10)
+	(up-find-local c: mining-camp c: 1)
+	(up-set-target-object search-local c: 0)
+	(up-get-search-state local-total-goal)
+	(set-goal split-rule-goal 302))
+;-------------------------------------- Effectively building mining-camp
+(defrule 
+	(goal split-rule-goal 302)
+	(up-compare-goal local-total-goal <= 0)
+	(can-build mining-camp)
+	(up-pending-objects c: mining-camp < 1)
+=>	(set-strategic-number sn-allow-adjacent-dropsites 0)
+	(set-strategic-number sn-placement-zone-size 3)
+	(up-set-target-point building-point-x)
+	(up-build place-point 0 c: mining-camp))
+
+;--------------------------------- RESETTING-------------------------------
+
+(defrule
+	(timer-triggered retreating-timer)
+=>	(up-full-reset-search)
+	(up-reset-unit c: infantry-class)
+	(up-reset-unit c: cavalry-class)
+	(up-reset-unit c: archery-class)
+	(up-set-attack-stance -1 c: stance-aggressive)
+	(set-strategic-number sn-disable-defend-groups 0)
+	(disable-timer retreating-timer))
+
+
+(defrule
+	(timer-triggered split-stance-timer)
+=>	(up-full-reset-search)
+	(up-set-attack-stance -1 c: stance-aggressive)
+	(disable-timer split-stance-timer))
+
+
+
+
+

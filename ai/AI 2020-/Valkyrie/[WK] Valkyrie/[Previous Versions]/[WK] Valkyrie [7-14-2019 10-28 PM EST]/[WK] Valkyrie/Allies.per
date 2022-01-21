@@ -1,0 +1,31 @@
+
+(defrule
+    (up-compare-const is-pocket == 1)
+    (up-compare-goal my-ally-flank c:> 0)
+    (unit-type-count knight > 0)
+    (or(goal attacking 0)
+    (goal attacking -1))
+    (not(town-under-attack))
+    =>
+    (up-modify-sn sn-focus-player-number g:= my-ally-flank)
+    (up-full-reset-search)
+    (up-find-remote c: town-center c: 1)
+    (up-set-target-object search-remote c: 0)
+    (up-get-object-data object-data-point-x my-ally-tc-x)
+    (up-get-object-data object-data-point-y my-ally-tc-y)
+)
+
+(defrule
+    (up-compare-const is-pocket == 1)
+    (up-compare-goal my-ally-flank c:> 0)
+    (unit-type-count knight > 0)
+    (or(goal attacking 0)
+    (goal attacking -1))
+    (not(town-under-attack))
+    =>
+    (up-full-reset-search)
+    (up-set-target-point my-ally-tc-x)
+    (up-find-local c: knight c: 240)
+    (up-remove-objects search-local object-data-distance < 30)
+    (up-target-point my-ally-tc-x action-move -1 -1)
+)

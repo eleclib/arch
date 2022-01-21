@@ -1,0 +1,269 @@
+
+; Dark Age ---
+
+(defrule
+    (unit-type-count villager >= 10)
+    =>
+    (set-strategic-number sn-enable-training-queue 0)
+    (disable-self)
+)
+
+(defrule
+    (can-research ri-loom)
+    (unit-type-count villager >= 10)
+    =>
+    (research ri-loom)
+)
+
+(defrule
+    (up-research-status c: ri-loom == research-complete)
+    =>
+    (set-strategic-number sn-enable-training-queue 1)
+    (disable-self)
+)
+
+(defrule
+    (up-compare-const is-pocket == 0)
+    (unit-type-count villager >= 23)
+    (can-research feudal-age)
+    =>
+    (research feudal-age)
+)
+
+(defrule
+    (up-compare-const is-pocket == 1)
+    (unit-type-count villager >= 26)
+    (can-research feudal-age)
+    =>
+    (research feudal-age)
+)
+
+; Feudal Age ---
+
+(defrule
+    (can-research ri-wheel-barrow)
+    =>
+    (research ri-wheel-barrow)
+)
+
+(defrule
+    (can-research ri-double-bit-axe)
+    =>
+    (research ri-double-bit-axe)
+)
+
+(defrule
+    (can-research ri-horse-collar)
+    =>
+    (research ri-horse-collar)
+)
+
+(defrule
+    (can-research ri-gold-mining)
+    =>
+    (research ri-gold-mining)
+)
+
+(defrule
+    (can-research ri-stone-mining)
+    =>
+    (research ri-stone-mining)
+)
+
+(defrule
+    (up-compare-const is-pocket == 0)
+    (can-research ri-padded-archer-armor)
+    =>
+    (research ri-padded-archer-armor)
+)
+
+(defrule
+    (up-compare-const is-pocket == 0)
+    (can-research ri-fletching)
+    =>
+    (research ri-fletching)
+)
+
+(defrule
+    (current-age >= feudal-age)
+    (up-compare-const is-meso-civ == 1)
+    (can-research ri-forging)
+    =>
+    (research ri-forging)
+)
+
+(defrule
+    (current-age >= feudal-age)
+    (up-compare-const is-meso-civ == 0)
+    (or(up-compare-const pocket-castle-unit == eagle-warrior-line)
+    (up-compare-const pocket-castle-unit == knight-line))
+    (can-research ri-forging)
+    =>
+    (research ri-forging)
+)
+
+(defrule
+    (current-age >= feudal-age)
+    (up-compare-const pocket-castle-unit == eagle-warrior-line)
+    (can-research ri-scale-mail)
+    =>
+    (research ri-scale-mail)
+)
+
+(defrule
+    (current-age >= castle-age)
+    (up-compare-const pocket-castle-unit == knight-line)
+    (can-research ri-scale-barding)
+    =>
+    (research ri-scale-barding)
+)
+
+(defrule
+    (food-amount >= 800)
+    (gold-amount >= 200)
+    =>
+    (set-strategic-number sn-enable-training-queue 0)
+    (disable-self)
+)
+
+(defrule
+    (can-research castle-age)
+    =>
+    (research castle-age)
+)
+
+; Castle Age ---
+
+(defrule
+    (can-research ri-hand-cart)
+    =>
+    (research ri-hand-cart)
+)
+
+(defrule
+    (can-research ri-bow-saw)
+    =>
+    (research ri-bow-saw)
+)
+
+(defrule
+    (can-research ri-heavy-plow)
+    =>
+    (research ri-heavy-plow)
+)
+
+(defrule
+    (can-research ri-gold-shaft-mining)
+    =>
+    (research ri-gold-shaft-mining)
+)
+
+(defrule
+    (can-research ri-stone-shaft-mining)
+    =>
+    (research ri-stone-shaft-mining)
+)
+
+(defrule
+    (up-compare-const is-pocket == 0)
+    (can-research ri-elite-skirmisher)
+    =>
+    (research ri-elite-skirmisher)
+)
+
+(defrule
+    (up-compare-const is-pocket == 0)
+    (can-research ri-bodkin-arrow)
+    =>
+    (research ri-bodkin-arrow)
+)
+
+(defrule
+    (up-compare-const is-pocket == 0)
+    (can-research ri-leather-archer-armor)
+    =>
+    (research ri-leather-archer-armor)
+)
+
+(defrule
+    (current-age >= castle-age)
+    (up-compare-const pocket-castle-unit == eagle-warrior-line)
+    (can-research ri-iron-casting)
+    =>
+    (research ri-iron-casting)
+)
+
+(defrule
+    (current-age >= castle-age)
+    (up-compare-const pocket-castle-unit == knight-line)
+    (can-research ri-chain-barding)
+    =>
+    (research ri-chain-barding)
+)
+
+(defrule
+    (current-age >= castle-age)
+    (up-compare-const is-meso-civ == 1)
+    (can-research ri-chain-mail)
+    =>
+    (research ri-chain-mail)
+)
+
+(defrule
+    (can-research imperial-age)
+    =>
+    (research imperial-age)
+)
+
+; Imperial Age ---
+
+(defrule
+    (current-age == imperial-age)
+    (up-compare-const is-meso-civ == 1)
+    (can-research ri-blast-furnace)
+    =>
+    (research ri-blast-furnace)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (up-compare-const is-meso-civ == 0)
+    (up-compare-const pocket-castle-unit == eagle-warrior-line)
+    (can-research ri-blast-furnace)
+    =>
+    (research ri-blast-furnace)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (up-compare-const is-meso-civ == 1)
+    (can-research ri-plate-mail)
+    =>
+    (research ri-plate-mail)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (can-research ri-cavalier)
+    =>
+    (research ri-cavalier)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (can-research ri-paladin)
+    =>
+    (research ri-paladin)
+)
+
+(defrule
+    (can-research ri-capped-ram)
+    =>
+    (research ri-capped-ram)
+)
+
+(defrule
+    (can-research ri-siege-ram)
+    =>
+    (research ri-siege-ram)
+)

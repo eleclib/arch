@@ -1,0 +1,120 @@
+(defrule
+    (current-age >= feudal-age)
+    (can-research ri-loom)
+    (up-research-status c: ri-loom == research-available)
+=>
+    (up-modify-goal GoldVillagers c:+ 1)
+    (up-research 0 c: ri-loom)
+)
+
+(defrule
+    (current-age >= feudal-age)
+    (can-research ri-bloodlines)
+    (up-research-status c: ri-bloodlines == research-available)
+    =>
+    (up-modify-goal WoodVillagers c:+ 1)
+    (up-modify-goal FoodVillagers c:+ 2)
+    (up-research 0 c: ri-bloodlines)
+)
+
+(defrule
+    (current-age >= feudal-age)
+    (can-research ri-wheel-barrow)
+    (up-research-status c: ri-wheel-barrow == research-available)
+=>
+    (up-modify-goal WoodVillagers c:+ 1)
+    (up-modify-goal FoodVillagers c:+ 2)
+    (research ri-wheel-barrow)
+)
+
+(defrule
+    (current-age >= feudal-age)
+    (can-research ri-town-watch)
+    (up-research-status c: ri-town-watch == research-available)
+=>
+    (up-modify-goal FoodVillagers c:+ 1)
+    (research ri-town-watch)
+)
+
+(defrule
+    (current-age >= feudal-age)
+    (can-research ri-double-bit-axe)
+    (up-research-status c: ri-double-bit-axe == research-available)
+=>
+    (up-modify-goal WoodVillagers c:+ 1)
+    (up-modify-goal FoodVillagers c:+ 1)
+    (research ri-double-bit-axe)
+)
+
+(defrule
+    (current-age >= feudal-age)
+    (can-research ri-horse-collar)
+    (up-research-status c: ri-horse-collar == research-available)
+=>
+    (up-modify-goal WoodVillagers c:+ 1)
+    (up-modify-goal FoodVillagers c:+ 1)
+    (research ri-horse-collar)
+)
+
+(defrule
+    (current-age >= feudal-age)
+    (can-research ri-gold-mining)
+    (up-research-status c: ri-gold-mining == research-available)
+=>
+    (up-modify-goal WoodVillagers c:+ 1)
+    (up-modify-goal FoodVillagers c:+ 1)
+    (research ri-gold-mining)
+)
+
+(defrule
+    (current-age >= feudal-age)
+    (can-research ri-stone-mining)
+    (up-research-status c: ri-stone-mining == research-available)
+=>
+    (up-modify-goal WoodVillagers c:+ 1)
+    (up-modify-goal FoodVillagers c:+ 1)
+    (research ri-stone-mining)
+)
+
+(defrule
+    (current-age >= feudal-age)
+    (can-research ri-padded-archer-armor)
+    (up-research-status c: ri-padded-archer-armor == research-available)
+=>
+    (up-modify-goal FoodVillagers c:+ 1)
+    (research ri-padded-archer-armor)
+)
+
+(defrule
+    (current-age >= feudal-age)
+    (can-research ri-fletching)
+    (up-research-status c: ri-fletching == research-available)
+=>
+    (up-modify-goal WoodVillagers c:+ 1)
+    (up-modify-goal GoldVillagers c:+ 1)
+    (research ri-fletching)
+)
+
+(defrule
+    (current-age >= feudal-age)
+    (up-can-research 0 c: castle-age)
+    (up-research-status c: castle-age == research-available)
+=>
+    (up-modify-goal FoodVillagers c:+ 8)
+    (up-modify-goal GoldVillagers c:+ 2)
+    (up-research 0 c: castle-age)
+    (disable-self)
+)
+
+(defrule
+    (current-age == feudal-age)
+    (or
+        (up-timer-status AgeEconomyTimer == timer-disabled)
+        (up-timer-status AgeEconomyTimer == timer-triggered)
+    )
+    (not(up-can-research 0 c: castle-age))
+    =>
+    (up-modify-goal FoodVillagers c:+ 2)
+    (up-modify-goal GoldVillagers c:+ 1)
+    (up-set-timer c: AgeEconomyTimer c: 60)
+)

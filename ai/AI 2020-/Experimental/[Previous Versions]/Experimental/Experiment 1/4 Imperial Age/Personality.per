@@ -1,0 +1,11 @@
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 1)
+    (current-age == imperial-age)
+=>
+    (set-strategic-number sn-maximum-wood-drop-distance 30)
+    (set-strategic-number sn-maximum-food-drop-distance 30)
+    (set-strategic-number sn-maximum-gold-drop-distance 30)
+    (set-strategic-number sn-maximum-stone-drop-distance 30)
+    (set-strategic-number sn-maximum-hunt-drop-distance 30)
+)

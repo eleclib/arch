@@ -1,0 +1,74 @@
+
+(defrule
+    (up-object-type-count-total c: stable >= 3)
+=>
+    (enable-timer TIMER_CastleMilitary 600)
+    (disable-self)
+)
+
+(defrule
+    (current-age == castle-age)
+=>
+    (up-set-offense-priority c: villager c: 11)
+    (disable-self)
+)
+
+(defrule
+    (current-age == castle-age)
+    (not(timer-triggered TIMER_CastleMilitary))
+    (not(up-timer-status TIMER_CastleMilitary == timer-disabled))
+    =>
+    (up-train 0 c: knight-line)
+)
+
+(defrule
+    (current-age == castle-age)
+    (not(timer-triggered TIMER_CastleMilitary))
+    (not(up-timer-status TIMER_CastleMilitary == timer-disabled))
+    (or
+        (up-object-type-count-total c: knight-line >= 20)
+        (or
+            (civ-selected mayan)
+            (civ-selected aztec)
+        )
+    )
+    =>
+    (up-train 0 c: archer-line)
+)
+
+(defrule
+    (current-age == castle-age)
+    (not(timer-triggered TIMER_CastleMilitary))
+    (not(up-timer-status TIMER_CastleMilitary == timer-disabled))
+    (or
+        (up-object-type-count-total c: knight-line >= 20)
+        (or
+            (civ-selected mayan)
+            (civ-selected aztec)
+        )
+    )
+    =>
+    (up-train 0 c: skirmisher-line)
+)
+
+(defrule
+    (current-age == castle-age)
+    (not(timer-triggered TIMER_CastleMilitary))
+    (not(up-timer-status TIMER_CastleMilitary == timer-disabled))
+    (or
+        (up-object-type-count-total c: knight-line >= 20)
+        (or
+            (civ-selected mayan)
+            (civ-selected aztec)
+        )
+    )
+    =>
+    (up-train 0 c: battering-ram-line)
+)
+
+(defrule
+    (current-age == castle-age)
+=>
+    (set-strategic-number sn-maximum-town-size 255)
+    (disable-self)
+)

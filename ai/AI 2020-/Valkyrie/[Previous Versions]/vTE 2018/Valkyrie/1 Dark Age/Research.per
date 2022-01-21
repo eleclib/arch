@@ -1,0 +1,22 @@
+
+(defrule
+    (current-age >= dark-age)
+    (up-can-research 0 c: feudal-age)
+    (up-research-status c: feudal-age == research-available)
+=>
+    (up-modify-goal FoodVillagers c:+ 5)
+    (up-research 0 c: feudal-age)
+    (disable-self)
+)
+
+(defrule
+    (current-age == dark-age)
+    (or
+        (up-timer-status AgeEconomyTimer == timer-disabled)
+        (up-timer-status AgeEconomyTimer == timer-triggered)
+    )
+    (not(up-can-research 0 c: feudal-age))
+    =>
+    (up-modify-goal FoodVillagers c:+ 1)
+    (up-set-timer c: AgeEconomyTimer c: 60)
+)

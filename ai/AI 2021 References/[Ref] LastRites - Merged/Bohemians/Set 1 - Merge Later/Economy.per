@@ -1,0 +1,43 @@
+
+; Pure Food (and Wood) Economy
+
+(defrule
+    (current-age == imperial-age)
+    =>
+    (set-strategic-number sn-wood-gatherer-percentage 38)
+    (set-strategic-number sn-food-gatherer-percentage 52)
+    (set-strategic-number sn-gold-gatherer-percentage 5)
+    (set-strategic-number sn-stone-gatherer-percentage 5)
+    (up-modify-goal gl-farms-total c:+ 42) ; from backbone
+    (disable-self)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (military-population > 35)
+    (or
+        (strategic-number sn-wood-gatherer-percentage < 5)
+        (strategic-number sn-food-gatherer-percentage < 5)
+    )
+    =>
+    (set-strategic-number sn-wood-gatherer-percentage 45)
+    (set-strategic-number sn-food-gatherer-percentage 45)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (military-population > 35)
+    (wood-amount > 1750)
+    =>
+    (up-modify-sn sn-wood-gatherer-percentage c:- 3)
+    (up-modify-sn sn-food-gatherer-percentage c:+ 3)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (military-population > 35)
+    (food-amount > 1750)
+    =>
+    (up-modify-sn sn-wood-gatherer-percentage c:+ 3)
+    (up-modify-sn sn-food-gatherer-percentage c:- 3)
+)

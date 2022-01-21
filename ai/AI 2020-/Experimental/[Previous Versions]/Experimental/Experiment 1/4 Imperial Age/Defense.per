@@ -1,0 +1,12 @@
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 1)
+    (current-age == imperial-age)
+    (up-can-build 0 c: bombard-tower)
+    (up-object-type-count-total c: bombard-tower < 1)
+    =>
+    (up-modify-goal GoldVillagers c:+ 1)
+    (up-modify-goal StoneVillagers c:+ 2)
+    (up-set-placement-data my-player-number -1 c: 0)
+    (up-build place-control 0 c: bombard-tower)
+)

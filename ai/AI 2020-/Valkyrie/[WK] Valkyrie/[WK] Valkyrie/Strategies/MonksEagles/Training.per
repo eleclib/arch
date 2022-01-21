@@ -1,0 +1,16 @@
+
+(defrule
+    (goal my-strategy strategy-monks-eagles)
+    (current-age >= castle-age)
+    (can-train monk)
+    =>
+    (train monk)
+)
+
+(defrule
+    (goal my-strategy strategy-monks-eagles)
+    (current-age >= castle-age)
+    (can-train eagle-warrior-line)
+    =>
+    (train eagle-warrior-line)
+)

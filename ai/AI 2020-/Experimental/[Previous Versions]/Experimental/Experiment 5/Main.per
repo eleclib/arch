@@ -1,0 +1,519 @@
+
+; -------------------------------------------------------------
+    ; Switch Conditionals for Training and Construction
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 5)
+    (up-compare-goal TrainVillagersSwitch c:== 1)
+    (up-pending-objects c: villager g:< TrainVillagerPending)
+    =>
+    (up-train 0 c: villager)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 5)
+    (up-compare-goal BuildHousesSwitch c:== 1)
+    (up-pending-objects c: house g:< BuildHousePendingCount)
+    =>
+    (up-build 0 place-normal c: house)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 5)
+    (up-compare-goal BuildFarmsSwitch c:== 1)
+    (up-pending-objects c: farm g:< BuildFarmPendingCount)
+    =>
+    (up-build 0 place-normal c: farm)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 5)
+    (up-compare-goal BuildMillsSwitch c:== 1)
+    (up-pending-objects c: mill g:< BuildMillPendingCount)
+    =>
+    (up-build 0 place-normal c: mill)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 5)
+    (up-compare-goal BuildLumberCampSwitch c:== 1)
+    (up-pending-objects c: lumber-camp g:< BuildLumberCampPendingCount)
+    =>
+    (up-build 0 place-normal c: lumber-camp)
+)
+
+; -------------------------------------------------------------
+
+; -------------------------------------------------------------
+
+    ; Initialization Rules
+
+; Set AI Name
+(defrule
+    (up-compare-goal ExperimentNumber c:== 5)
+    =>
+    (up-change-name "Experiment 5")
+)
+
+; Set Initial Strategic Numbers
+(defrule
+    (up-compare-goal ExperimentNumber c:== 5)
+    =>
+    (set-strategic-number sn-enable-new-building-system 1)
+    (set-strategic-number sn-enable-training-queue 1)
+    (set-strategic-number sn-intelligent-gathering 1)
+    (set-strategic-number sn-cap-civilian-explorers 0)
+    (set-strategic-number sn-cap-civilian-gatherers 200)
+    (set-strategic-number sn-cap-civilian-builders 200)
+    (set-strategic-number sn-minimum-town-size 7)
+    (set-strategic-number sn-maximum-town-size 7)
+    (disable-self)
+)
+
+; -------------------------------------------------------------
+
+; Setup Scouting
+(defrule
+    (up-compare-goal ExperimentNumber c:== 5)
+    =>
+    (set-strategic-number sn-number-explore-groups 1)
+    (disable-self)
+)
+
+; -------------------------------------------------------------
+
+; -------------------------------------------------------------
+
+; Set Villager Gatherer Percentages
+(defrule
+    (up-compare-goal ExperimentNumber c:== 5)
+    =>
+    (set-strategic-number sn-wood-gatherer-percentage 0)
+    (set-strategic-number sn-food-gatherer-percentage 100)
+    (set-strategic-number sn-gold-gatherer-percentage 0)
+    (set-strategic-number sn-stone-gatherer-percentage 0)
+    (set-strategic-number sn-maximum-wood-drop-distance 5)
+    (set-strategic-number sn-maximum-food-drop-distance 5)
+    (set-strategic-number sn-maximum-hunt-drop-distance 10)
+    (set-strategic-number sn-maximum-gold-drop-distance 20)
+    (set-strategic-number sn-maximum-stone-drop-distance 5)
+    (disable-self)
+)
+
+; -------------------------------------------------------------
+
+    ; Start Initial Training Villagers
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 5)
+    =>
+    (up-modify-goal TrainVillagerPending c:= 2)
+    (up-modify-goal TrainVillagersSwitch c:= 1)
+    (disable-self)
+)
+
+; -------------------------------------------------------------
+
+    ; Build one house
+
+; Enable
+(defrule
+    (up-compare-goal ExperimentNumber c:== 5)
+    (up-object-type-count c: house == 0)
+    =>
+    (up-modify-goal BuildHousePendingCount c:= 1)
+    (up-modify-goal BuildHousesSwitch c:= 1)
+)
+
+; Assign Special Builders
+(defrule
+    (up-compare-goal ExperimentNumber c:== 5)
+    (up-object-type-count c: house == 0)
+    (up-pending-objects c: house g:== BuildHousePendingCount)
+    =>
+    (up-assign-builders c: house c: 3)
+)
+
+;Disable
+(defrule
+    (up-compare-goal ExperimentNumber c:== 5)
+    (up-object-type-count c: house == 0)
+    (up-pending-objects c: house g:== BuildHousePendingCount)
+    =>
+    (up-modify-goal BuildHousesSwitch c:= 0)
+)
+
+; -------------------------------------------------------------
+
+; -------------------------------------------------------------
+
+    ; Build two houses
+
+; Enable
+(defrule
+    (up-compare-goal ExperimentNumber c:== 5)
+    (up-object-type-count c: house == 1)
+    =>
+    (up-modify-goal BuildHousePendingCount c:= 2)
+    (up-modify-goal BuildHousesSwitch c:= 1)
+)
+
+; Assign 0 Special Builders for Houses
+(defrule
+    (up-compare-goal ExperimentNumber c:== 5)
+    (up-object-type-count c: house == 1)
+    (up-pending-objects c: house g:== BuildHousePendingCount)
+    =>
+    (up-assign-builders c: house c: 0)
+)
+
+;Disable
+(defrule
+    (up-compare-goal ExperimentNumber c:== 5)
+    (up-object-type-count c: house == 1)
+    (up-pending-objects c: house g:== BuildHousePendingCount)
+    =>
+    (up-modify-goal BuildHousesSwitch c:= 0)
+)
+
+; -------------------------------------------------------------
+
+; -------------------------------------------------------------
+
+    ; Manage Wood and Food Collection at 8-10 Villagers
+
+; At 8 Villagers, send one to Wood (1 Wood, 7 Food)
+(defrule
+    (up-compare-goal ExperimentNumber c:== 5)
+    (up-object-type-count c: villager == 8)
+    =>
+    (set-strategic-number sn-wood-gatherer-percentage 13) ; 1 Villager Wood
+    (set-strategic-number sn-food-gatherer-percentage 87) ; 7 Villagers Food
+    (disable-self)
+)
+
+; Force Drop Everything
+(defrule
+    (up-compare-goal ExperimentNumber c:== 5)
+    (up-object-type-count c: villager == 8)
+    =>
+    (up-drop-resources food c: 0)
+    (disable-self)
+)
+
+; At 9 Villagers, send one to Wood (2 Wood, 7 Food)
+(defrule
+    (up-compare-goal ExperimentNumber c:== 5)
+    (up-object-type-count c: villager == 9)
+    =>
+    (set-strategic-number sn-wood-gatherer-percentage 22) ; 2 Villager Wood
+    (set-strategic-number sn-food-gatherer-percentage 78) ; 7 Villagers Food
+    (disable-self)
+)
+
+; Force Drop Everything
+(defrule
+    (up-compare-goal ExperimentNumber c:== 5)
+    (up-object-type-count c: villager == 9)
+    =>
+    (up-drop-resources food c: 0)
+    (disable-self)
+)
+
+; At 10 Villagers, send one to Wood (3 Wood, 7 Food)
+(defrule
+    (up-compare-goal ExperimentNumber c:== 5)
+    (up-object-type-count c: villager == 10)
+    =>
+    (set-strategic-number sn-wood-gatherer-percentage 30) ; 3 Villager Wood
+    (set-strategic-number sn-food-gatherer-percentage 70) ; 7 Villagers Food
+    (disable-self)
+)
+
+; Force Drop Everything
+(defrule
+    (up-compare-goal ExperimentNumber c:== 5)
+    (up-object-type-count c: villager == 10)
+    =>
+    (up-drop-resources food c: 0)
+    (disable-self)
+)
+
+; -------------------------------------------------------------
+
+; -------------------------------------------------------------
+
+    ; Construct a mill when little (2 or less) sheep are left
+    ; with 10 or more villagers
+
+; Enable
+(defrule
+    (up-compare-goal ExperimentNumber c:== 5)
+    (up-object-type-count c: mill == 0)
+    (up-object-type-count c: villager >= 10)
+    (up-object-type-count c: 594 <= 2) ; Sheep
+    (up-object-type-count c: 833 <= 2) ; Turkey
+    =>
+    (up-modify-goal BuildMillPendingCount c:= 1)
+    (up-modify-goal BuildMillsSwitch c:= 1)
+)
+
+; Assign 3 Special Builders to the Mill
+(defrule
+    (up-compare-goal ExperimentNumber c:== 5)
+    (up-object-type-count c: mill == 0)
+    (up-object-type-count c: villager >= 10)
+    (or
+        (up-object-type-count c: 594 < 3)
+        (up-object-type-count c: 833 < 3)
+    )
+    =>
+    (up-assign-builders c: mill c: 3)
+)
+
+; Disable
+(defrule
+    (up-compare-goal ExperimentNumber c:== 5)
+    (up-object-type-count c: mill == 0)
+    (up-pending-objects c: mill g:== BuildMillPendingCount)
+    =>
+    (up-modify-goal BuildMillsSwitch c:= 0)
+)
+
+; -------------------------------------------------------------
+
+; -------------------------------------------------------------
+
+; At 11 Villagers
+(defrule
+    (up-compare-goal ExperimentNumber c:== 5)
+    (up-object-type-count c: villager == 11)
+    =>
+    (set-strategic-number sn-wood-gatherer-percentage 27) ; 3 Villagers Wood
+    (set-strategic-number sn-food-gatherer-percentage 64) ; 7 Villagers Food
+    (set-strategic-number sn-gold-gatherer-percentage 9) ; 1 Villager Gold
+    (disable-self)
+)
+
+; Force Drop Everything
+(defrule
+    (up-compare-goal ExperimentNumber c:== 5)
+    (up-object-type-count c: villager == 11)
+    =>
+    (up-drop-resources wood c: 0)
+    (up-drop-resources food c: 0)
+    (up-drop-resources gold c: 0)
+    (disable-self)
+)
+
+; At 12 Villagers
+(defrule
+    (up-compare-goal ExperimentNumber c:== 5)
+    (up-object-type-count c: villager == 12)
+    =>
+    (set-strategic-number sn-wood-gatherer-percentage 25) ; 3 Villagers Wood
+    (set-strategic-number sn-food-gatherer-percentage 58) ; 7 Villagers Food
+    (set-strategic-number sn-gold-gatherer-percentage 17) ; 2 Villagers Gold
+    (disable-self)
+)
+
+; Force Drop Everything
+(defrule
+    (up-compare-goal ExperimentNumber c:== 5)
+    (up-object-type-count c: villager == 12)
+    =>
+    (up-drop-resources wood c: 0)
+    (up-drop-resources food c: 0)
+    (up-drop-resources gold c: 0)
+    (disable-self)
+)
+
+; At 13 Villagers
+(defrule
+    (up-compare-goal ExperimentNumber c:== 5)
+    (up-object-type-count c: villager == 13)
+    =>
+    (set-strategic-number sn-wood-gatherer-percentage 23) ; 3 Villagers Wood
+    (set-strategic-number sn-food-gatherer-percentage 54) ; 7 Villagers Food
+    (set-strategic-number sn-gold-gatherer-percentage 23) ; 3 Villagers Gold
+    (disable-self)
+)
+
+; Force Drop Everything
+(defrule
+    (up-compare-goal ExperimentNumber c:== 5)
+    (up-object-type-count c: villager == 13)
+    =>
+    (up-drop-resources wood c: 0)
+    (up-drop-resources food c: 0)
+    (up-drop-resources gold c: 0)
+    (disable-self)
+)
+
+; At 14 Villagers
+(defrule
+    (up-compare-goal ExperimentNumber c:== 5)
+    (up-object-type-count c: villager == 14)
+    =>
+    (set-strategic-number sn-wood-gatherer-percentage 21) ; 3 Villagers Wood
+    (set-strategic-number sn-food-gatherer-percentage 57) ; 8 Villagers Food
+    (set-strategic-number sn-gold-gatherer-percentage 21) ; 3 Villagers Gold
+    (disable-self)
+)
+
+; Force Drop Everything
+(defrule
+    (up-compare-goal ExperimentNumber c:== 5)
+    (up-object-type-count c: villager == 14)
+    =>
+    (up-drop-resources wood c: 0)
+    (up-drop-resources food c: 0)
+    (up-drop-resources gold c: 0)
+    (disable-self)
+)
+
+; At 15 Villagers
+(defrule
+    (up-compare-goal ExperimentNumber c:== 5)
+    (up-object-type-count c: villager == 15)
+    =>
+    (set-strategic-number sn-wood-gatherer-percentage 20) ; 3 Villagers Wood
+    (set-strategic-number sn-food-gatherer-percentage 60) ; 9 Villagers Food
+    (set-strategic-number sn-gold-gatherer-percentage 20) ; 3 Villagers Gold
+    (disable-self)
+)
+
+; Force Drop Everything
+(defrule
+    (up-compare-goal ExperimentNumber c:== 5)
+    (up-object-type-count c: villager == 15)
+    =>
+    (up-drop-resources wood c: 0)
+    (up-drop-resources food c: 0)
+    (up-drop-resources gold c: 0)
+    (disable-self)
+)
+
+; At 16 Villagers
+(defrule
+    (up-compare-goal ExperimentNumber c:== 5)
+    (up-object-type-count c: villager == 16)
+    =>
+    (set-strategic-number sn-wood-gatherer-percentage 19) ; 3 Villagers Wood
+    (set-strategic-number sn-food-gatherer-percentage 62) ; 10 Villagers Food
+    (set-strategic-number sn-gold-gatherer-percentage 19) ; 3 Villagers Gold
+    (disable-self)
+)
+
+; Force Drop Everything
+(defrule
+    (up-compare-goal ExperimentNumber c:== 5)
+    (up-object-type-count c: villager == 16)
+    =>
+    (up-drop-resources wood c: 0)
+    (up-drop-resources food c: 0)
+    (up-drop-resources gold c: 0)
+    (disable-self)
+)
+
+; At 17 Villagers
+(defrule
+    (up-compare-goal ExperimentNumber c:== 5)
+    (up-object-type-count c: villager == 17)
+    =>
+    (set-strategic-number sn-wood-gatherer-percentage 18) ; 3 Villagers Wood
+    (set-strategic-number sn-food-gatherer-percentage 65) ; 11 Villagers Food
+    (set-strategic-number sn-gold-gatherer-percentage 17) ; 3 Villagers Gold
+    (disable-self)
+)
+
+; Force Drop Everything
+(defrule
+    (up-compare-goal ExperimentNumber c:== 5)
+    (up-object-type-count c: villager == 17)
+    =>
+    (up-drop-resources wood c: 0)
+    (up-drop-resources food c: 0)
+    (up-drop-resources gold c: 0)
+    (disable-self)
+)
+
+; -------------------------------------------------------------
+
+; -------------------------------------------------------------
+
+    ; Disable Villager Training at 16 (17) Villagers
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 5)
+    (up-object-type-count-total c: villager == 17)
+    =>
+    (up-modify-goal TrainVillagersSwitch c:= 0)
+    (disable-self)
+)
+
+; -------------------------------------------------------------
+
+; -------------------------------------------------------------
+
+    ; Build Lumber Camp
+
+; Enable
+(defrule
+    (up-compare-goal ExperimentNumber c:== 5)
+    (up-object-type-count c: lumber-camp == 0)
+    (up-object-type-count-total c: villager == 17)
+    =>
+    (up-modify-goal BuildLumberCampPendingCount c:= 1)
+    (up-modify-goal BuildLumberCampSwitch c:= 1)
+)
+
+; Assign 3 Special Villagers to the Lumber Camp
+(defrule
+    (up-compare-goal ExperimentNumber c:== 5)
+    (up-object-type-count c: lumber-camp == 0)
+    (up-object-type-count-total c: villager == 17)
+    =>
+    (up-assign-builders c: lumber-camp c: 3)
+)
+
+; Disable
+(defrule
+    (up-compare-goal ExperimentNumber c:== 5)
+    (up-object-type-count c: lumber-camp == 0)
+    (up-pending-objects c: lumber-camp g:== BuildLumberCampPendingCount)
+    =>
+    (up-modify-goal BuildLumberCampSwitch c:= 0)
+)
+
+; -------------------------------------------------------------
+
+; -------------------------------------------------------------
+
+    ; Research Feudal Age
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 5)
+    (up-object-type-count c: villager == 17)
+    =>
+    (up-research 0 c: feudal-age)
+)
+
+; -------------------------------------------------------------
+
+    ; Build Farms once hitting Feudal Age
+
+; Enable
+;(defrule
+    
+;)
+
+; -------------------------------------------------------------
+
+; -------------------------------------------------------------
+
+    ; 
+
+
+
+; -------------------------------------------------------------

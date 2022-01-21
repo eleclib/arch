@@ -1,0 +1,8 @@
+#load-if-defined QUARANTINE
+(defrule
+    (true)
+    =>
+    (set-goal my-strategy strategy-eagles)
+    (disable-self)
+)
+#end-if

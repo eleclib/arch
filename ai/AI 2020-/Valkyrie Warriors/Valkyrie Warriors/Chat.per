@@ -1,0 +1,47 @@
+
+(defrule
+    (taunt-detected any-ally 170)
+    =>
+    (acknowledge-taunt this-any-ally 170)
+    (chat-to-player this-any-ally "Strategy Selection")
+    (chat-to-player this-any-ally "171) Monks")
+    (chat-to-player this-any-ally "172) Eagles")
+    (chat-to-player this-any-ally "173) Monks and Eagles")
+    (chat-to-player this-any-ally "174) Monks and Siege")
+    (chat-to-player this-any-ally "175) Eagles and Siege")
+)
+
+(defrule
+    (taunt-detected any-ally 171)
+    =>
+    (acknowledge-taunt this-any-ally 171)
+    (set-goal my-strategy strategy-monks)
+)
+
+(defrule
+    (taunt-detected any-ally 172)
+    =>
+    (acknowledge-taunt this-any-ally 172)
+    (set-goal my-strategy strategy-eagles)
+)
+
+(defrule
+    (taunt-detected any-ally 173)
+    =>
+    (acknowledge-taunt this-any-ally 173)
+    (set-goal my-strategy strategy-monks-eagles)
+)
+
+(defrule
+    (taunt-detected any-ally 174)
+    =>
+    (acknowledge-taunt this-any-ally 174)
+    (set-goal my-strategy strategy-monks-siege)
+)
+
+(defrule
+    (taunt-detected any-ally 175)
+    =>
+    (acknowledge-taunt this-any-ally 175)
+    (set-goal my-strategy strategy-eagles-siege)
+)

@@ -1,0 +1,21 @@
+
+
+
+(defrule
+    (current-age == dark-age)
+    =>
+    (up-research 0 c: ri-loom)
+)
+
+
+(defrule
+
+    (current-age == dark-age)
+    (up-can-research 0 c: feudal-age)
+=>
+    (up-research 0 c: feudal-age)
+    (disable-self)
+)
+
+
+

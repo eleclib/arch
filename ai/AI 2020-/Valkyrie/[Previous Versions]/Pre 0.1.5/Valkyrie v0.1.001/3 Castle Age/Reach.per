@@ -1,0 +1,21 @@
+
+(defrule
+    (current-age == castle-age)
+    (up-gaia-type-count c: gold < 5)
+    (up-object-type-count-total c: mining-camp < CASTLE_REACH_CAMPS)
+    (resource-found gold)
+    =>
+    (up-modify-sn sn-camp-max-distance c:+ 15)
+    (up-build place-normal 0 c: mining-camp)
+)
+
+
+(defrule
+    (current-age == castle-age)
+    (up-gaia-type-count c: stone < 5)
+    (up-object-type-count-total c: mining-camp < CASTLE_REACH_CAMPS)
+    (resource-found stone)
+    =>
+    (up-modify-sn sn-camp-max-distance c:+ 15)
+    (up-build place-normal 0 c: mining-camp)
+)

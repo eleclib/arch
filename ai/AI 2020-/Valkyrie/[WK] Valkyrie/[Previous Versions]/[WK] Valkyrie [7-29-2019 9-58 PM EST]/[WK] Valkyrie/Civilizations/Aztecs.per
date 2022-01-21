@@ -1,0 +1,48 @@
+
+#load-if-defined AZTEC-CIV
+
+(defconst pocket-castle-unit eagle-warrior-line)
+
+; (defrule
+;     (up-research-status c: castle-age >= research-pending)
+;     (can-build barracks)
+;     (building-type-count barracks < 5)
+;     (building-type-count-total lumber-camp >= 1)
+;     (up-pending-objects c: barracks < 1)
+;     =>
+;     (build barracks)
+; )
+
+; (defrule
+;     (current-age == feudal-age)
+;     (can-build blacksmith)
+;     (or(building-type-count-total archery-range >= 2)
+;     (building-type-count-total barracks >= 2))
+;     (building-type-count blacksmith < 1)
+;     (up-pending-objects c: blacksmith < 1)
+;     =>
+;     (build blacksmith)
+; )
+
+; (defrule
+;     (current-age >= castle-age)
+;     (can-research ri-eagle-warrior)
+;     =>
+;     (research ri-eagle-warrior)
+; )
+
+; (defrule
+;     (current-age >= castle-age)
+;     (can-research ri-elite-eagle-warrior)
+;     =>
+;     (research ri-elite-eagle-warrior)
+; )
+
+; (defrule
+;     (current-age == imperial-age)
+;     (can-research ri-garland-wars)
+;     =>
+;     (research ri-garland-wars)
+; )
+
+#end-if

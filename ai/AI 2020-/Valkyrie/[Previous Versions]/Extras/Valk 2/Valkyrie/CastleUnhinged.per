@@ -1,0 +1,198 @@
+
+(defrule
+    (current-age == castle-age)
+    =>
+    ;(up-modify-sn sn-wood-gatherer-percentage c:- 11)
+    (up-modify-sn sn-food-gatherer-percentage c:- 21)
+    (up-modify-sn sn-gold-gatherer-percentage c:+ 13)
+    (up-modify-sn sn-stone-gatherer-percentage c:+ 10)
+    (disable-self)
+)
+
+(defrule
+    (current-age == castle-age)
+    (goal goal-castle-strategy castle-unhinged)
+    (unit-type-count-total villager < 90)
+    =>
+    (up-modify-escrow food c:+ 50)
+)
+
+(defrule
+    (current-age == castle-age)
+    (goal goal-castle-strategy castle-unhinged)
+    (unit-type-count-total villager < 90)
+    (up-can-train goal-using-escrow c: villager)
+    =>
+    (up-train goal-using-escrow c: villager)
+)
+
+(defrule
+    (current-age >= castle-age)
+    (goal goal-castle-strategy castle-unhinged)
+    (building-type-count-total town-center < 3)
+    =>
+    (up-modify-escrow wood c:+ 275)
+    (up-modify-escrow stone c:+ 100)
+)
+
+(defrule
+    (current-age >= castle-age)
+    (goal goal-castle-strategy castle-unhinged)
+    (building-type-count-total town-center < 3)
+    (up-can-build goal-using-escrow c: town-center)
+    =>
+    (up-build place-normal goal-using-escrow c: town-center)
+)
+
+(defrule
+    (current-age >= castle-age)
+    (goal goal-castle-strategy castle-unhinged)
+    (building-type-count-total barracks < 3)
+    (can-build barracks)
+    =>
+    (build barracks)
+)
+
+(defrule
+    (current-age == castle-age)
+    (goal goal-castle-strategy castle-unhinged)
+    (building-type-count-total archery-range < 3)
+    (can-build archery-range)
+    =>
+    (build archery-range)
+)
+
+(defrule
+    (current-age == castle-age)
+    (goal goal-castle-strategy castle-unhinged)
+    (building-type-count-total stable < 3)
+    (can-build stable)
+    =>
+    (build stable)
+)
+
+(defrule
+    (current-age == castle-age)
+    (goal goal-castle-strategy castle-unhinged)
+    (building-type-count-total siege-workshop < 3)
+    (can-build siege-workshop)
+    =>
+    (build siege-workshop)
+)
+
+(defrule
+    (current-age == castle-age)
+    (goal goal-castle-strategy castle-unhinged)
+    (building-type-count-total monastery < 3)
+    (can-build monastery)
+    =>
+    (build monastery)
+)
+
+(defrule
+    (current-age == castle-age)
+    (goal goal-castle-strategy castle-unhinged)
+    (current-age-time < 1800)
+    (can-train spearman-line)
+    =>
+    (train spearman-line)
+)
+
+(defrule
+    (current-age == castle-age)
+    (goal goal-castle-strategy castle-unhinged)
+    (current-age-time < 1800)
+    (can-train skirmisher-line)
+    =>
+    (train skirmisher-line)
+)
+
+(defrule
+    (current-age == castle-age)
+    (goal goal-castle-strategy castle-unhinged)
+    (current-age-time < 1800)
+    (can-train archer-line)
+    =>
+    (train archer-line)
+)
+
+(defrule
+    (current-age == castle-age)
+    (goal goal-castle-strategy castle-unhinged)
+    (current-age-time < 1800)
+    (can-train cavalry-archer-line)
+    =>
+    (train cavalry-archer-line)
+)
+
+(defrule
+    (current-age == castle-age)
+    (goal goal-castle-strategy castle-unhinged)
+    (current-age-time < 1800)
+    (can-train scout-cavalry-line)
+    =>
+    (train scout-cavalry-line)
+)
+
+(defrule
+    (current-age == castle-age)
+    (goal goal-castle-strategy castle-unhinged)
+    (current-age-time < 1800)
+    (can-train knight-line)
+    =>
+    (train knight-line)
+)
+
+(defrule
+    (current-age == castle-age)
+    (goal goal-castle-strategy castle-unhinged)
+    (current-age-time < 1800)
+    (can-train camel-line)
+    =>
+    (train camel-line)
+)
+
+(defrule
+    (current-age == castle-age)
+    (goal goal-castle-strategy castle-unhinged)
+    (current-age-time < 1800)
+    (can-train militiaman-line)
+    =>
+    (train militiaman-line)
+)
+
+(defrule
+    (current-age == castle-age)
+    (goal goal-castle-strategy castle-unhinged)
+    (current-age-time < 1800)
+    (can-train battering-ram-line)
+    =>
+    (train battering-ram-line)
+)
+
+(defrule
+    (current-age == castle-age)
+    (goal goal-castle-strategy castle-unhinged)
+    (current-age-time < 1800)
+    (can-train mangonel-line)
+    =>
+    (train mangonel-line)
+)
+
+(defrule
+    (current-age == castle-age)
+    (goal goal-castle-strategy castle-unhinged)
+    (current-age-time < 1800)
+    (can-train scorpion-line)
+    =>
+    (train scorpion-line)
+)
+
+(defrule
+    (current-age == castle-age)
+    (goal goal-castle-strategy castle-unhinged)
+    (current-age-time < 1800)
+    (can-train monk)
+    =>
+    (train monk)
+)

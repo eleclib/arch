@@ -1,0 +1,64 @@
+
+(defrule
+    (not
+        (civ-selected chinese)
+    )
+    (current-age == dark-age)
+    (up-can-build 0 c: house)
+    (up-pending-objects c: house < 1)
+    (housing-headroom < 3)
+=>
+    (up-set-placement-data my-player-number -1 c: -3)
+    (up-build place-control 0 c: house)
+)
+
+(defrule
+    (civ-selected chinese)
+    (current-age == dark-age)
+    (up-can-build 0 c: house)
+    (up-pending-objects c: house < 1)
+    (housing-headroom < 3)
+=>
+    (up-set-placement-data my-player-number -1 c: -3)
+    (up-build place-control 0 c: house)
+)
+
+(defrule
+    (current-age == dark-age)
+    (or
+        (civ-selected hun)
+        (up-object-type-count c: house >= 2)
+    )
+    (up-object-type-count-total c: mill < 1)
+    (up-pending-objects c: mill < 1)
+=>
+    (up-build place-normal 0 c: mill)
+)
+
+(defrule
+    (current-age == dark-age)
+    (up-object-type-count-total c: mill >= 1)
+    (up-object-type-count-total c: lumber-camp < 2)
+    (up-pending-objects c: lumber-camp < 1)
+=>
+    (up-build place-normal 0 c: lumber-camp)
+)
+
+(defrule
+    (current-age == dark-age)
+    (up-object-type-count-total c: lumber-camp >= 1)
+    (idle-farm-count == 0)
+=>
+    (up-set-placement-data my-player-number -1 c: -3)
+    (up-build place-control 0 c: farm)
+)
+
+(defrule
+    (current-age == dark-age)
+    (up-research-status c: feudal-age == research-pending)
+    (up-object-type-count-total c: barracks < 1)
+    (up-pending-objects c: barracks < 1)
+=>
+    (up-set-placement-data my-player-number -1 c: -3)
+    (up-build place-control 0 c: barracks)
+)

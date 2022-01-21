@@ -1,0 +1,8 @@
+
+(defrule
+    (current-age == imperial-age)
+    (up-can-train 0 c: villager)
+    (up-object-type-count-total c: villager < 100)
+=>
+    (up-train 0 c: villager)
+)

@@ -1,0 +1,1328 @@
+
+; Valkyrie Reborn
+; /ValkyrieReborn/Main.per
+
+
+; Definitive Edition only, hence "Reborn"
+
+; We are assuming we have:
+; 200 pop limit
+; Some Arabia Map
+; Conquest
+
+
+
+; Win as fast as possible before the enemy overwhelms.
+; Adapt to the situations and be proactive.
+
+
+; We are Vikings, our true Nordic Roots and our Valkyrie.
+
+
+
+
+
+; Counter-Strategy
+; 1) Build everything behind the base (for DE AI)
+
+
+
+
+
+
+
+
+; Perfect Dark Age
+; We're doing full DUC.
+
+; DE/UP/PRE Constants
+
+(defconst object-data-distance 44)
+(defconst status-pending 0)
+(defconst list-active 0)
+(defconst object-data-target-id 23)
+(defconst explored-no 0)
+(defconst object-data-player 20)
+
+; Numerical Constants
+
+(defconst cn-dark-vill-max-distance 5) ; 20 = Test
+(defconst cn-no-escrow-use 0)
+(defconst cn-dark-initial-houses-to-build-start 2) ; 3 is bugged
+(defconst cn-dark-max-house-builders 2)
+; let the third+ villager(s) idle until housing construction is complete
+
+
+(defconst cn-no-action -1)
+(defconst cn-no-target -1)
+(defconst cn-dark-sheep-to-bring-to-tc 16)
+(defconst cn-dark-exclude-sheep-within-tc-radius-of 4)
+(defconst cn-dark-exclude-sheep-outside-tc-radius-of 24)
+(defconst cn-ignore-distance -1)
+(defconst cn-sheep-food-left-threshold-clear-id 1)
+(defconst cn-dark-age-static-villager-total 22)
+(defconst cn-dark-sheep-distance-to-kill-point 1)
+
+
+(defconst cn-dark-scout-sight-range 5) ; (4) + 1 for unexplored tile -> so 5
+
+
+(defconst cn-dead-category 30)
+
+; Goal Constants
+
+(defconst gl-dark-vill-x 41)
+(defconst gl-dark-vill-z 42) ; Instead of y
+
+(defconst gl-dark-house-x 43)
+(defconst gl-dark-house-z 44) ; Instead of Y
+
+(defconst gl-dark-position-x 45)
+(defconst gl-dark-position-z 46)
+
+(defconst gl-dark-scout-x 47)
+(defconst gl-dark-scout-z 48)
+
+(defconst gl-search-state-1a 3)
+(defconst gl-search-state-1b 4)
+(defconst gl-search-state-1c 5)
+(defconst gl-search-state-1d 6)
+
+(defconst gl-dark-vill-iterator 7)
+(defconst gl-dark-goal-ptr 8)
+
+(defconst gl-dark-vill-1-distance-to-target 9)
+(defconst gl-dark-vill-2-distance-to-target 10)
+(defconst gl-dark-vill-3-distance-to-target 11)
+(defconst gl-dark-vill-4-distance-to-target 12)
+(defconst gl-dark-vill-5-distance-to-target 13)
+(defconst gl-dark-vill-6-distance-to-target 14)
+(defconst gl-dark-vill-7-distance-to-target 15)
+
+(defconst gl-dark-get-object-data 16)
+
+(defconst gl-dark-vill-lowest-distance 17)
+
+(defconst gl-dark-get-indirect-goal 18)
+
+(defconst gl-dark-new-house-foundations-built 19)
+(defconst gl-dark-house-foundations-built 20)
+
+
+(defconst gl-dark-vill-iterator-pted 21)
+(defconst gl-dark-vill-target-reference 22)
+
+(defconst gl-dark-house-iterator 23)
+
+
+
+(defconst gl-dark-house-foundations-found 24)
+
+(defconst gl-dark-scout-ordered-to-sheep 25)
+
+(defconst gl-all-scout-sent-to-explore 26)
+(defconst gl-all-scout-id 27)
+
+(defconst gl-dark-house-id 28)
+
+(defconst gl-dark-sheep-iterator 29)
+
+(defconst gl-dark-sheep-id 30)
+(defconst gl-dark-target-sheep-id 31)
+
+
+
+(defconst gl-for-1-iterator 32)
+(defconst gl-for-2-iterator 33)
+
+(defconst gl-dark-scout-sight-mul-result 34)
+
+
+
+(defconst gl-dark-scout-original-x 49)
+(defconst gl-dark-scout-original-z 50)
+
+(defconst gl-dark-scout-target-x 51)
+(defconst gl-dark-scout-target-z 52)
+
+
+(defconst gl-dark-scout-target-array-x-1 53)
+(defconst gl-dark-scout-target-array-z-1 54)
+(defconst gl-dark-scout-target-array-x-2 55)
+(defconst gl-dark-scout-target-array-z-2 56)
+(defconst gl-dark-scout-target-array-x-3 57)
+(defconst gl-dark-scout-target-array-z-3 58)
+(defconst gl-dark-scout-target-array-x-4 59)
+(defconst gl-dark-scout-target-array-z-4 60)
+(defconst gl-dark-scout-target-array-x-5 61)
+(defconst gl-dark-scout-target-array-z-5 62)
+(defconst gl-dark-scout-target-array-x-6 63)
+(defconst gl-dark-scout-target-array-z-6 64)
+(defconst gl-dark-scout-target-array-x-7 65)
+(defconst gl-dark-scout-target-array-z-7 66)
+(defconst gl-dark-scout-target-array-x-8 67)
+(defconst gl-dark-scout-target-array-z-8 68)
+
+
+
+
+
+(defconst gl-dark-math-1 35)
+(defconst gl-dark-math-2 36)
+
+(defconst gl-dark-iterator 37)
+
+
+(defconst gl-dark-scout-unexplored-points-count 38)
+
+
+
+(defconst gl-random-number 39)
+
+
+; Only room for one more (40) - NO MORE ROOM! Start from upper goals now..
+(defconst gl-dark-scout-id 40)
+
+
+(defconst gl-dark-placed-initial-house-foundations 100)
+(defconst gl-dark-assigned-initial-vills-to-houses 101)
+(defconst gl-dark-built-initial-houses 102)
+
+
+
+; Rename Myself
+
+(defrule
+    (true)
+    =>
+    (up-change-name "Odin")
+    (disable-self)
+)
+
+; Disable all automatic villager control.
+; Disable all construction too.
+
+(defrule
+    (true)
+    =>
+    (set-strategic-number sn-cap-civilian-builders -1)
+    (set-strategic-number sn-cap-civilian-gatherers 0)
+    (set-strategic-number sn-cap-civilian-explorers 0)
+    (set-strategic-number sn-initial-exploration-required 0)
+    ;(set-strategic-number sn-percent-civilian-gatherers 0)
+    (set-strategic-number sn-maximum-food-drop-distance -2)
+    (set-strategic-number sn-maximum-gold-drop-distance -2)
+    (set-strategic-number sn-maximum-hunt-drop-distance -2)
+    (set-strategic-number sn-maximum-stone-drop-distance -2)
+    (set-strategic-number sn-maximum-wood-drop-distance -2)
+    ;(set-strategic-number sn-food-dropsite-distance -2)
+    ;(set-strategic-number sn-gold-dropsite-distance -2)
+    ;(set-strategic-number sn-hunt-dropsite-distance -2)
+    ;(set-strategic-number sn-stone-dropsite-distance -2)
+    ;(set-strategic-number sn-wood-dropsite-distance -2)
+
+    (set-strategic-number sn-disable-villager-garrison 3)
+    (disable-self)
+)
+
+; Init Goals to Zero
+
+(defrule
+    (true)
+    =>
+    (set-goal gl-dark-built-initial-houses 0)
+    (set-goal gl-dark-placed-initial-house-foundations 0)
+    (set-goal gl-dark-house-foundations-built 0)
+    (disable-self)
+)
+
+
+
+; Reset all target-id goals to prevent DUC leaks
+;(defrule
+;    (true)
+;    =>
+;    (set-goal gl-dark-house-id -1)
+;    (set-goal gl-dark-target-sheep-id -1)
+;)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+; Lets begin basic villager detection of positions.
+
+(defrule
+    (goal gl-dark-built-initial-houses 1)
+    =>
+    (up-jump-rule 39)
+)
+
+(defrule
+    (goal gl-dark-built-initial-houses 0)
+    (goal gl-dark-placed-initial-house-foundations 1)
+    =>
+
+    ; Debug
+    ;(chat-to-all "Skipping 18 Rules")
+
+    (up-jump-rule 24) ; Update.
+    ; Skip rules if we are already assigned but not built.
+)
+
+    (defrule
+        (true)
+        =>
+        (up-full-reset-search)
+        (up-find-local c: villager-class c: 240) ; Find all villagers.
+        (up-get-search-state gl-search-state-1a)
+    )
+
+    ; Debug
+    ;(X defrule
+    ;    (true)
+    ;    =>
+    ;    (up-chat-data-to-all "Vills: %d" g: gl-search-state-1a)
+    ;)
+
+    ; We want two houses to be built first and foremost.
+    ; We take one villager and check its distance to the other ones.
+    ; Figuring out the rest...
+    ; If one is close to the other (5 tiles), build house there.
+    ; Else build one house and assign others to second house.
+
+    ; We always start with at least 3 villagers no matter what.
+
+    (defrule
+        (true)
+        =>
+        (set-goal gl-dark-vill-iterator 0)
+        (set-goal gl-dark-vill-target-reference 0)
+        (set-goal gl-dark-goal-ptr gl-dark-vill-1-distance-to-target)
+    )
+
+    (defrule
+        ;(true)
+        (up-compare-goal gl-dark-vill-target-reference g:< gl-search-state-1a)
+        =>
+
+        ; Debug
+        ;(up-chat-data-to-all "Setting Target Point For Villager %d" g: gl-dark-vill-target-reference)
+
+        ; Get and Set Target Point for First Villager.
+        (up-set-target-object search-local g: gl-dark-vill-target-reference)
+        (up-get-object-data object-data-point-x gl-dark-vill-x)
+        (up-get-object-data object-data-point-y gl-dark-vill-z)
+        (up-set-target-point gl-dark-vill-x)
+        ;(up-modify-goal gl-dark-vill-iterator c:+ 1)
+        (up-modify-goal gl-dark-vill-iterator-pted g:= gl-dark-vill-target-reference)
+        (set-goal gl-dark-vill-iterator 0)
+    )
+
+    (defrule
+        (up-compare-goal gl-dark-vill-iterator g:>= gl-search-state-1a)
+        =>
+        (up-jump-rule 2) ; Update.
+    )
+
+        (defrule
+            ;(true)
+            (up-compare-goal gl-dark-vill-iterator g:!= gl-dark-vill-target-reference)
+            =>
+
+           
+
+            ; Get Distance of Current Villager to First Villager.
+            (up-set-target-object search-local g: gl-dark-vill-iterator)
+            (up-get-object-data object-data-distance gl-dark-get-object-data)
+            (up-set-indirect-goal g: gl-dark-goal-ptr g: gl-dark-get-object-data)
+
+            ; Debug
+
+            ;(up-chat-data-to-all "Distance of Current Villager to First: %d" g: gl-dark-get-object-data)
+
+            ; Increment Villager Iterator, Goal Pointer and Jump Up.
+            (up-modify-goal gl-dark-vill-iterator c:+ 1)
+            (up-modify-goal gl-dark-goal-ptr c:+ 1)
+            (up-jump-rule -2) ; Update.
+        )
+
+        (defrule
+            (true)
+            =>
+            (up-modify-goal gl-dark-vill-iterator c:+ 1)
+            (up-jump-rule -3)
+        )
+
+    ; End of Loop
+
+    ; Now Get and Check Lowest Distances
+
+    (defrule
+        (true)
+        =>
+        (set-goal gl-dark-vill-iterator 0)
+        (set-goal gl-dark-goal-ptr gl-dark-vill-1-distance-to-target)
+        ;(set-goal gl-dark-vill-lowest-distance -1)
+    )
+
+    (defrule
+        (up-compare-goal gl-dark-vill-iterator g:>= gl-search-state-1a)
+        =>
+
+        ; Debug
+
+        ;(up-chat-data-to-all "gl-dark-vill-iterator >= %d" g: gl-search-state-1a)
+
+        (up-jump-rule 4) ; Update.
+    )
+
+        (defrule
+            (true)
+            =>
+            (up-get-indirect-goal g: gl-dark-goal-ptr gl-dark-get-indirect-goal)
+        )
+
+        (defrule
+            (up-compare-goal gl-dark-vill-lowest-distance == -1)
+            =>
+            (up-modify-goal gl-dark-vill-lowest-distance g:= gl-dark-get-indirect-goal)
+            (up-jump-rule 1)
+        )
+
+        (defrule
+            (up-compare-goal gl-dark-get-indirect-goal g:< gl-dark-vill-lowest-distance)
+            =>
+            (up-modify-goal gl-dark-vill-lowest-distance g:= gl-dark-get-indirect-goal)
+        )
+
+        (defrule
+            (true)
+            =>
+            (up-modify-goal gl-dark-goal-ptr c:+ 1)
+            (up-modify-goal gl-dark-vill-iterator c:+ 1)
+
+            ;(up-chat-data-to-all "Iterating Distances [%d]" g: gl-dark-vill-iterator)
+
+            (up-jump-rule -5)
+        )
+
+    ; End of Distance Info Gathering
+
+    (defrule
+        (true)
+        =>
+        (set-goal gl-dark-new-house-foundations-built 0)
+    )
+
+    (defrule
+        (up-compare-goal gl-dark-vill-lowest-distance > cn-dark-vill-max-distance)
+        
+        (up-can-build-line cn-no-escrow-use gl-dark-vill-x c: house)
+        =>
+        (up-build-line gl-dark-vill-x gl-dark-vill-x c: house)
+        (up-modify-goal gl-dark-new-house-foundations-built c:+ 1)
+        (up-jump-rule 1) ; Update.
+    )
+
+    (defrule
+        (up-can-build-line cn-no-escrow-use gl-dark-vill-x c: house)
+        =>
+        (up-build-line gl-dark-vill-x gl-dark-vill-x c: house)
+        (up-modify-goal gl-dark-new-house-foundations-built c:+ 1)
+    )
+
+    (defrule
+        (up-compare-goal gl-dark-new-house-foundations-built > 0)
+        =>
+        (up-modify-goal gl-dark-house-foundations-built g:+ gl-dark-new-house-foundations-built)
+        (up-jump-rule 1) ; Update.
+    )
+
+    (defrule
+        (up-compare-goal gl-dark-vill-target-reference g:< gl-search-state-1a)
+        =>
+        (up-modify-goal gl-dark-vill-target-reference g:= gl-dark-vill-iterator-pted)
+        (up-modify-goal gl-dark-vill-target-reference c:+ 1)
+        (up-jump-rule -15) ; Jump Far Up Here?
+    )
+
+    ; End of Placing Foundations
+
+    (defrule
+        ; Set Finished Assigning Vars to Prevent ReLoops.
+        ;(up-pending-objects c: house >= cn-dark-initial-houses-to-build-start)
+        (up-compare-goal gl-dark-house-foundations-built >= cn-dark-initial-houses-to-build-start)
+        ; Kinda iffy about this set of conidions (double purpose)
+        =>
+        (set-goal gl-dark-placed-initial-house-foundations 1)
+    )
+
+    ; Now Assign Villagers to Buildings
+    ; We know two+ villagers are directly on top of their respective house foundations
+
+    (defrule
+        (goal gl-dark-placed-initial-house-foundations 1)
+        =>
+        (up-full-reset-search)
+        (up-filter-status c: status-pending c: list-active)
+        (up-find-status-local c: house c: cn-dark-initial-houses-to-build-start)
+        (up-get-search-state gl-search-state-1a)
+    )
+
+    (defrule
+        (true)
+        =>
+        (set-goal gl-dark-house-iterator 0)
+        (up-modify-goal gl-dark-house-foundations-found g:= gl-search-state-1a)
+    )
+
+    (defrule
+        (up-pending-objects c: house == cn-dark-initial-houses-to-build-start)
+        (goal gl-dark-assigned-initial-vills-to-houses 1)
+        =>
+        (up-jump-rule 3)
+    )
+
+    (defrule
+        (up-compare-goal gl-dark-house-iterator >= gl-dark-house-foundations-found)
+        =>
+        (up-jump-rule 2) ; Update.
+    )
+
+        (defrule
+            (true)
+            =>
+            (up-set-target-object search-local g: gl-dark-house-iterator)
+            (up-get-object-data object-data-point-x gl-dark-house-x)
+            (up-get-object-data object-data-point-y gl-dark-house-z)
+            (up-set-target-point gl-dark-house-x)
+
+            (up-create-group 0 gl-search-state-1a c: 0)
+        )
+
+        ; Assign Villager(s) to Build This House
+
+        (defrule
+            (true)
+            =>
+            (up-full-reset-search)
+            (up-filter-distance c: cn-ignore-distance c: cn-dark-vill-max-distance)
+            (up-find-local c: villager-class c: cn-dark-max-house-builders)
+            (up-set-group search-remote c: 0)
+            (up-target-objects 0 action-default -1 -1)
+
+            (up-modify-goal gl-dark-house-iterator c:+ 1)
+            (up-jump-rule -3)
+        )
+
+
+
+
+
+    ; Consistently Check if they are all assigned
+
+    (defrule
+        (true)
+        =>
+        (up-full-reset-search)
+        (up-filter-status c: status-pending c: list-active)
+        (up-find-status-local c: house c: cn-dark-initial-houses-to-build-start)
+        (up-get-search-state gl-search-state-1a)
+    )
+
+    (defrule
+        (true)
+        =>
+        (set-goal gl-dark-house-iterator 0)
+        (up-modify-goal gl-dark-house-foundations-found g:= gl-search-state-1a)
+    )
+
+    (defrule
+        (up-compare-goal gl-dark-house-foundations-found == 0)
+        =>
+        (up-jump-rule 10) ; Update.
+        ; Exclude the last rule with the house built check
+    )
+
+    (defrule
+        (up-compare-goal gl-dark-house-iterator g:>= gl-dark-house-foundations-found)
+        =>
+        (up-jump-rule 7) ; Update.
+    )
+
+        (defrule
+            (true)
+            =>
+            (up-set-target-object search-local g: gl-dark-house-iterator)
+            (up-get-object-data object-data-point-x gl-dark-house-x)
+            (up-get-object-data object-data-point-y gl-dark-house-z)
+            (up-set-target-point gl-dark-house-x)
+
+            (up-get-object-data object-data-id gl-dark-house-id)
+
+            (up-create-group 0 gl-search-state-1a c: 0)
+        )
+
+        ; Check if villagers are not assigned when they should be.
+        ; Then Reassign if there are assigned idle villagers not doing their job.
+
+        (defrule
+            (true)
+            =>
+            (up-full-reset-search)
+            (up-filter-distance c: cn-ignore-distance c: cn-dark-vill-max-distance)
+            (up-find-local c: villager-class c: cn-dark-max-house-builders)
+            ;(up-set-group search-remote c: 0)
+            ;(up-target-objects 0 action-default -1 -1)
+
+            (up-get-search-state gl-search-state-1a)
+        )
+
+        (defrule
+            (true)
+            =>
+            (set-goal gl-dark-vill-iterator 0)
+        )
+
+        (defrule
+            (up-compare-goal gl-dark-vill-iterator >= cn-dark-max-house-builders)
+            =>
+            (up-jump-rule 2) ; Update.
+        )
+
+            (defrule
+                (up-set-target-object search-local g: gl-dark-vill-iterator)
+                (up-object-data object-data-action == cn-no-action)
+                (up-set-target-by-id g: gl-dark-house-id)     
+                =>
+                (up-target-objects 1 action-default -1 -1)
+            )
+
+            (defrule
+                (true)
+                =>
+                (up-modify-goal gl-dark-vill-iterator c:+ 1)
+                (up-jump-rule -3) ; Update.
+            )
+
+        (defrule
+            (true)
+            =>
+            (up-modify-goal gl-dark-house-iterator c:+ 1)
+            (up-jump-rule -8) ; Update.
+        )
+
+
+    (defrule
+        (up-pending-objects c: house == cn-dark-initial-houses-to-build-start)
+        
+        =>
+        (set-goal gl-dark-assigned-initial-vills-to-houses 1)
+        (up-jump-rule 1)
+    )
+
+    (defrule
+        (true)
+        =>
+        (set-goal gl-dark-assigned-initial-vills-to-houses 0)
+    )
+
+
+
+
+
+
+
+
+; Should be outside of all loops too
+
+    (defrule
+        (up-pending-objects c: house == 0)
+        (building-type-count house == cn-dark-initial-houses-to-build-start)
+        =>
+        (set-goal gl-dark-built-initial-houses 1)
+    ;    (set-goal gl-dark-house-foundations-built 1)
+    ;    (set-goal gl-dark-placed-initial-house-foundations 1)
+    )
+
+
+
+
+
+; Out of All Loops
+
+
+
+
+
+; Sheep Targeting with Scout
+
+(defrule
+    (current-age > dark-age)
+    =>
+    (up-jump-rule 4)
+)
+
+(defrule
+    (true)
+    =>
+    (up-full-reset-search)
+    (set-strategic-number sn-focus-player-number 0)
+)
+
+(defrule
+    (goal gl-dark-scout-ordered-to-sheep 0)
+    (up-find-remote c: livestock-class c: 1)
+    (up-set-target-object search-remote c: 0)
+    (up-object-data object-data-hitpoints <= 1)
+    (up-object-data object-data-player == 0)
+    (up-object-data object-data-id g:!= gl-dark-sheep-id)
+    =>
+    (up-find-local c: all-units-class c: 240)
+    (up-remove-objects search-local object-data-class == villager-class)
+    (up-remove-objects search-local object-data-class == livestock-class)
+    (up-remove-objects search-local object-data-class == building-class)
+    (up-remove-objects search-local object-data-class == tower-class)
+    (up-remove-objects search-local object-data-class == wall-class)
+    ;(up-remove-objects search-local object-data-action != cn-no-action)
+    (up-get-search-state gl-search-state-1a)
+    (set-goal gl-dark-scout-ordered-to-sheep 1)
+    (up-jump-rule 1)
+)
+
+(defrule
+    (true)
+    =>
+    (set-goal gl-dark-scout-ordered-to-sheep 0)
+)
+
+(defrule
+    (up-compare-goal gl-search-state-1a > 0)
+    (up-compare-goal gl-search-state-1c > 0)
+    =>
+    ; Should only have a scout unit targeting a found sheep unit     
+    (up-set-target-object search-local c: 0)
+    (up-get-object-data object-data-id gl-all-scout-id)
+    (up-target-objects 0 action-move -1 -1)
+)
+
+
+
+; Send All Sheep to Town Center
+
+
+(defrule
+    (unit-type-count livestock-class == 0)
+    =>
+    (up-jump-rule 6) ; Update.
+)
+
+(defrule
+    (true)
+    =>
+    (up-full-reset-search)
+    (up-filter-distance c: cn-dark-exclude-sheep-within-tc-radius-of c: cn-dark-exclude-sheep-outside-tc-radius-of)
+    (up-find-local c: livestock-class c: cn-dark-sheep-to-bring-to-tc)
+    (up-remove-objects search-local object-data-action == actionid-move)
+    (up-remove-objects search-local object-data-player != my-player-number)
+    (up-get-search-state gl-search-state-1a)
+
+    (up-create-group 0 gl-search-state-1a c: 0)
+)
+
+(defrule
+    (up-compare-goal gl-search-state-1a == 0)
+    =>
+    (up-jump-rule 5) ; Update.
+)
+
+(defrule
+    (true)
+    =>
+    (set-goal gl-dark-sheep-iterator 0)
+)
+
+(defrule
+    (up-compare-goal gl-dark-sheep-iterator g:>= gl-search-state-1a)
+    =>
+    (up-jump-rule 3) ; Update.
+)
+
+    (defrule
+        (true)
+        =>
+        (up-set-group search-local c: 0)
+
+        (up-set-target-object search-local g: gl-dark-sheep-iterator)
+        (up-get-object-data object-data-id gl-dark-sheep-id)
+
+        (up-full-reset-search)
+        (up-find-local c: town-center c: 1)
+        (up-set-target-object search-local c: 0)
+        (up-get-object-data object-data-point-x gl-dark-position-x)
+        (up-get-object-data object-data-point-y gl-dark-position-z)
+        
+        (up-modify-goal gl-dark-position-x c:- 2)
+        (up-modify-goal gl-dark-position-z c:- 2)
+
+        (up-full-reset-search)
+        (up-add-object-by-id search-local g: gl-dark-sheep-id)
+    )
+
+    (defrule
+        (up-set-target-by-id g: gl-dark-sheep-id)
+        (up-object-data object-data-player == my-player-number)
+        =>
+        (up-set-target-point gl-dark-position-x)
+        (up-target-point gl-dark-position-x action-move -1 -1)
+    )
+
+    (defrule
+        (true)
+        =>
+        (up-modify-goal gl-dark-sheep-iterator c:+ 1)
+        (up-jump-rule -4)
+    )
+
+
+
+
+
+
+
+; Send Villagers to Sheep
+; Check to make sure houses were built first
+
+(defrule
+    (goal gl-dark-built-initial-houses 0)
+    =>
+    (up-jump-rule 7) ; Update.
+)
+
+
+
+
+; Modify this for when we get more than x villagers before sending some to wood
+; Also need to modify this for capped villagers per sheep
+
+
+
+
+(defrule
+    (up-set-target-by-id g: gl-dark-target-sheep-id)
+    =>
+    (up-jump-rule 3) ; Update.
+)
+
+;(defrule
+;    (true)
+;    =>
+;    (up-jump-rule 0) ; Update.
+;)
+
+(defrule
+    (unit-type-count livestock-class > 0)
+    =>
+    (up-full-reset-search)
+    (up-filter-distance c: cn-ignore-distance c: cn-dark-exclude-sheep-within-tc-radius-of)
+    (up-find-local c: livestock-class c: 1)
+    (up-get-search-state gl-search-state-1a)
+)
+
+(defrule
+    (up-compare-goal gl-search-state-1a == 0)
+    =>
+    (up-jump-rule 1)
+)
+
+(defrule
+    (true)
+    =>
+    (up-set-target-object search-local c: 0)
+    (up-get-object-data object-data-id gl-dark-target-sheep-id)
+)
+
+; We got a sheep?
+
+(defrule
+    (up-set-target-by-id g: gl-dark-target-sheep-id)
+    =>
+    (up-full-reset-search)
+    
+    (up-find-local c: town-center c: 1)
+    (up-set-target-object search-local c: 0)
+    (up-get-object-data object-data-point-x gl-dark-position-x)
+    (up-get-object-data object-data-point-y gl-dark-position-z)
+    (up-modify-goal gl-dark-position-x c:- 2)
+    (up-modify-goal gl-dark-position-z c:+ 2)
+    (up-set-target-point gl-dark-position-x)
+
+    (up-full-reset-search)
+    (up-add-object-by-id search-local g: gl-dark-target-sheep-id)
+    (up-target-point gl-dark-position-x action-move -1 -1)
+)
+
+(defrule
+    (up-set-target-by-id g: gl-dark-target-sheep-id)
+
+    (up-object-data object-data-distance <= cn-dark-sheep-distance-to-kill-point)
+    ;(up-object-data object-data-point-x g:== gl-dark-position-x)
+    ;(up-object-data object-data-point-y g:== gl-dark-position-z)
+
+    ;(true)
+    =>
+    (up-full-reset-search)
+    (up-filter-distance c: cn-ignore-distance c: cn-dark-exclude-sheep-outside-tc-radius-of)
+    (up-find-local c: villager-class c: 240)
+    ;(up-remove-objects search-local object-data-action != action-none)
+    (up-remove-objects search-local object-data-action == actionid-build)
+    (up-remove-objects search-local object-data-action == actionid-gather)
+    ;(up-get-search-state gl-search-state-1a)
+    ;(up-create-group 0 gl-search-state-1a c: 0)
+
+    ;(up-full-reset-search)
+    ;(up-find-local c: livestock-class c: 1)
+    ;(up-get-search-state gl-search-state-1a)
+    ;(up-create-group 0 gl-search-state-1a c: 1)
+
+    ;(up-set-group search-remote c: 1)
+    ;(up-set-group search-local c: 0)
+
+    (up-add-object-by-id search-remote g: gl-dark-target-sheep-id)
+    (up-remove-objects search-remote object-data-action == actionid-move)
+    ;(up-set-target-object search-remote c: 0)
+    (up-get-search-state gl-search-state-1a)
+)
+
+(defrule
+    (up-set-target-by-id g: gl-dark-target-sheep-id)
+    (up-object-data object-data-distance <= cn-dark-sheep-distance-to-kill-point)
+
+    (up-compare-goal gl-search-state-1c > 0)
+    =>
+    ;(up-get-object-data object-data-distance gl-dark-get-object-data)
+    ;(up-chat-data-to-all "Sheep Distance from Target %d")
+
+    (up-target-objects 0 action-default -1 -1)
+)
+
+
+
+
+
+
+(defrule
+    (up-set-target-by-id g: gl-dark-target-sheep-id)
+    (up-object-data object-data-carry < cn-sheep-food-left-threshold-clear-id)
+    =>
+    (set-goal gl-dark-target-sheep-id -1)
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+; Scout around the area.
+; We will use an experimental scouting method.
+; Uncovered tiles will be checked and sent to explore.
+; Exploration Direction will be randomized.
+; When we have no uncovered tiles nearby, check radius for nearest uncovered.
+; Then send scout there.
+; This will idealy lead to the entire map being uncovered.
+
+; Get Scout Position
+; Be sure to bound destination points!
+
+
+
+
+
+; Reset Scout ID (This assumes we only have one!)
+
+(defrule
+    (true)
+    =>
+    (set-goal gl-dark-scout-id -1)
+)
+
+
+; Find Scout
+
+(defrule
+    (true)
+    =>
+    (up-full-reset-search)
+    (up-find-local c: all-units-class c: 240)
+    (up-remove-objects search-local object-data-class == villager-class)
+    (up-remove-objects search-local object-data-class == livestock-class)
+    (up-remove-objects search-local object-data-class == building-class)
+    (up-remove-objects search-local object-data-class == tower-class)
+    (up-remove-objects search-local object-data-class == wall-class)
+
+
+    ; filter out moving scouts
+    (up-remove-objects search-local object-data-action == actionid-move)
+
+    ; We now have the scout at index 0
+
+    ;(up-set-target-object search-local c: 0)
+
+    ; I know there is an easier way ->> (up-get-point position-object gl-dark-scout-x)
+    ;(up-get-point position-object gl-dark-scout-x)
+    ;(up-get-object-data object-data-point-x gl-dark-scout-x)
+    ;(up-get-object-data object-data-point-y gl-dark-scout-z)
+)
+
+
+(defrule
+    (up-set-target-object search-local c: 0)
+    =>
+    (up-get-point position-object gl-dark-scout-x)
+
+    ;(up-chat-data-to-all "get scout x: %d" g: gl-dark-scout-x)
+    ;(up-chat-data-to-all "get scout z: %d" g: gl-dark-scout-z)
+
+    (up-get-object-data object-data-id gl-dark-scout-id)
+
+    ;(up-chat-data-to-all "Scout ID: %d" g: gl-dark-scout-id)
+)
+
+; Find closest dark spot
+; Try to be inexpensive...
+
+(defrule
+    (up-compare-goal gl-dark-scout-id == -1)
+    =>
+    (up-jump-rule 26)
+)
+
+
+
+; Check the 8 directions from the scout as a square
+
+; x -1 to 1
+; z -1 to 1
+
+; for loop in for loop
+
+(defrule
+    (true)
+    =>
+    (set-goal gl-for-1-iterator -1)
+)
+
+(defrule
+    (up-compare-goal gl-for-1-iterator > 1)
+    =>
+    (up-jump-rule 8) ; Update.
+)
+
+    (defrule
+        (true)
+        =>
+        (set-goal gl-for-2-iterator -1)
+    )
+
+    (defrule
+        (up-compare-goal gl-for-2-iterator > 1)
+        =>
+        (up-jump-rule 5) ; Update.
+    )
+
+        (defrule
+            (true)
+            =>
+            (up-modify-goal gl-dark-scout-target-x g:= gl-dark-scout-x)
+            (up-modify-goal gl-dark-scout-target-z g:= gl-dark-scout-z)
+
+            (up-modify-goal gl-dark-scout-sight-mul-result c:= cn-dark-scout-sight-range)
+            (up-modify-goal gl-dark-scout-sight-mul-result g:* gl-for-2-iterator) ; z
+
+            (up-modify-goal gl-dark-scout-target-z g:+ gl-dark-scout-sight-mul-result)
+            
+            (up-modify-goal gl-dark-scout-sight-mul-result c:= cn-dark-scout-sight-range)
+            (up-modify-goal gl-dark-scout-sight-mul-result g:* gl-for-1-iterator) ; x
+
+            (up-modify-goal gl-dark-scout-target-x g:+ gl-dark-scout-sight-mul-result)
+        )
+
+        (defrule
+            (true)
+            =>
+            ; Calculate Array Index for Indirect Goal Ptr
+            ; ( (z+1) * 3 + (x+1) ) * 2
+
+
+            (up-modify-goal gl-dark-goal-ptr c:= gl-dark-scout-target-array-x-1)
+            (up-modify-goal gl-dark-math-1 g:= gl-for-2-iterator) ; z
+            (up-modify-goal gl-dark-math-1 c:+ 1)
+            (up-modify-goal gl-dark-math-1 c:* 3)
+            (up-modify-goal gl-dark-math-2 g:= gl-for-1-iterator) ; x
+            (up-modify-goal gl-dark-math-2 c:+ 1)
+            (up-modify-goal gl-dark-math-1 g:+ gl-dark-math-2)
+            (up-modify-goal gl-dark-math-1 c:* 2)
+            ; We now have our ptr index in gl-dark-math-1
+            ; Add it to the base index of the array
+            (up-modify-goal gl-dark-goal-ptr g:+ gl-dark-math-1)
+
+            ;(up-chat-data-to-all "dglptr: %d" g: gl-dark-goal-ptr)
+
+            ;(up-chat-data-to-all "check x: %d" g: gl-dark-scout-target-x)
+            ;(up-chat-data-to-all "check z: %d" g: gl-dark-scout-target-z)
+
+            ;(up-send-flare gl-dark-scout-target-x)
+        )
+
+        (defrule
+            (up-point-explored gl-dark-scout-target-x == explored-no)
+            =>
+            ;(chat-to-all "Point Not Explored Found!")
+            ;(up-chat-data-to-all "x: %d" g: gl-dark-scout-target-x)
+            ;(up-chat-data-to-all "z: %d" g: gl-dark-scout-target-z)
+
+            (up-set-indirect-goal g: gl-dark-goal-ptr g: gl-dark-scout-target-x)
+            (up-modify-goal gl-dark-goal-ptr c:+ 1)
+            (up-set-indirect-goal g: gl-dark-goal-ptr g: gl-dark-scout-target-z)
+            (up-jump-rule 1)
+        )
+
+        (defrule
+            (true)
+            =>
+            (up-set-indirect-goal g: gl-dark-goal-ptr c: -1)
+            (up-modify-goal gl-dark-goal-ptr c:+ 1)
+            (up-set-indirect-goal g: gl-dark-goal-ptr c: -1)
+        )
+
+        (defrule
+            (true)
+            =>
+            (up-modify-goal gl-for-2-iterator c:+ 1)
+            (up-jump-rule -6) ; Update.
+        )
+
+    (defrule
+        (true)
+        =>
+        (up-modify-goal gl-for-1-iterator c:+ 1)
+        (up-jump-rule -9) ; Update.
+    )
+
+
+
+; Finished 1 Level Nested For Loop
+
+(defrule
+    (true)
+    =>
+    (set-goal gl-dark-scout-unexplored-points-count 0)
+)
+
+; Count number of valid points
+
+
+(defrule
+    (true)
+    =>
+    (set-goal gl-dark-iterator 0)
+)
+
+(defrule
+    (up-compare-goal gl-dark-iterator >= 16)
+    =>
+    (up-jump-rule 4) ; Update.
+)
+
+    (defrule
+        (true)
+        =>
+        (up-modify-goal gl-dark-goal-ptr c:= gl-dark-scout-target-array-x-1)
+        (up-modify-goal gl-dark-goal-ptr g:+ gl-dark-iterator)
+        (up-get-indirect-goal g: gl-dark-goal-ptr gl-dark-get-indirect-goal)
+    )
+
+    (defrule
+        (up-compare-goal gl-dark-get-indirect-goal == -1)
+        =>
+        (up-jump-rule 1)
+    )
+
+    (defrule
+        (true)
+        =>
+        (up-modify-goal gl-dark-scout-unexplored-points-count c:+ 1)
+    )
+
+    (defrule
+        (true)
+        =>
+        (up-modify-goal gl-dark-iterator c:+ 2)
+        (up-jump-rule -5)
+    )
+
+
+
+; End of Counting Loop
+
+; Debug
+
+;(defrule
+;    (true)
+;    =>
+;    (up-chat-data-to-all "Pairs Count: %d" g: gl-dark-scout-unexplored-points-count)
+;)
+
+; Pick Point to Go To, and Tell Scout to Go To it
+
+(defrule
+    (up-compare-goal gl-dark-scout-unexplored-points-count > 0) ; avoid div 0
+    =>
+    (generate-random-number 10000) ; 100 * 100 for more accuracy in division
+    (up-get-fact random-number 0 gl-random-number)
+    (up-modify-goal gl-dark-math-1 c:= 10000)
+    (up-modify-goal gl-dark-math-1 g:/ gl-dark-scout-unexplored-points-count)
+    (up-modify-goal gl-dark-math-2 g:= gl-dark-math-1) ; percent chance "block"
+    (up-modify-goal gl-dark-goal-ptr c:= gl-dark-scout-target-array-x-1)
+    (up-jump-rule 1)
+)
+
+(defrule
+    (true)
+    =>
+    (up-jump-rule 7)
+)
+
+
+; Stat of new loop - doing move scout after checking array and randomness
+
+(defrule
+    (true)
+    =>
+    (set-goal gl-dark-iterator 0)
+)
+
+(defrule
+    (up-compare-goal gl-dark-iterator >= 8)
+    =>
+    (up-jump-rule 5) ; Update.
+)
+
+    (defrule
+        (true)
+        =>
+        (up-get-indirect-goal g: gl-dark-goal-ptr gl-dark-get-indirect-goal)
+    )
+
+    (defrule
+        (up-compare-goal gl-dark-get-indirect-goal c:== -1)
+        =>
+        (up-jump-rule 2)
+    )
+
+    (defrule
+        (up-compare-goal gl-random-number g:>= gl-dark-math-2)
+        =>
+        (up-modify-goal gl-dark-math-2 g:+ gl-dark-math-1)
+        (up-jump-rule 1)
+    )
+
+    (defrule
+        ; Do Scout Move and Jump Out of All Loops!
+        (true)
+        =>
+        ; Get a copy of our target point from array..
+        (up-get-indirect-goal g: gl-dark-goal-ptr gl-dark-scout-target-x)
+        (up-modify-goal gl-dark-goal-ptr c:+ 1)
+        (up-get-indirect-goal g: gl-dark-goal-ptr gl-dark-scout-target-z)
+
+        (up-full-reset-search)
+        ;(up-find-local c: all-units-class c: 240)
+        ;(up-remove-objects search-local object-data-class == villager-class)
+        ;(up-remove-objects search-local object-data-class == livestock-class)
+
+        (up-add-object-by-id search-local g: gl-dark-scout-id)
+        (up-target-point gl-dark-scout-target-x action-move -1 -1)
+        ;(chat-to-all "Moving Scout")
+        ;(up-chat-data-to-all "x: %d" g: gl-dark-scout-target-x)
+        ;(up-chat-data-to-all "z: %d" g: gl-dark-scout-target-z)
+        (up-jump-rule 1)
+    )
+
+    (defrule
+        (true)
+        =>
+        (up-modify-goal gl-dark-iterator c:+ 1)
+        (up-modify-goal gl-dark-goal-ptr c:+ 2)
+        (up-jump-rule -6)
+    )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+(defrule
+    (unit-type-count-total villager < cn-dark-age-static-villager-total)
+    ; not really static, will be self adjustable due to the situation
+    (can-train villager)
+    =>
+    (train villager)
+)

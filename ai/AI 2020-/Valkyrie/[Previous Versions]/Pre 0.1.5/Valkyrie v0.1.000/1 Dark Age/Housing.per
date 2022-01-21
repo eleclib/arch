@@ -1,0 +1,51 @@
+
+
+
+
+
+(defrule
+    (not
+        (civ-selected chinese)
+    )
+    (current-age == dark-age)
+    (up-can-build 0 c: house)
+    (up-object-type-count-total c: house < 2)
+    (up-object-type-count c: mill < 1)
+
+=>
+    (up-build place-normal 0 c: house)
+
+)
+
+
+
+
+
+
+(defrule
+    (civ-selected chinese)
+    (current-age == dark-age)
+    (up-can-build 0 c: house)
+    (up-object-type-count-total c: house < 2)
+    (up-object-type-count c: mill < 1)
+=>
+    (up-build place-normal 0 c: house)
+)
+
+
+
+
+
+
+
+
+(defrule
+    (current-age == dark-age)
+    (up-can-build 0 c: house)
+    (up-object-type-count-total c: house < 5)
+    (up-object-type-count c: mill >= 1)
+    (up-object-type-count c: villager >= 13)
+=>
+    (up-build place-normal 0 c: house)
+)
+

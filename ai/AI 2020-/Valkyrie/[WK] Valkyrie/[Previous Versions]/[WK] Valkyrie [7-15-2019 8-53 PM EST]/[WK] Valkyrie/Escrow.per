@@ -1,0 +1,132 @@
+
+(defrule ; Villager
+    (up-compare-const is-pocket == 0)
+    (current-age == dark-age)
+    (unit-type-count-total villager < 23)
+    =>
+    (up-modify-escrow food c:+ 50)
+)
+
+(defrule ; Villager
+    (up-compare-const is-pocket == 0)
+    (current-age == feudal-age)
+    (unit-type-count-total villager < 70)
+    =>
+    (up-modify-escrow food c:+ 50)
+)
+
+(defrule ; Villager
+    (up-compare-const is-pocket == 1)
+    (current-age == dark-age)
+    (unit-type-count-total villager < 29)
+    =>
+    (up-modify-escrow food c:+ 50)
+)
+
+; (defrule ; Lumber Camp
+;     (building-type-count lumber-camp < 1)
+;     (building-type-count-total mill >= 1)
+;     (unit-type-count villager >= 17)
+;     (up-pending-objects c: lumber-camp < 1)
+;     =>
+;     (up-modify-escrow wood c:+ 100)
+; )
+
+(defrule ; Villager
+    (up-compare-const is-pocket == 1)
+    (current-age == feudal-age)
+    (unit-type-count-total villager < 31)
+    =>
+    (up-modify-escrow food c:+ 50)
+)
+
+(defrule ; Villager
+    (current-age == castle-age)
+    (unit-type-count-total villager < 120)
+    =>
+    (up-modify-escrow food c:+ 50)
+)
+
+(defrule ; Villager
+    (current-age == imperial-age)
+    (unit-type-count-total villager < 120)
+    =>
+    (up-modify-escrow food c:+ 50)
+)
+
+; (defrule ; Skirmisher
+;     ;(up-compare-const is-pocket == 1)
+;     (game-time < 1260)
+;     (current-age == feudal-age)
+;     (building-type-count archery-range >= 1)
+;     =>
+;     (up-modify-escrow wood c:+ 35)
+;     (up-modify-escrow food c:+ 25)
+; )
+
+; (defrule ; Skirmisher
+;     (up-compare-const is-pocket == 1)
+;     (current-age == castle-age)
+;     (building-type-count archery-range >= 1)
+;     =>
+;     (up-modify-escrow wood c:+ 35)
+;     (up-modify-escrow food c:+ 25)
+; )
+
+; (defrule ; Knight
+;     (up-compare-const pocket-castle-unit == knight-line)
+;     (current-age == castle-age)
+;     (building-type-count stable >= 1)
+;     =>
+;     (up-modify-escrow food c:+ 60)
+;     (up-modify-escrow gold c:+ 75)
+; )
+
+; (defrule ; Battering Ram
+;     (current-age == castle-age)
+;     (building-type-count siege-workshop >= 1)
+;     =>
+;     (up-modify-escrow wood c:+ 160)
+;     (up-modify-escrow gold c:+ 75)
+; )
+
+; (defrule ; Mangonel
+;     (current-age == castle-age)
+;     (building-type-count siege-workshop >= 1)
+;     =>
+;     (up-modify-escrow wood c:+ 160)
+;     (up-modify-escrow gold c:+ 135)
+; )
+
+; (defrule ; Skirmishers
+;     (current-age == imperial-age)
+;     (building-type-count archery-range >= 1)
+;     =>
+;     (up-modify-escrow wood c:+ 35)
+;     (up-modify-escrow food c:+ 25)
+; )
+
+; (defrule ; Knight
+;     (up-compare-const pocket-castle-unit == knight-line)
+;     (current-age == imperial-age)
+;     (building-type-count stable >= 1)
+;     =>
+;     (up-modify-escrow food c:+ 60)
+;     (up-modify-escrow gold c:+ 75)
+; )
+
+; (defrule ; Battering Ram
+;     (current-age == imperial-age)
+;     (building-type-count siege-workshop >= 1)
+;     =>
+;     (up-modify-escrow wood c:+ 160)
+;     (up-modify-escrow gold c:+ 75)
+; )
+
+; (defrule ; Mangonel
+;     (current-age == imperial-age)
+;     (building-type-count siege-workshop >= 1)
+;     =>
+;     (up-modify-escrow wood c:+ 160)
+;     (up-modify-escrow gold c:+ 135)
+; )

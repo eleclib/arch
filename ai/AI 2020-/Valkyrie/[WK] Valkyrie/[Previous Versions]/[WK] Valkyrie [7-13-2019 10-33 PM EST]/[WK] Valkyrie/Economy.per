@@ -1,0 +1,60 @@
+
+(defrule
+    (true)
+    =>
+    (set-strategic-number sn-food-gatherer-percentage 100)
+    (disable-self)
+)
+
+(defrule
+    (unit-type-count villager >= 8)
+    =>
+    (set-strategic-number sn-wood-gatherer-percentage 10)
+    (set-strategic-number sn-food-gatherer-percentage 90)
+    (disable-self)
+)
+
+(defrule
+    (unit-type-count villager >= 17)
+    =>
+    (set-strategic-number sn-wood-gatherer-percentage 30)
+    (set-strategic-number sn-food-gatherer-percentage 70)
+    (disable-self)
+)
+
+(defrule
+    (building-type-count-total lumber-camp >= 1)
+    (or(building-type-count-total house >= 4)
+    (civ-selected hun))
+    =>
+    (set-strategic-number sn-wood-gatherer-percentage 20)
+    (set-strategic-number sn-food-gatherer-percentage 80)
+    (disable-self)
+)
+
+(defrule
+    (up-research-status c: feudal-age == research-pending)
+    =>
+    (set-strategic-number sn-wood-gatherer-percentage 100)
+    (set-strategic-number sn-food-gatherer-percentage 0)
+    (disable-self)
+)
+
+(defrule
+    (current-age == feudal-age)
+    =>
+    (set-strategic-number sn-wood-gatherer-percentage 5)
+    (set-strategic-number sn-food-gatherer-percentage 85)
+    (set-strategic-number sn-gold-gatherer-percentage 10)
+    (disable-self)
+)
+
+(defrule
+    (current-age == castle-age)
+    =>
+    (set-strategic-number sn-wood-gatherer-percentage 50)
+    (set-strategic-number sn-food-gatherer-percentage 20)
+    (set-strategic-number sn-gold-gatherer-percentage 20)
+    (set-strategic-number sn-stone-gatherer-percentage 10)
+    (disable-self)
+)

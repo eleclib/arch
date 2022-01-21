@@ -1,0 +1,65 @@
+
+(defrule
+	(building-type-count market >= 1)
+	(up-research-status c: castle-age < research-pending)
+	(gold-amount > 300)
+	(food-amount < 800)
+	(can-buy-commodity food)
+=>	(buy-commodity food))
+
+(defrule
+	(building-type-count market >= 1)
+	(gold-amount > 1000)
+	(wood-amount < 200)
+	(can-buy-commodity wood)
+=>	(buy-commodity wood))
+
+(defrule
+	(building-type-count market >= 1)
+	(gold-amount > 1000)
+	(food-amount < 400)
+	(can-buy-commodity food)
+=>	(buy-commodity food))
+
+(defrule
+	(up-research-status c: castle-age > research-pending)
+	(building-type-count town-center >= 2)
+	(building-type-count market >= 1)
+	(gold-amount < 200)
+	(wood-amount > 500)
+	(can-sell-commodity wood)
+=>	(sell-commodity wood))
+
+(defrule
+	(up-research-status c: castle-age >= research-pending)
+	(building-type-count market >= 1)
+	(gold-amount < 200)
+	(food-amount > 800)
+	(can-sell-commodity food)
+=>	(sell-commodity food))
+
+(defrule
+	(current-age == castle-age)
+	(civilian-population > 90)
+	(research-available imperial-age)
+	(building-type-count market >= 1)
+	(gold-amount < 800)
+	(food-amount > 1200)
+	(can-sell-commodity food)
+=>	(sell-commodity food))
+
+(defrule
+	(up-research-status c: castle-age < research-pending)
+	(building-type-count market >= 1)
+	(gold-amount > 350)
+	(food-amount < 800)
+	(can-buy-commodity food)
+=>	(buy-commodity food))
+
+(defrule
+	(up-research-status c: castle-age < research-pending)
+	(building-type-count market >= 1)
+	(gold-amount < 200)
+	(food-amount > 900)
+	(can-sell-commodity food)
+=>	(sell-commodity food))

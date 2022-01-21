@@ -1,0 +1,222 @@
+
+(defrule
+    (current-age >= feudal-age)
+    (up-players-in-game ally == 0)
+    =>
+    (up-modify-goal resign-points c:+ 1)
+)
+
+(defrule
+    (current-age >= castle-age)
+    (players-population every-enemy > 50)
+    =>
+    (up-modify-goal resign-points c:+ 1)
+)
+
+(defrule
+    (current-age >= castle-age)
+    (players-population every-ally < 35)
+    =>
+    (up-modify-goal resign-points c:+ 1)
+)
+
+(defrule
+    (current-age >= feudal-age)
+    (up-players-in-game ally < 2)
+    (up-players-in-game enemy > 2)
+    =>
+    (up-modify-goal resign-points c:+ 1)
+)
+
+(defrule
+    (building-type-count town-center == 0)
+    =>
+    (up-modify-goal resign-points c:+ 1)
+)
+
+(defrule
+    (current-age >= feudal-age)
+    (unit-type-count villager < 20)
+    =>
+    (up-modify-goal resign-points c:+ 1)
+)
+
+(defrule
+    (current-age >= feudal-age)
+    (players-building-type-count any-ally town-center == 0)
+    (players-unit-type-count any-ally villager < 35)
+    =>
+    (up-modify-goal resign-points c:+ 1)
+)
+
+(defrule
+    (current-age >= feudal-age)
+    (players-unit-type-count any-ally villager < 15)
+    =>
+    (up-modify-goal resign-points c:+ 1)
+)
+
+(defrule
+    (current-age >= feudal-age)
+    (building-count-total < 20)
+    =>
+    (up-modify-goal resign-points c:+ 1)
+)
+
+(defrule
+    (up-compare-const human-in-game == 1)
+    (not(player-in-game any-human-ally))
+    =>
+    (up-modify-goal resign-points c:+ 1)
+)
+
+(defrule
+    (up-allied-goal any-computer-ally valkyrie-goal-1 c:== 4096)
+    (up-allied-goal any-computer-ally valkyrie-goal-2 c:== -8192)
+    (up-allied-goal any-computer-ally valkyrie-goal-3 c:== -2048)
+    (up-allied-goal any-computer-ally resign-points c:>= 3)
+    =>
+    (up-modify-goal resign-points c:+ 1)
+)
+
+#load-if-defined UP-1-PLAYER-TEAM
+
+(defrule
+    (up-compare-goal resign-points c:>= 5)
+    =>
+    (up-set-timer c: resign-timer c: 10)
+    (resign)
+)
+
+#end-if
+
+#load-if-defined UP-1-PLAYER-TEAM
+
+(defrule
+    (up-compare-goal resign-points c:>= 5)
+    =>
+    (up-set-timer c: resign-timer c: 10)
+    (chat-to-all "Aghh, My Soldiers have Failed Me, I Paid Them Well Too")
+    (disable-self)
+)
+
+(defrule
+    (timer-triggered resign-timer)
+    =>
+    (resign)
+)
+
+#end-if
+
+#load-if-defined UP-2-PLAYER-TEAM
+
+(defrule
+    (up-compare-goal resign-points c:>= 5)
+    =>
+    (up-set-timer c: resign-timer c: 10)
+    (chat-to-all "Completely Garbage and Useless Teammate - Get me out")
+    (disable-self)
+)
+
+(defrule
+    (timer-triggered resign-timer)
+    =>
+    (resign)
+)
+
+
+#end-if
+
+#load-if-defined UP-3-PLAYER-TEAM
+
+(defrule
+    (up-compare-goal resign-points c:>= 5)
+    =>
+    (up-set-timer c: resign-timer c: 10)
+    (chat-to-all "Useless Teammates - I Need A New Team")
+    (chat-to-all "Why Did You Both Let Us Lose This?? EZ Wins....")
+    (disable-self)
+)
+
+(defrule
+    (timer-triggered resign-timer)
+    =>
+    (resign)
+)
+
+#end-if
+
+#load-if-defined UP-4-PLAYER-TEAM
+
+(defrule
+    (up-compare-goal resign-points c:>= 5)
+    =>
+    (up-set-timer c: resign-timer c: 10)
+    (chat-to-all "What The Hell Is Wrong With My Team??? Help Me!!!")
+    (chat-to-all "But Too Late Now, You All Left Me To Die.......")
+    (disable-self)
+)
+
+(defrule
+    (timer-triggered resign-timer)
+    =>
+    (resign)
+)
+
+#end-if
+
+#load-if-defined UP-5-PLAYER-TEAM
+
+(defrule
+    (up-compare-goal resign-points c:>= 5)
+    =>
+    (up-set-timer c: resign-timer c: 10)
+    (chat-to-all "Dumbass Teamamtes, Four Of You Couldn't Save One.")
+    (chat-to-all "What A Shame, I'm Gonna Climb The Ranks Without You Noobs.")
+    (disable-self)
+)
+
+(defrule
+    (timer-triggered resign-timer)
+    =>
+    (resign)
+)
+
+#end-if
+
+#load-if-defined UP-6-PLAYER-TEAM
+
+(defrule
+    (up-compare-goal resign-points c:>= 5)
+    =>
+    (up-set-timer c: resign-timer c: 10)
+    (chat-to-all "Wow, You All Must Be Really Bad... I'm Out")
+    (disable-self)
+)
+
+(defrule
+    (timer-triggered resign-timer)
+    =>
+    (resign)
+)
+
+#end-if
+
+#load-if-defined UP-7-PLAYER-TEAM
+
+(defrule
+    (up-compare-goal resign-points c:>= 5)
+    =>
+    (up-set-timer c: resign-timer c: 10)
+    (chat-to-all "How The Hell Did I Die To One Enemy With 7 Of Us???")
+    (chat-to-all "Do Any Of You Not Understand What Teamwork Is???")
+    (disable-self)
+)
+
+(defrule
+    (timer-triggered resign-timer)
+    =>
+    (resign)
+)
+
+#end-if

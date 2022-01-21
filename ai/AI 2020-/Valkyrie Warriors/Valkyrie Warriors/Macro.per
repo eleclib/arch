@@ -1,0 +1,145 @@
+
+(defrule
+	(or	(taunt-detected any-ally 200)
+		(taunt-detected my-player-number 200))
+=>	(up-chat-data-to-all "My target is player %d." s: sn-target-player-number)
+	(up-chat-data-to-all "My focus is player %d." s: sn-focus-player-number)
+	(acknowledge-taunt every-ally 200)
+	(acknowledge-taunt my-player-number 200))
+
+(defrule
+    (players-building-count any-enemy > 0)
+    =>
+    (up-find-player enemy find-closest closest-enemy-goal)
+    (up-modify-sn sn-focus-player-number g:= closest-enemy-goal)
+    (up-modify-sn sn-target-player-number g:= closest-enemy-goal)
+)
+(defrule
+    (game-time > 1500)
+    (population > 60)
+    (players-population target-player < 30)
+    (players-population any-enemy > 70)
+    =>
+    (up-find-player enemy find-closest closest-enemy-goal)
+    (up-find-next-player enemy find-closest closest-enemy-goal)
+    (up-modify-sn sn-focus-player-number g:= closest-enemy-goal)
+    (up-modify-sn sn-target-player-number g:= closest-enemy-goal)
+)
+(defrule
+    (game-time > 1500)
+    (population > 60)
+    (players-population target-player < 30)
+    (players-population any-enemy > 70)
+    =>
+    (up-find-player enemy find-closest closest-enemy-goal)
+    (up-find-next-player enemy find-closest closest-enemy-goal)
+    (up-find-next-player enemy find-closest closest-enemy-goal)
+    (up-modify-sn sn-focus-player-number g:= closest-enemy-goal)
+    (up-modify-sn sn-target-player-number g:= closest-enemy-goal)
+)
+
+(defrule
+    (current-age >= feudal-age)
+    (up-timer-status attack-timer-threshold <= timer-triggered)
+    =>
+    (up-set-timer c: attack-timer-threshold c: 36)
+    (up-modify-goal attack-amount-threshold c:+ 1)
+    (up-chat-data-to-self "Attack Threshold to %d" g: attack-amount-threshold)
+)
+
+(defrule
+    (current-age >= feudal-age)
+    =>
+    (up-get-fact military-population 0 military-count)
+    (up-get-target-fact military-population 0 enemy-military-count)
+    (up-modify-goal military-advantage g:= military-count)
+    (up-modify-goal military-advantage g:- enemy-military-count)
+)
+
+(defrule
+	(true)
+=>	(set-goal attack-amount-threshold 12))
+
+(defrule
+	(game-time <= 1320)
+	(current-age == feudal-age)
+	(or	(and	(military-population >= 5)
+			(players-military-population target-player < 3))
+		(or	(and	(military-population >= 10)
+			(players-military-population target-player < 10))
+			(or	(and	(military-population >= 4)
+				(players-current-age target-player < feudal-age))
+				(military-population >= 25))))
+=>	(set-goal attack-amount-threshold 0))
+
+(defrule
+	(game-time > 1320)
+	(current-age < imperial-age)
+	(or	(and	(military-population >= 12)
+			(players-military-population target-player < 3))
+		(or	(and	(military-population >= 15)
+			(players-military-population target-player < 10))
+			(military-population >= 25)))
+=>	(set-goal attack-amount-threshold 0))
+
+(defrule
+	(current-age == feudal-age)
+	(or	(and	(players-unit-type-count target-player archer-line > 0)
+			(up-compare-goal military-advantage <= -4))
+		(or	(and	(players-unit-type-count target-player knight-line > 0)
+				(and	(unit-type-count spearman-line < 4)
+					(unit-type-count cavalry-class < 4)))
+			(and	(up-compare-goal military-advantage <= -5)
+				(military-population < 14))))
+=>	(set-goal attack-amount-threshold 100))
+
+(defrule
+    (current-age >= feudal-age)
+    (up-compare-goal military-count g:>= attack-amount-threshold)
+    (up-compare-goal map-size s:>= sn-maximum-town-size)
+    =>
+    (set-goal attacking 1)
+    (up-modify-sn sn-maximum-town-size c:+ 4)
+;   (up-modify-sn sn-safe-town-size c:+ 4)
+    (up-chat-data-to-self "Town Size to %d" s: sn-maximum-town-size)
+)
+
+(defrule
+    (current-age >= feudal-age)
+    =>
+    (up-modify-goal math1 g:= attack-amount-threshold)
+    (up-modify-goal math1 c:/ 3)
+)
+
+(defrule
+    (current-age >= feudal-age)
+    (up-compare-goal military-count g:<= math1) ; half the threshold
+    (goal attacking 1)
+    =>
+    (set-goal attacking 0)
+    (set-strategic-number sn-maximum-town-size 16)
+;   (set-strategic-number sn-safe-town-size 16)
+    (up-chat-data-to-self "Town Size to %d" s: sn-maximum-town-size)
+)
+
+(defrule
+    (current-age == castle-age)
+    =>
+    (up-modify-goal attack-amount-threshold c:%* 60)
+    (disable-self)
+)
+
+(defrule
+    (current-age == imperial-age)
+    =>
+    (up-modify-goal attack-amount-threshold c:%* 60)
+    (disable-self)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (up-timer-status attack-timer-div-set <= timer-triggered)
+    =>
+    (up-modify-goal attack-amount-threshold c:%* 60)
+    (up-set-timer c: attack-timer-div-set c: 300)
+)

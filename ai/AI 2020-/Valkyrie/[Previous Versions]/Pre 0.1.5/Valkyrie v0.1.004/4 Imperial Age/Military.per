@@ -1,0 +1,69 @@
+
+(defrule
+    (current-age == imperial-age)
+=>
+    (up-set-offense-priority c: villager c: 11)
+    (disable-self)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (up-object-type-count-total c: my-unique-unit-line < 20)
+    =>
+    (up-train 0 c: my-unique-unit-line)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (up-object-type-count-total c: knight-line < 20)
+    =>
+    (up-train 0 c: knight-line)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (up-object-type-count-total c: archer-line < 20)
+    =>
+    (up-train 0 c: archer-line)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (up-object-type-count-total c: militiaman-line < 20)
+    =>
+    (up-train 0 c: militiaman-line)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (up-object-type-count-total c: trebuchet < 20)
+    =>
+    (up-train 0 c: trebuchet)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (up-object-type-count-total c: my-unique-unit-line >= 20)
+    (up-object-type-count-total c: knight-line >= 20)
+    (up-object-type-count-total c: archer-line >= 20)
+    (up-object-type-count-total c: militiaman-line >= 20)
+    (up-object-type-count-total c: trebuchet >= 20)
+=>
+    (set-goal GOAL_2 VALK_TRUE)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (up-timer-status TIMER_1 == timer-disabled)
+=>
+    (enable-timer TIMER_1 600)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (timer-triggered TIMER_1)
+=>
+    (attack-now)
+    (disable-timer TIMER_1)
+)
+

@@ -1,0 +1,159 @@
+(defrule
+    (true)
+=>
+    (set-goal GOAL_UNIT_GROUPING_GOAL 2)
+    (disable-self)
+)
+
+
+(defrule
+    (not(goal DROWN VALK_TRUE))
+    (current-age == castle-age)
+    (up-timer-status TIMER_MILITARY_ROTATION_DELAY == timer-disabled)
+=>
+    (enable-timer TIMER_MILITARY_ROTATION_DELAY CASTLE_MILITARY_ROTATION_DELAY)
+    (generate-random-number 100)
+)
+
+(defrule
+    (not(goal DROWN VALK_TRUE))
+    (timer-triggered TIMER_MILITARY_ROTATION_DELAY)
+=>
+    (generate-random-number 100)
+)
+
+
+
+(defrule
+    (not(goal DROWN VALK_TRUE))
+    (current-age == castle-age)
+    (timer-triggered TIMER_MILITARY_ROTATION_DELAY)
+    (random-number < 51)
+    =>
+    (set-goal GOAL_UNIT_GROUPING_GOAL 1)
+    (disable-timer TIMER_MILITARY_ROTATION_DELAY)
+    (enable-timer TIMER_MILITARY_ROTATION_DELAY CASTLE_MILITARY_ROTATION_DELAY)
+)
+
+(defrule
+    (not(goal DROWN VALK_TRUE))
+    (current-age == castle-age)
+    (timer-triggered TIMER_MILITARY_ROTATION_DELAY)
+    (random-number > 50)
+    (random-number < 101)
+    =>
+    (set-goal GOAL_UNIT_GROUPING_GOAL 2)
+    (disable-timer TIMER_MILITARY_ROTATION_DELAY)
+    (enable-timer TIMER_MILITARY_ROTATION_DELAY CASTLE_MILITARY_ROTATION_DELAY)
+)
+
+
+
+(defrule
+    (not(goal DROWN VALK_TRUE))
+    (goal GOAL_UNIT_GROUPING_GOAL 1)
+    (current-age == castle-age)
+    (up-object-type-count-total c: battering-ram-line < 35)
+    (up-can-train 0 c: battering-ram-line)
+=>
+    (up-train 0 c: battering-ram-line)
+) (defrule
+    (not(goal DROWN VALK_TRUE))
+    (goal GOAL_UNIT_GROUPING_GOAL 1)
+    (current-age == castle-age)
+    (up-object-type-count-total c: knight-line < 35)
+=>
+    (up-train 0 c: knight-line)
+) (defrule
+    (not(goal DROWN VALK_TRUE))
+    (goal GOAL_UNIT_GROUPING_GOAL 1)
+    (current-age == castle-age)
+    (up-object-type-count-total c: militiaman < 30)
+=>
+    (up-train 0 c: militiaman-line)
+)
+
+
+
+
+(defrule
+    (goal GOAL_UNIT_GROUPING_GOAL 2)
+    (current-age == castle-age)
+    (up-object-type-count-total c: archer-line < 35)
+=>
+    (up-train 0 c: archer-line)
+) (defrule
+    (goal GOAL_UNIT_GROUPING_GOAL 2)
+    (current-age == castle-age)
+    (up-object-type-count-total c: scout-cavalry-line < 30)
+=>
+    (up-train 0 c: scout-cavalry-line)
+) (defrule
+    (goal GOAL_UNIT_GROUPING_GOAL 2)
+    (current-age == castle-age)
+    (up-object-type-count-total c: my-unique-unit-line < 35)
+=>
+    (up-train 0 c: my-unique-unit-line)
+)
+
+
+
+
+
+
+
+
+(defrule
+    (current-age == castle-age)
+    (goal DROWN VALK_TRUE)
+    (up-object-type-count-total c: skirmisher-line < 50)
+    =>
+    (up-train 0 c: skirmisher-line)
+)
+
+(defrule
+    (current-age == castle-age)
+    (goal DROWN VALK_TRUE)
+    (up-object-type-count-total c: spearman-line < 50)
+    =>
+    (up-train 0 c: spearman-line)
+)
+
+
+
+
+
+
+(defrule
+    (current-age == castle-age)
+    (food-amount > 1000)
+=>
+    (up-train 0 c: scout-cavalry-line)
+)
+
+
+(defrule
+    (current-age == castle-age)
+    (wood-amount > 1000)
+    (food-amount > 1000)
+=>
+    (up-train 0 c: skirmisher-line)
+)
+
+
+
+(defrule
+    (current-age == castle-age)
+    (up-timer-status ATTACK_TIMER == timer-disabled)
+=>
+    (enable-timer ATTACK_TIMER CASTLE_ATTACK_TIME)
+)
+
+(defrule
+    (current-age == castle-age)
+    (game-time > INITIAL_ATTACK_TIME)
+    (timer-triggered ATTACK_TIMER)
+=>
+    (attack-now)
+    (disable-timer ATTACK_TIMER)
+)

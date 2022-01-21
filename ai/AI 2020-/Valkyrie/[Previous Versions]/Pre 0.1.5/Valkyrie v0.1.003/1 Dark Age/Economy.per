@@ -1,0 +1,57 @@
+
+(defrule
+	(current-age == dark-age)
+	(unit-type-count villager >= 3)
+=>
+	(set-strategic-number sn-wood-gatherer-percentage 0)
+	(set-strategic-number sn-food-gatherer-percentage 100)
+	(set-strategic-number sn-gold-gatherer-percentage 0)
+	(set-strategic-number sn-stone-gatherer-percentage 0)
+	(disable-self)
+)
+
+(defrule
+	(current-age == dark-age)
+
+	(up-object-type-count-total c: house >= 2)
+	(up-object-type-count-total c: mill >= 1)
+=>
+	(set-strategic-number sn-wood-gatherer-percentage 10)
+	(set-strategic-number sn-food-gatherer-percentage 90)
+	(set-strategic-number sn-gold-gatherer-percentage 0)
+	(set-strategic-number sn-stone-gatherer-percentage 0)
+	(disable-self)
+)
+
+(defrule
+	(current-age == dark-age)
+	(unit-type-count villager >= 13)
+=>
+	(set-strategic-number sn-wood-gatherer-percentage 25)
+	(set-strategic-number sn-food-gatherer-percentage 75)
+	(set-strategic-number sn-gold-gatherer-percentage 0)
+	(set-strategic-number sn-stone-gatherer-percentage 0)
+	(disable-self)
+)
+
+(defrule
+	(current-age == dark-age)
+	(unit-type-count villager >= 19)
+=>
+	(set-strategic-number sn-wood-gatherer-percentage 28)
+	(set-strategic-number sn-food-gatherer-percentage 72)
+	(set-strategic-number sn-gold-gatherer-percentage 0)
+	(set-strategic-number sn-stone-gatherer-percentage 0)
+	(disable-self)
+)
+
+(defrule
+	(current-age == dark-age)
+	(unit-type-count villager >= 25)
+=>
+	(set-strategic-number sn-wood-gatherer-percentage 32)
+	(set-strategic-number sn-food-gatherer-percentage 68)
+	(set-strategic-number sn-gold-gatherer-percentage 0)
+	(set-strategic-number sn-stone-gatherer-percentage 0)
+	(disable-self)
+)

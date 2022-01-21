@@ -1,0 +1,18 @@
+
+(defrule
+    (current-age == imperial-age)
+    (up-compare-sn sn-maximum-town-size == 255)
+    (or
+        (up-timer-status TrebuchetRepeatTimer == timer-disabled)
+        (up-timer-status TrebuchetRepeatTimer == timer-triggered)
+    )
+    =>
+    (up-find-local c: trebuchet c: 50)
+    (up-find-remote c: castle c: 30)
+    (up-find-remote c: bombard-tower c: 30)
+    (up-find-remote c: palisade-wall c: 30)
+    (up-find-remote c: stone-wall c: 30)
+    (up-find-remote c: gate c: 30)
+    (up-target-objects 0 action-default -1 -1)
+    (up-set-timer c: TrebuchetRepeatTimer c: 30)
+)

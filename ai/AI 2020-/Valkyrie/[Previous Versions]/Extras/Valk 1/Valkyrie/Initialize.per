@@ -1,0 +1,34 @@
+
+(defrule ; Initialize Dark Age Start
+    (true)
+    =>
+    (set-strategic-number sn-number-explore-groups 1)
+    (set-strategic-number sn-cap-civilian-explorers 1)
+    (set-strategic-number sn-enable-new-building-system 1)
+    (set-strategic-number sn-enable-training-queue 1)
+    (set-strategic-number sn-initial-exploration-required 0)
+    (set-strategic-number sn-cap-civilian-builders 3)
+    (set-strategic-number sn-placement-zone-size 0)
+    (set-strategic-number sn-allow-adjacent-dropsites 1)
+    (set-strategic-number sn-maximum-town-size 12)
+    (set-strategic-number sn-livestock-to-town-center 1)
+    (set-strategic-number sn-percent-building-cancellation 0)
+    (set-strategic-number sn-home-exploration-time 420)
+    (set-strategic-number sn-enable-boar-hunting 1)
+    ;(set-strategic-number sn-required-forest-tiles 25) ; Doesn't work
+    (disable-self)
+)
+
+(defrule
+    (true)
+    =>
+    (set-strategic-number sn-enable-patrol-attack 1)
+    (set-goal to-escrow with-escrow)
+)
+
+(defrule
+    (current-age == castle-age)
+    =>
+    (set-strategic-number sn-maximum-town-size 20)
+    (disable-self)
+)

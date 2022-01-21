@@ -1,0 +1,407 @@
+
+/* T_Woodlands */
+/* Written by Electricity (Thaldren) */
+/* Jan 2022 */
+
+/* Age of Empires 2 Definitive Edition Only! */
+
+
+#define PH_TROPHICALSOUTH
+
+#include_drs F_seasons.inc
+
+<PLAYER_SETUP>
+grouped_by_team
+ai_info_map_type BLACK_FOREST 0 0 0
+behavior_version 1
+
+
+<LAND_GENERATION>
+base_terrain DESERT
+
+create_player_lands {
+    terrain_type LAYER_C
+    base_size 23
+    land_percent 27
+    circle_radius 42 3
+}
+
+<TERRAIN_GENERATION>
+#include_drs F_ColorCorrection.inc
+
+create_terrain WOODIES {
+    base_terrain DESERT
+    land_percent 100
+    number_of_clumps 100
+    spacing_to_other_terrain_types 11
+    set_avoid_player_start_areas 27
+}
+
+create_terrain WOODIES {
+    base_terrain DESERT
+    land_percent 100
+    number_of_clumps 100
+    spacing_to_other_terrain_types 11
+    set_avoid_player_start_areas 27
+}
+
+create_terrain WOODIES {
+    base_terrain DESERT
+    land_percent 100
+    number_of_clumps 100
+    spacing_to_other_terrain_types 11
+    set_avoid_player_start_areas 27
+}
+
+create_terrain WOODIES {
+    base_terrain DESERT
+    land_percent 100
+    number_of_clumps 100
+    spacing_to_other_terrain_types 11
+    set_avoid_player_start_areas 27
+}
+
+create_terrain WOODIES {
+    base_terrain DESERT
+    land_percent 100
+    number_of_clumps 100
+    spacing_to_other_terrain_types 11
+    set_avoid_player_start_areas 27
+}
+
+create_terrain WOODIES {
+    base_terrain DESERT
+    land_percent 100
+    number_of_clumps 100
+    spacing_to_other_terrain_types 11
+    set_avoid_player_start_areas 27
+}
+
+create_terrain WOODIES {
+    base_terrain DESERT
+    land_percent 100
+    number_of_clumps 100
+    spacing_to_other_terrain_types 11
+    set_avoid_player_start_areas 27
+}
+
+
+
+
+create_terrain LAYER_B
+{
+    base_terrain DESERT
+    land_percent                   100
+    number_of_clumps               1000
+}
+
+create_terrain LAYER_B
+{
+    base_terrain DESERT
+    land_percent                   100
+    number_of_clumps               1000
+}
+
+create_terrain LAYER_B
+{
+    base_terrain DESERT
+    land_percent                   100
+    number_of_clumps               1000
+}
+
+create_terrain LAYER_B
+{
+    base_terrain DESERT
+    land_percent                   100
+    number_of_clumps               1000
+}
+
+create_terrain LAYER_B
+{
+    base_terrain DESERT
+    land_percent                   100
+    number_of_clumps               1000
+}
+
+create_terrain LAYER_B
+{
+    base_terrain DESERT
+    land_percent                   100
+    number_of_clumps               1000
+}
+
+create_terrain LAYER_B
+{
+    base_terrain DESERT
+    land_percent                   100
+    number_of_clumps               1000
+}
+
+create_terrain LAYER_B
+{
+    base_terrain DESERT
+    land_percent                   100
+    number_of_clumps               1000
+}
+
+
+
+
+create_terrain WOODIES_B
+{
+    base_terrain LAYER_B
+    land_percent 3
+    number_of_clumps 8
+    set_scale_by_groups
+}
+
+
+
+create_terrain LAYER_C
+{
+    base_terrain LAYER_B
+    land_percent 100
+    number_of_clumps 1000
+}
+
+create_terrain LAYER_B
+{
+    base_terrain LAYER_C
+    spacing_to_other_terrain_types 1
+    land_percent 4
+    number_of_clumps 26
+    terrain_mask 2
+}
+
+create_terrain LAYER_B
+{
+    base_terrain LAYER_C
+    spacing_to_other_terrain_types 1
+    land_percent 3
+    number_of_clumps 40
+    terrain_mask 2
+}
+
+create_terrain LAYER_E
+{
+    base_terrain LAYER_C
+    land_percent 2
+    number_of_clumps 2
+    set_scale_by_groups
+    terrain_mask 1
+}
+
+
+create_terrain LAYER_A
+{
+    base_terrain LAYER_C
+    land_percent 7
+    number_of_clumps 4
+    set_scale_by_groups
+    terrain_mask 1
+}
+
+<CONNECTION_GENERATION>
+create_connect_teams_lands {
+    replace_terrain LAYER_A	CESTA
+    replace_terrain LAYER_B	CESTA
+    replace_terrain LAYER_C	CESTA
+    replace_terrain WOODIES CESTA
+    replace_terrain WOODIES_B CESTA
+    terrain_cost VODA 7
+    terrain_cost MED_WATER 7
+    terrain_cost ICE 7
+    terrain_cost WOODIES 7
+    terrain_cost WOODIES_B 7
+    terrain_cost LAYER_A 2
+    terrain_cost LAYER_B 2
+    terrain_cost LAYER_C 2
+    terrain_cost BEACH 4
+    terrain_cost CESTA 1
+
+if LUDIKRIS_MAP
+    terrain_size VODA 3 1
+    terrain_size MED_WATER 3 1
+    terrain_size ICE 3 1
+    terrain_size LAYER_A 3 0
+    terrain_size LAYER_B 3 0
+    terrain_size LAYER_C 3 0
+    terrain_size WOODIES 3 0
+    terrain_size WOODIES_B 3 0
+else
+    terrain_size VODA	2 1
+    terrain_size MED_WATER 2 1
+    terrain_size ICE 2 1
+    terrain_size LAYER_A 1 0
+    terrain_size LAYER_B 1 0
+    terrain_size LAYER_C 1 0
+    terrain_size WOODIES 1 0
+    terrain_size WOODIES_B 1 0
+endif
+
+}
+
+create_connect_all_players_land 
+{
+    replace_terrain WOODIES LAYER_A
+    terrain_cost WOODIES 9
+    terrain_cost LAYER_C 1
+    terrain_size WOODIES 7 0
+}
+
+
+<OBJECTS_GENERATION>
+create_object TOWN_CENTER {
+    set_place_for_every_player
+    max_distance_to_players 0
+}
+
+create_object OAKTREE {
+    number_of_objects 5
+    min_distance_to_players 5
+    max_distance_to_players 8
+    set_place_for_every_player
+    set_gaia_object_only
+}
+
+create_object VILLAGER {
+    set_place_for_every_player
+    min_distance_to_players 6
+    max_distance_to_players 6
+}
+
+create_object SCOUT {
+    set_place_for_every_player
+    max_distance_to_players 7
+}
+
+create_object SHEEP {
+    number_of_groups 1
+    number_of_objects 4
+    min_distance_to_players 7
+    max_distance_to_players 9
+    set_gaia_object_only
+    set_place_for_every_player
+    min_distance_group_placement 4
+}
+
+create_object SHEEP {
+    number_of_groups 2
+    number_of_objects 2
+    min_distance_to_players 17
+    max_distance_to_players 21
+    set_gaia_object_only
+    set_place_for_every_player
+    min_distance_group_placement 4
+}
+
+create_object FORAGE {
+    number_of_objects 6
+    number_of_groups 1
+    min_distance_to_players 9
+    max_distance_to_players 13
+    set_gaia_object_only
+    set_place_for_every_player
+    set_tight_grouping
+    min_distance_group_placement 4
+}
+
+create_object GOLD {
+    number_of_objects 7
+    group_placement_radius 3
+    set_tight_grouping
+    set_gaia_object_only
+    set_place_for_every_player
+    min_distance_to_players 10
+    max_distance_to_players 17
+    min_distance_group_placement 4
+    max_distance_to_other_zones 7
+}
+
+create_object GOLD {
+    number_of_objects 4
+    group_placement_radius 3
+    set_tight_grouping
+    set_gaia_object_only
+    set_place_for_every_player
+    min_distance_to_players 15
+    max_distance_to_players 22
+    min_distance_group_placement 4
+    max_distance_to_other_zones 7
+}
+
+create_object GOLD {
+    number_of_groups 2
+    number_of_objects 4
+    group_placement_radius 3
+    set_tight_grouping
+    set_gaia_object_only
+    set_place_for_every_player
+    min_distance_to_players 20
+    max_distance_to_players 31
+    min_distance_group_placement 4
+    max_distance_to_other_zones 7
+}
+
+create_object STONE {
+    number_of_objects 6
+    group_placement_radius 2
+    set_tight_grouping 
+    set_gaia_object_only
+    set_place_for_every_player
+    min_distance_to_players 12
+    max_distance_to_players 22
+    min_distance_group_placement 4
+    max_distance_to_other_zones 7
+}
+
+create_object STONE {
+    number_of_groups 2
+    number_of_objects 4
+    group_placement_radius 2
+    set_tight_grouping 
+    set_gaia_object_only
+    set_place_for_every_player
+    min_distance_to_players 20
+    max_distance_to_players 28
+    min_distance_group_placement 4
+    max_distance_to_other_zones 7
+}
+
+create_object BOAR {
+    number_of_groups 2
+    number_of_objects 1
+    set_loose_grouping
+    set_gaia_object_only
+    set_place_for_every_player
+    min_distance_to_players 14
+    max_distance_to_players 19
+}
+
+create_object DEER {
+    number_of_groups 2
+    number_of_objects 4
+    min_distance_group_placement 10
+    set_place_for_every_player
+    min_distance_to_players 16
+    max_distance_to_players 21
+    set_gaia_object_only
+    min_distance_group_placement 5
+}
+
+create_object RELIC
+{
+    number_of_objects 1
+    number_of_groups 5
+    set_gaia_object_only
+}
+
+create_object SKELETON
+{
+    number_of_groups 1000
+}
+
+create_object HAWK {
+    number_of_objects 34
+}
+

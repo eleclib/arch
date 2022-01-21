@@ -1,0 +1,49 @@
+
+(defrule
+    (goal need-eagles-counter 1)
+    (unit-type-count-total militiaman-line < 10)
+    =>
+    (train militiaman-line)
+)
+
+(defrule
+    (up-compare-const is-pocket == 0)
+    (current-age < imperial-age)
+    (or	(players-civ target-player aztec)
+    (or	(players-civ target-player mayan)
+        (players-civ target-player incan)))
+    (or	(players-building-type-count target-player barracks > 1)
+    (players-unit-type-count target-player eagle-warrior-line > 1))
+    (unit-type-count-total militiaman-line < 6)
+    (players-unit-type-count target-player archer-line < 3)
+    =>
+    (train militiaman-line)
+)
+
+(defrule
+    (up-compare-const is-pocket == 0)
+    (current-age < imperial-age)
+    (or	(players-civ target-player aztec)
+    (or	(players-civ target-player mayan)
+        (players-civ target-player incan)))
+    (up-research-status c: ri-man-at-arms >= research-pending)
+    (unit-type-count-total militiaman-line < 12)
+    (players-unit-type-count target-player eagle-warrior-line > 5)
+    (players-unit-type-count target-player archer-line < 3)
+    =>
+    (train militiaman-line)
+)
+
+(defrule
+    (up-compare-const is-pocket == 0)
+    (current-age < imperial-age)
+    (or	(players-civ target-player aztec)
+    (or	(players-civ target-player mayan)
+        (players-civ target-player incan)))
+    (up-research-status c: ri-long-swordsman >= research-pending)
+    (unit-type-count-total militiaman-line < 18)
+    (players-unit-type-count target-player eagle-warrior-line > 5)
+    (players-unit-type-count target-player archer-line < 3)
+    =>
+    (train militiaman-line)
+)

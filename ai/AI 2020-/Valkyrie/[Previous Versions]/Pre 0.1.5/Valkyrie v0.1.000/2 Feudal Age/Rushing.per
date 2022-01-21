@@ -1,0 +1,44 @@
+
+
+(defrule
+    (current-age == feudal-age)
+    (food-amount > 880)
+    (not(up-research-status c: castle-age == research-pending))
+=>
+    (up-train 0 c: scout-cavalry-line)
+)
+
+(defrule
+    (current-age == feudal-age)
+    (up-research-status c: castle-age == research-pending)
+=>
+    (up-train 0 c: scout-cavalry-line)
+)
+
+
+
+
+(defrule
+    (current-age == feudal-age)
+    (up-timer-status ATTACK_TIMER == timer-disabled)
+=>
+    (enable-timer ATTACK_TIMER FEUDAL_ATTACK_TIME)
+)
+
+(defrule
+    (goal DEBUG_SAY_ALL VALK_TRUE)
+    (current-age == feudal-age)
+    (game-time > INITIAL_ATTACK_TIME)
+    (timer-triggered ATTACK_TIMER)
+=>
+    (chat-to-all "Attacking now")
+)
+
+(defrule
+    (current-age == feudal-age)
+    (game-time > INITIAL_ATTACK_TIME)
+    (timer-triggered ATTACK_TIMER)
+=>
+    (attack-now)
+    (disable-timer ATTACK_TIMER)
+)

@@ -1,0 +1,579 @@
+
+(defrule
+    (true)
+    (up-compare-goal ExperimentNumber c:== 3)
+    =>
+    (set-strategic-number sn-wood-gatherer-percentage 30)
+    (set-strategic-number sn-food-gatherer-percentage 70)
+    (set-strategic-number sn-gold-gatherer-percentage 0)
+    (set-strategic-number sn-stone-gatherer-percentage 0)
+    (set-strategic-number sn-maximum-wood-drop-distance 25)
+    (set-strategic-number sn-maximum-food-drop-distance 15)
+    (set-strategic-number sn-maximum-hunt-drop-distance 15)
+    (set-strategic-number sn-maximum-gold-drop-distance 15)
+    (set-strategic-number sn-maximum-stone-drop-distance 15)
+    (disable-self)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 3)
+    (civilian-population > 9)
+    =>
+    (set-strategic-number sn-wood-gatherer-percentage 30)
+    (set-strategic-number sn-food-gatherer-percentage 40)
+    (set-strategic-number sn-gold-gatherer-percentage 15)
+    (set-strategic-number sn-stone-gatherer-percentage 15)
+    (disable-self)
+)
+
+(defrule
+    (true)
+    (up-compare-goal ExperimentNumber c:== 3)
+    =>
+    (set-strategic-number sn-intelligent-gathering 1)
+    (set-strategic-number sn-initial-exploration-required 0)
+    (set-strategic-number sn-enable-new-building-system 1)
+    (set-strategic-number sn-number-explore-groups 1)
+    (set-strategic-number sn-cap-civilian-explorers 0)
+    (set-strategic-number sn-cap-civilian-builders 10)
+    (set-strategic-number sn-enable-boar-hunting 1)
+    (set-strategic-number sn-minimum-boar-hunt-group-size 8)
+    (set-strategic-number sn-minimum-boar-lure-group-size 8)
+    (disable-self)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 3)
+    (current-age == feudal-age)
+    =>
+    (up-modify-sn sn-maximum-town-size c:+ 7)
+    (disable-self)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 3)
+    (current-age == castle-age)
+    =>
+    (up-modify-sn sn-maximum-town-size c:+ 7)
+    (disable-self)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 3)
+    (current-age == imperial-age)
+    =>
+    (up-modify-sn sn-maximum-town-size c:+ 7)
+    (disable-self)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 3)
+    (up-can-research 0 c: feudal-age)
+    =>
+    (up-research 0 c: feudal-age)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 3)
+    (up-can-research 0 c: castle-age)
+    =>
+    (up-research 0 c: castle-age)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 3)
+    (up-can-research 0 c: imperial-age)
+    =>
+    (up-research 0 c: imperial-age)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 3)
+    (up-can-research 0 c: ri-horse-collar)
+    =>
+    (up-research 0 c: ri-horse-collar)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 3)
+    (civilian-population < 100)
+    (up-can-train 0 c: villager)
+    =>
+    (up-train 0 c: villager)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 3)
+    (civilian-population < 50)
+    (up-can-train 0 c: fishing-ship)
+    =>
+    (up-train 0 c: fishing-ship)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 3)
+    (up-can-build 0 c: farm)
+    (up-object-type-count c: lumber-camp >= 1)
+    (idle-farm-count < 3)
+    =>
+    (up-build place-normal 0 c: farm)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 3)
+    (up-can-build 0 c: house)
+    (housing-headroom < 10)
+    =>
+    (up-build place-normal 0 c: house)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 3)
+    (current-age == dark-age)
+    (up-can-build 0 c: mill)
+    (up-gaia-type-count-total c: forage-class > 0)
+    (or
+        (up-object-type-count c: house >= 1)
+        (civ-selected hun)
+    )
+    (up-object-type-count-total c: mill < 1)
+    =>
+    (up-build place-normal 0 c: mill)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 3)
+    (current-age == feudal-age)
+    (up-can-build 0 c: mill)
+    (up-gaia-type-count-total c: forage-class > 0)
+    (or
+        (up-object-type-count c: house >= 1)
+        (civ-selected hun)
+    )
+    (up-object-type-count-total c: mill < 2)
+    =>
+    (up-build place-normal 0 c: mill)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 3)
+    (current-age == castle-age)
+    (up-can-build 0 c: mill)
+    (up-gaia-type-count-total c: forage-class > 0)
+    (or
+        (up-object-type-count c: house >= 1)
+        (civ-selected hun)
+    )
+    (up-object-type-count-total c: mill < 3)
+    =>
+    (up-build place-normal 0 c: mill)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 3)
+    (current-age == imperial-age)
+    (up-can-build 0 c: mill)
+    (up-gaia-type-count-total c: forage-class > 0)
+    (or
+        (up-object-type-count c: house >= 1)
+        (civ-selected hun)
+    )
+    (up-object-type-count-total c: mill < 4)
+    =>
+    (up-build place-normal 0 c: mill)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 3)
+    (current-age == dark-age)
+    (up-can-build 0 c: lumber-camp)
+    (up-gaia-type-count-total c: wood > 25)
+    (or
+        (up-object-type-count c: house >= 1)
+        (civ-selected hun)
+    )
+    (up-object-type-count-total c: lumber-camp < 1)
+    =>
+    (up-build place-normal 0 c: lumber-camp)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 3)
+    (current-age == feudal-age)
+    (up-can-build 0 c: lumber-camp)
+    (up-gaia-type-count-total c: wood > 25)
+    (or
+        (up-object-type-count c: house >= 1)
+        (civ-selected hun)
+    )
+    (up-object-type-count-total c: lumber-camp < 2)
+    =>
+    (up-build place-normal 0 c: lumber-camp)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 3)
+    (current-age == castle-age)
+    (up-can-build 0 c: lumber-camp)
+    (up-gaia-type-count-total c: wood > 25)
+    (or
+        (up-object-type-count c: house >= 1)
+        (civ-selected hun)
+    )
+    (up-object-type-count-total c: lumber-camp < 3)
+    =>
+    (up-build place-normal 0 c: lumber-camp)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 3)
+    (current-age == imperial-age)
+    (up-can-build 0 c: lumber-camp)
+    (up-gaia-type-count-total c: wood > 25)
+    (or
+        (up-object-type-count c: house >= 1)
+        (civ-selected hun)
+    )
+    (up-object-type-count-total c: lumber-camp < 4)
+    =>
+    (up-build place-normal 0 c: lumber-camp)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 3)
+    (current-age == dark-age)
+    (up-can-build 0 c: mining-camp)
+    (or
+        (up-gaia-type-count-total c: gold > 0)
+        (up-gaia-type-count-total c: stone > 0)
+    )
+    (or
+        (up-object-type-count c: house >= 1)
+        (civ-selected hun)
+    )
+    (up-object-type-count c: lumber-camp >= 1)
+    (up-object-type-count-total c: mining-camp < 1)
+    =>
+    (up-build place-normal 0 c: mining-camp)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 3)
+    (current-age == feudal-age)
+    (up-can-build 0 c: mining-camp)
+    (or
+        (up-gaia-type-count-total c: gold > 0)
+        (up-gaia-type-count-total c: stone > 0)
+    )
+    (or
+        (up-object-type-count c: house >= 1)
+        (civ-selected hun)
+    )
+    (up-object-type-count c: lumber-camp >= 1)
+    (up-object-type-count-total c: mining-camp < 2)
+    =>
+    (up-build place-normal 0 c: mining-camp)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 3)
+    (current-age == castle-age)
+    (up-can-build 0 c: mining-camp)
+    (or
+        (up-gaia-type-count-total c: gold > 0)
+        (up-gaia-type-count-total c: stone > 0)
+    )
+    (or
+        (up-object-type-count c: house >= 1)
+        (civ-selected hun)
+    )
+    (up-object-type-count c: lumber-camp >= 1)
+    (up-object-type-count-total c: mining-camp < 3)
+    =>
+    (up-build place-normal 0 c: mining-camp)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 3)
+    (current-age == imperial-age)
+    (up-can-build 0 c: mining-camp)
+    (or
+        (up-gaia-type-count-total c: gold > 0)
+        (up-gaia-type-count-total c: stone > 0)
+    )
+    (or
+        (up-object-type-count c: house >= 1)
+        (civ-selected hun)
+    )
+    (up-object-type-count c: lumber-camp >= 1)
+    (up-object-type-count-total c: mining-camp < 4)
+    =>
+    (up-build place-normal 0 c: mining-camp)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 3)
+    (current-age == dark-age)
+    (up-can-build 0 c: dock)
+    (or
+        (up-object-type-count c: house >= 1)
+        (civ-selected hun)
+    )
+    (up-object-type-count-total c: dock < 1)
+    =>
+    (up-build place-normal 0 c: dock)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 3)
+    (current-age == feudal-age)
+    (up-can-build 0 c: dock)
+    (or
+        (up-object-type-count c: house >= 1)
+        (civ-selected hun)
+    )
+    (up-object-type-count-total c: dock < 2)
+    =>
+    (up-build place-normal 0 c: dock)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 3)
+    (current-age == castle-age)
+    (up-can-build 0 c: dock)
+    (or
+        (up-object-type-count c: house >= 1)
+        (civ-selected hun)
+    )
+    (up-object-type-count-total c: dock < 3)
+    =>
+    (up-build place-normal 0 c: dock)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 3)
+    (current-age == imperial-age)
+    (up-can-build 0 c: dock)
+    (or
+        (up-object-type-count c: house >= 1)
+        (civ-selected hun)
+    )
+    (up-object-type-count-total c: dock < 4)
+    =>
+    (up-build place-normal 0 c: dock)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 3)
+    (current-age == dark-age)
+    (up-can-build 0 c: barracks)
+    (or
+        (up-object-type-count c: house >= 1)
+        (civ-selected hun)
+    )
+    (up-object-type-count-total c: barracks < 1)
+    =>
+    (up-build place-normal 0 c: barracks)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 3)
+    (current-age == feudal-age)
+    (up-can-build 0 c: barracks)
+    (or
+        (up-object-type-count c: house >= 1)
+        (civ-selected hun)
+    )
+    (up-object-type-count-total c: barracks < 2)
+    =>
+    (up-build place-normal 0 c: barracks)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 3)
+    (current-age == castle-age)
+    (up-can-build 0 c: barracks)
+    (or
+        (up-object-type-count c: house >= 1)
+        (civ-selected hun)
+    )
+    (up-object-type-count-total c: barracks < 3)
+    =>
+    (up-build place-normal 0 c: barracks)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 3)
+    (current-age == imperial-age)
+    (up-can-build 0 c: barracks)
+    (or
+        (up-object-type-count c: house >= 1)
+        (civ-selected hun)
+    )
+    (up-object-type-count-total c: barracks < 4)
+    =>
+    (up-build place-normal 0 c: barracks)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 3)
+    (current-age == feudal-age)
+    (up-can-build 0 c: stable)
+    (up-object-type-count c: stable < 2)
+    =>
+    (up-build place-normal 0 c: stable)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 3)
+    (current-age == castle-age)
+    (up-can-build 0 c: stable)
+    (up-object-type-count-total c: stable < 3)
+    =>
+    (up-build place-normal 0 c: stable)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 3)
+    (current-age == imperial-age)
+    (up-can-build 0 c: stable)
+    (up-object-type-count-total c: stable < 4)
+    =>
+    (up-build place-normal 0 c: stable)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 3)
+    (current-age == feudal-age)
+    (up-can-build 0 c: archery-range)
+    (up-object-type-count-total c: archery-range < 2)
+    =>
+    (up-build place-normal 0 c: archery-range)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 3)
+    (current-age == castle-age)
+    (up-can-build 0 c: archery-range)
+    (up-object-type-count c: archery-range < 3)
+    =>
+    (up-build place-normal 0 c: archery-range)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 3)
+    (current-age == imperial-age)
+    (up-can-build 0 c: archery-range)
+    (up-object-type-count-total c: archery-range < 4)
+    =>
+    (up-build place-normal 0 c: archery-range)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 3)
+    (current-age == castle-age)
+    (up-can-build 0 c: siege-workshop)
+    (up-object-type-count-total c: siege-workshop < 3)
+    =>
+    (up-build place-normal 0 c: siege-workshop)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 3)
+    (current-age == imperial-age)
+    (up-can-build 0 c: siege-workshop)
+    (up-object-type-count-total c: siege-workshop < 4)
+    =>
+    (up-build place-normal 0 c: siege-workshop)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 3)
+    (current-age == castle-age)
+    (up-can-build 0 c: monastery)
+    (up-object-type-count-total c: monastery < 3)
+    =>
+    (up-build place-normal 0 c: monastery)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 3)
+    (current-age == imperial-age)
+    (up-can-build 0 c: monastery)
+    (up-object-type-count-total c: monastery < 4)
+    =>
+    (up-build place-normal 0 c: monastery)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 3)
+    (current-age == castle-age)
+    (up-can-build 0 c: castle)
+    (up-object-type-count-total c: castle < 3)
+    =>
+    (up-build place-normal 0 c: castle)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 3)
+    (current-age == imperial-age)
+    (up-can-build 0 c: castle)
+    (up-object-type-count-total c: castle < 4)
+    =>
+    (up-build place-normal 0 c: castle)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 3)
+    (current-age == feudal-age)
+    (up-can-build 0 c: blacksmith)
+    (up-object-type-count-total c: blacksmith < 2)
+    =>
+    (up-build place-normal 0 c: blacksmith)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 3)
+    (current-age == castle-age)
+    (up-can-build 0 c: blacksmith)
+    (up-object-type-count-total c: blacksmith < 3)
+    =>
+    (up-build place-normal 0 c: blacksmith)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 3)
+    (current-age == imperial-age)
+    (up-can-build 0 c: blacksmith)
+    (up-object-type-count-total c: blacksmith < 4)
+    =>
+    (up-build place-normal 0 c: blacksmith)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 3)
+    (current-age == feudal-age)
+    (up-can-build 0 c: market)
+    (up-object-type-count-total c: market < 2)
+    =>
+    (up-build place-normal 0 c: market)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 3)
+    (current-age == castle-age)
+    (up-can-build 0 c: market)
+    (up-object-type-count-total c: market < 3)
+    =>
+    (up-build place-normal 0 c: market)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 3)
+    (current-age == imperial-age)
+    (up-can-build 0 c: market)
+    (up-object-type-count-total c: market < 4)
+    =>
+    (up-build place-normal 0 c: market)
+)
+

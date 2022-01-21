@@ -1,0 +1,20 @@
+
+
+
+(defrule
+    (current-age == dark-age)
+    (military-population >= 3)
+    ;(up-enemy-buildings-in-town <= 7)
+    =>
+    (set-goal gl-attacking 1)
+    ;(up-modify-sn sn-maximum-town-size c:+ 4)
+)
+
+(defrule
+    (current-age == dark-age)
+    (military-population < 3)
+    ;(up-enemy-buildings-in-town >= 7)
+    =>
+    (set-goal gl-attacking 0)
+    ;(up-modify-sn sn-maximum-town-size c:- 7)
+)

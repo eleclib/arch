@@ -1,0 +1,18 @@
+
+(defrule
+    (current-age == castle-age)
+=>
+    (set-strategic-number sn-wood-gatherer-percentage 35)
+    (set-strategic-number sn-food-gatherer-percentage 45)
+    (set-strategic-number sn-gold-gatherer-percentage 16)
+    (set-strategic-number sn-stone-gatherer-percentage 4)
+    (disable-self)
+)
+
+(defrule
+    (player-in-game any-ally)
+    (current-age == castle-age)
+    (up-object-type-count-total c: trade-cart < 20)
+    =>
+    (up-train 0 c: trade-cart)
+)

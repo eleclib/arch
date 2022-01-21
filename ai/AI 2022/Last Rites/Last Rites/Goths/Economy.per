@@ -1,0 +1,144 @@
+
+
+(defrule
+    (true)
+    =>
+    (set-strategic-number sn-food-gatherer-percentage 100)
+    (disable-self)
+)
+
+
+(defrule
+    (unit-type-count villager >= 5)
+    =>
+    (set-strategic-number sn-wood-gatherer-percentage 28)
+    (set-strategic-number sn-food-gatherer-percentage 72)
+    (disable-self)
+)
+
+
+
+(defrule
+    (current-age == dark-age)
+    (unit-type-count villager >= 16)
+    =>
+    (set-strategic-number sn-wood-gatherer-percentage 42)
+    (set-strategic-number sn-food-gatherer-percentage 34)
+    (set-strategic-number sn-gold-gatherer-percentage 20)
+    (set-strategic-number sn-stone-gatherer-percentage 4)
+    (disable-self)
+)
+
+
+
+
+(defrule
+    (current-age == feudal-age)
+    =>
+    (set-strategic-number sn-wood-gatherer-percentage 42)
+    (set-strategic-number sn-food-gatherer-percentage 32)
+    (set-strategic-number sn-gold-gatherer-percentage 18)
+    (set-strategic-number sn-stone-gatherer-percentage 8)
+    (disable-self)
+)
+
+
+
+(defrule
+    (current-age == dark-age)
+    =>
+    (up-modify-goal gl-farms-total c:+ 17)
+    (disable-self)
+)
+
+
+
+
+
+
+(defrule
+    (current-age == feudal-age)
+    =>
+    (up-modify-goal gl-farms-total c:+ 21)
+    (disable-self)
+)
+
+
+
+
+
+
+
+(defrule
+    (current-age == feudal-age)
+    (building-type-count-total market == 1)
+    =>
+    (set-strategic-number sn-wood-gatherer-percentage 48)
+    (set-strategic-number sn-food-gatherer-percentage 36)
+    (set-strategic-number sn-gold-gatherer-percentage 12)
+    (set-strategic-number sn-stone-gatherer-percentage 10)
+    (disable-self)
+)
+
+
+
+(defrule
+    (current-age == feudal-age)
+    (building-type-count-total market == 1)
+    =>
+    (up-modify-goal gl-farms-total c:+ 42)
+    (disable-self)
+)
+
+
+
+
+
+
+
+(defrule
+    (current-age == castle-age)
+    =>
+    (set-strategic-number sn-wood-gatherer-percentage 28)
+    (set-strategic-number sn-food-gatherer-percentage 38)
+    (set-strategic-number sn-gold-gatherer-percentage 16)
+    (set-strategic-number sn-stone-gatherer-percentage 16)
+    (disable-self)
+)
+
+
+
+
+(defrule
+    (current-age == castle-age)
+    =>
+    (up-modify-goal gl-farms-total c:+ 26)
+    (disable-self)
+)
+
+
+
+
+
+
+
+(defrule
+    (current-age == imperial-age)
+    =>
+    (set-strategic-number sn-wood-gatherer-percentage 20)
+    (set-strategic-number sn-food-gatherer-percentage 70)
+    (set-strategic-number sn-gold-gatherer-percentage 5)
+    (set-strategic-number sn-stone-gatherer-percentage 5)
+    (disable-self)
+)
+
+
+
+
+
+(defrule
+    (current-age == imperial-age)
+    =>
+    (up-modify-goal gl-farms-total c:+ 72)
+    (disable-self)
+)

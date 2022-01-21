@@ -1,0 +1,112 @@
+
+;(defrule
+;    (or
+;        (up-timer-status EndGameTimer == timer-disabled)
+;        (up-timer-status EndGameTimer == timer-triggered)
+;    )
+;    (up-idle-unit-count idle-type-villager > 5)
+;    (up-can-build 0 c: lumber-camp)
+;    (up-can-build 0 c: mining-camp)
+;    (up-can-build 0 c: mill)
+;    =>
+;    (up-modify-goal TownSizeHolder c:+ 5)
+;    (up-modify-sn sn-maximum-town-size s:= TownSizeHolder)
+;    (up-build place-normal 0 c: lumber-camp)
+;    (up-build place-normal 0 c: mining-camp)
+;    (up-build place-normal 0 c: mill)
+;    (up-set-timer c: EndGameTimer c: 90)
+;)
+
+(defrule
+    (true)
+    (up-compare-goal ExperimentNumber c:== 3)
+    =>
+    (up-modify-goal TownSizeHolder c:= 20)
+    (disable-self)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 3)
+    (up-can-research 0 c: ri-scale-barding)
+    =>
+    (up-research 0 c: ri-scale-barding)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 3)
+    (up-can-research 0 c: ri-chain-barding)
+    =>
+    (up-research 0 c: ri-chain-barding)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 3)
+    (up-can-research 0 c: ri-plate-barding)
+    =>
+    (up-research 0 c: ri-plate-barding)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 3)
+    (up-can-research 0 c: ri-forging)
+    =>
+    (up-research 0 c: ri-forging)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 3)
+    (up-can-research 0 c: ri-iron-casting)
+    =>
+    (up-research 0 c: ri-iron-casting)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 3)
+    (up-can-research 0 c: ri-blast-furnace)
+    =>
+    (up-research 0 c: ri-blast-furnace)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 3)
+    (up-can-research 0 c: ri-light-cavalry)
+    =>
+    (up-research 0 c: ri-light-cavalry)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 3)
+    (up-can-research 0 c: ri-hussar)
+    =>
+    (up-research 0 c: ri-hussar)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 3)
+    (or
+        (up-timer-status ScoutTrainTimer == timer-disabled)
+        (up-timer-status ScoutTrainTimer == timer-triggered)
+    )
+    (up-can-train 0 c: scout-cavalry-line)
+    =>
+    (up-train 0 c: scout-cavalry-line)
+    (up-set-timer c: ScoutTrainTimer c: 15)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 3)
+    (up-object-type-count c: scout-cavalry-line >= 80)
+    =>
+    (up-modify-goal TownSizeHolder s:= sn-maximum-town-size)
+    (up-modify-sn sn-maximum-town-size c:= 255)
+    (up-modify-sn sn-number-explore-groups c:= 7)
+)
+
+(defrule
+    (up-compare-goal ExperimentNumber c:== 3)
+    (up-compare-sn sn-maximum-town-size c:== 255)
+    (up-object-type-count c: scout-cavalry-line <= 15)
+    =>
+    (up-modify-sn sn-maximum-town-size g:= TownSizeHolder)
+    (up-modify-sn sn-number-explore-groups c:= 2)
+)

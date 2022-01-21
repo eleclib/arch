@@ -1,0 +1,71 @@
+
+(defrule
+    (not
+        (civ-selected chinese)
+    )
+    (current-age == dark-age)
+    (up-can-build 0 c: house)
+    (up-pending-objects c: house < 1)
+    (housing-headroom < 5)
+=>
+    (up-set-placement-data my-player-number -1 c: 0)
+    (up-build place-control 0 c: house)
+)
+
+(defrule
+    (civ-selected chinese)
+    (current-age == dark-age)
+    (up-can-build 0 c: house)
+    (up-pending-objects c: house < 1)
+    (housing-headroom < 5)
+=>
+    (up-set-placement-data my-player-number -1 c: 0)
+    (up-build place-control 0 c: house)
+)
+
+(defrule
+    (up-can-build 0 c: mill)
+    (up-gaia-type-count-total c: forage-class c:> 0)
+    (up-object-type-count-total c: mill < 2)
+    =>
+    (up-modify-sn sn-preferred-mill-placement c:= 0) ; Forage
+    (up-build place-normal 0 c: mill)
+)
+
+(defrule
+    (up-can-build 0 c: mill)
+    (up-gaia-type-count-total c: deer-class c:>= 4)
+    (up-object-type-count-total c: mill < 2)
+    =>
+    (up-modify-sn sn-preferred-mill-placement c:= 1) ; Deer
+    (up-build place-normal 0 c: mill)
+)
+
+(defrule
+    (current-age == dark-age)
+    (up-object-type-count-total c: mill >= 1)
+    (up-object-type-count-total c: lumber-camp < 2)
+    (up-pending-objects c: lumber-camp < 1)
+=>
+    (up-build place-normal 0 c: lumber-camp)
+)
+
+(defrule
+    (current-age == dark-age)
+    (up-object-type-count-total c: farm <= 5)
+    (up-object-type-count-total c: lumber-camp >= 1)
+    (idle-farm-count < 3)
+=>
+    (up-set-placement-data my-player-number -1 c: 0)
+    (up-build place-control 0 c: farm)
+)
+
+(defrule
+    (current-age == dark-age)
+    (up-object-type-count-total c: lumber-camp >= 1)
+    (up-object-type-count-total c: barracks < 1)
+    (up-pending-objects c: barracks < 1)
+=>
+    (up-set-placement-data my-player-number -1 c: 0)
+    (up-build place-control 0 c: barracks)
+)

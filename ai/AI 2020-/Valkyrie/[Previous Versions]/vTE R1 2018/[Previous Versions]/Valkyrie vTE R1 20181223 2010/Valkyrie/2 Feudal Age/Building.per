@@ -1,0 +1,109 @@
+
+(defrule
+    (current-age == feudal-age)
+    (idle-farm-count < 3)
+=>
+    (up-set-placement-data my-player-number -1 c: 0)
+    (up-build place-control 0 c: farm)
+)
+
+(defrule
+    (current-age == feudal-age)
+    (up-can-build 0 c: house)
+    (up-pending-objects c: house < 1)
+    (housing-headroom < 6)
+=>
+    (up-set-placement-data my-player-number -1 c: 0)
+    (up-build place-control 0 c: house)
+)
+
+(defrule
+    (current-age == feudal-age)
+    (up-object-type-count-total c: barracks < 1)
+    (up-pending-objects c: barracks < 1)
+    (up-can-build 0 c: barracks)
+=>
+    (up-set-placement-data my-player-number -1 c: 0)
+    (up-build place-control 0 c: barracks)
+)
+
+(defrule
+    (or
+        (or
+            (civ-selected aztec)
+            (civ-selected mayan)
+        )
+        (up-compare-goal ScoutRush == 1)
+    )
+    (current-age == feudal-age)
+    (up-object-type-count-total c: barracks >= 1)
+    (up-object-type-count-total c: stable < 1)
+    (up-can-build 0 c: stable)
+=>
+    (up-set-placement-data my-player-number -1 c: 0)
+    (up-build place-control 0 c: stable)
+)
+
+(defrule
+    (or
+        (or
+            (civ-selected aztec)
+            (civ-selected mayan)
+        )
+        (up-compare-goal ArcherRush == 1)
+    )
+    (current-age == feudal-age)
+    (up-object-type-count-total c: barracks >= 1)
+    (up-object-type-count-total c: archery-range < 1)
+    (up-can-build 0 c: archery-range)
+=>
+    (up-set-placement-data my-player-number -1 c: 0)
+    (up-build place-control 0 c: archery-range)
+)
+
+(defrule
+    (player-in-game any-ally)
+    (current-age == feudal-age)
+    (up-object-type-count-total c: archery-range >= 1)
+    (up-object-type-count-total c: market < 1)
+    (up-pending-objects c: market < 1)
+    (up-can-build 0 c: market)
+=>
+    (up-set-placement-data my-player-number -1 c: 0)
+    (up-build place-control 0 c: market)
+)
+
+(defrule
+    (current-age == feudal-age)
+    (or
+        (up-object-type-count-total c: archery-range >= 1)
+        (up-object-type-count-total c: stable >= 1)
+    )
+    (up-object-type-count-total c: blacksmith < 1)
+    (up-pending-objects c: blacksmith < 1)
+    (up-can-build 0 c: blacksmith)
+    (wood-amount > 250)
+=>
+    (up-set-placement-data my-player-number -1 c: 0)
+    (up-build place-control 0 c: blacksmith)
+)
+
+(defrule
+    (current-age == feudal-age)
+    (up-object-type-count-total c: mining-camp < 1)
+    (up-pending-objects c: mining-camp < 1)
+=>
+    (up-build place-normal 0 c: mining-camp)
+)
+
+(defrule
+    (current-age == feudal-age)
+    (or
+        (up-object-type-count-total c: archery-range >= 1)
+        (up-object-type-count-total c: stable >= 1)
+    )
+    (up-object-type-count-total c: mining-camp < 2)
+    (up-pending-objects c: mining-camp < 1)
+=>
+    (up-build place-normal 0 c: mining-camp)
+)

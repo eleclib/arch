@@ -1,0 +1,57 @@
+
+
+
+
+; bug test
+
+;(defrule
+;    (up-research-status c: feudal-age == research-pending)
+;    =>
+;    (up-chat-data-to-all "gl-farms-total is %d" g: gl-farms-total)
+;    (up-chat-data-to-all "gl-farms-idle-total is %d" g: gl-farms-idle-total)    
+;)
+
+
+
+(defrule
+    (up-research-status c: feudal-age == research-pending)
+    (up-gaia-type-count-total c: cn-forage-bush-class == 0)
+    (building-type-count-total lumber-camp > 0)
+    (up-object-type-count-total c: farm g:< gl-farms-total)
+    (up-get-fact idle-farm-count 0 gl-up-get-fact)
+    (up-compare-goal gl-up-get-fact g:< gl-farms-idle-total)
+    (can-build farm)
+    =>
+    (build farm)
+)
+
+
+
+
+
+
+
+
+
+
+(defrule
+    (current-age == feudal-age)
+    (building-type-count-total archery-range >= 2)
+    (up-object-type-count-total c: farm g:< gl-farms-total)
+    (up-get-fact idle-farm-count 0 gl-up-get-fact)
+    (up-compare-goal gl-up-get-fact g:< gl-farms-idle-total)
+    (can-build farm)
+    =>
+    (build farm)
+)
+
+(defrule
+    (current-age >= castle-age)
+    (up-object-type-count-total c: farm g:< gl-farms-total)
+    (up-get-fact idle-farm-count 0 gl-up-get-fact)
+    (up-compare-goal gl-up-get-fact g:< gl-farms-idle-total)
+    (can-build farm)
+    =>
+    (build farm)
+)
+

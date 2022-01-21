@@ -1,0 +1,323 @@
+
+
+
+
+(defrule
+    (game-time >= FORCED_TIME_CASTLE)
+    (current-age == feudal-age)
+    (up-can-research 0 c: castle-age)
+    (food-amount > 800)
+    (gold-amount > 200)
+=>
+    (up-research 0 c: castle-age)
+    (disable-self)
+)
+
+
+
+
+
+
+(defrule
+
+(game-time >= FORCED_TIME_CASTLE)
+(current-age == feudal-age)
+
+(up-research-status c: castle-age >= research-pending)
+
+=>
+
+(set-goal GOAL_WE_ARE_STOCKPILING VALK_FALSE)
+(disable-self)
+
+
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+(defrule
+
+(not(goal GOAL_WE_ARE_STOCKPILING VALK_TRUE))
+(current-age == feudal-age)
+(can-research ri-wheel-barrow)
+
+=>
+
+(research ri-wheel-barrow)
+
+)
+
+
+
+(defrule
+
+(not(goal GOAL_WE_ARE_STOCKPILING VALK_TRUE))
+(current-age == feudal-age)
+(can-research ri-town-watch)
+
+=>
+
+(research ri-town-watch)
+
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+(defrule
+
+(not(goal GOAL_WE_ARE_STOCKPILING VALK_TRUE))
+(current-age == feudal-age)
+(can-research ri-double-bit-axe)
+
+=>
+
+(research ri-double-bit-axe)
+
+)
+
+
+(defrule
+
+(not(goal GOAL_WE_ARE_STOCKPILING VALK_TRUE))
+(current-age == feudal-age)
+(can-research ri-horse-collar)
+
+=>
+
+(research ri-horse-collar)
+
+)
+
+
+(defrule
+
+(not(goal GOAL_WE_ARE_STOCKPILING VALK_TRUE))
+(current-age == feudal-age)
+(can-research ri-gold-mining)
+
+=>
+
+(research ri-gold-mining)
+
+)
+
+
+
+(defrule
+
+(not(goal GOAL_WE_ARE_STOCKPILING VALK_TRUE))
+(current-age == feudal-age)
+(can-research ri-stone-mining)
+
+=>
+
+(research ri-stone-mining)
+
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+(defrule
+
+(not(goal GOAL_WE_ARE_STOCKPILING VALK_TRUE))
+(current-age == feudal-age)
+(can-research ri-man-at-arms)
+
+=>
+
+(research ri-man-at-arms)
+
+)
+
+
+(defrule
+
+(not(goal GOAL_WE_ARE_STOCKPILING VALK_TRUE))
+(current-age == feudal-age)
+(can-research ri-tracking)
+
+=>
+
+(research ri-tracking)
+
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+(defrule
+
+(not(goal GOAL_WE_ARE_STOCKPILING VALK_TRUE))
+(current-age == feudal-age)
+(can-research ri-scale-mail)
+
+=>
+
+(research ri-scale-mail)
+
+)
+
+
+
+(defrule
+
+(not(goal GOAL_WE_ARE_STOCKPILING VALK_TRUE))
+(current-age == feudal-age)
+(can-research ri-forging)
+
+=>
+
+(research ri-forging)
+
+)
+
+
+(defrule
+
+(not(goal GOAL_WE_ARE_STOCKPILING VALK_TRUE))
+(current-age == feudal-age)
+(can-research ri-fletching)
+
+=>
+
+(research ri-fletching)
+
+)
+
+
+
+
+
+
+
+
+(defrule
+
+(not(goal GOAL_WE_ARE_STOCKPILING VALK_TRUE))
+(current-age == feudal-age)
+(can-research ri-padded-archer-armor)
+
+=>
+
+(research ri-padded-archer-armor)
+
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+(defrule
+
+(current-age == feudal-age)
+(up-can-research 0 c: ri-cartography)
+
+=>
+
+(up-research 0 c: ri-cartography)
+
+)
+

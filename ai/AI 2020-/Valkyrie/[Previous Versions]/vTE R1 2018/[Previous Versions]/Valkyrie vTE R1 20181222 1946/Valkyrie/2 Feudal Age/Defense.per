@@ -1,0 +1,14 @@
+
+(defrule
+    (current-age == feudal-age)
+    (town-under-attack)
+    (up-enemy-units-in-town >= 4)
+=>
+    (set-strategic-number sn-disable-villager-garrison 0)
+)
+
+(defrule
+    (current-age == feudal-age)
+=>
+    (set-strategic-number sn-disable-villager-garrison 3)
+)

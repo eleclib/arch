@@ -1,0 +1,331 @@
+; MiniValk created by Electricity for AI Scripters
+
+(defrule
+	(true)
+	=>
+	(up-modify-sn sn-blot-exploration-map c:= 0)
+	(up-modify-sn sn-number-explore-groups c:= 1)
+	(up-modify-sn sn-cap-civilian-explorers c:= 0)
+	(up-modify-sn sn-cap-civilian-builders c:= 2)
+	(up-modify-sn sn-enable-training-queue c:= 1)
+	(up-modify-sn sn-enable-new-building-system c:= 1)
+	(up-modify-sn sn-percent-exploration-required c:= 0)
+	(up-modify-sn sn-food-gatherer-percentage c:= 100)
+	(up-modify-sn sn-enable-boar-hunting c:= 2)
+	(up-modify-sn sn-minimum-boar-hunt-group-size c:= 4)
+	(up-modify-sn sn-minimum-boar-lure-group-size c:= 1)
+	(up-modify-sn sn-boar-lure-destination c:= 10)
+	(disable-self)
+	)
+
+(defrule
+	(true)
+	=>
+	(up-modify-goal 41 c:= 27)
+	(up-modify-goal 42 c:= 5)
+	(disable-self)
+)
+
+(defrule
+	(up-object-type-count-total c: villager > 10)
+	=>
+	(up-modify-sn sn-wood-gatherer-percentage c:= 30)
+	(up-modify-sn sn-food-gatherer-percentage c:= 70)
+	(disable-self)
+	)
+
+(defrule
+	(or
+		(or
+			(up-can-research 0 c: feudal-age)
+			(up-can-research 0 c: castle-age)
+		)
+		(up-can-research 0 c: imperial-age)
+	)
+	=>
+	(up-research 0 c: feudal-age)
+	(up-research 0 c: castle-age)
+	(up-research 0 c: imperial-age)
+	)
+
+(defrule
+	(or
+		(up-can-research 0 c: ri-loom)
+		(up-gaia-type-count-total c: 958 == 0)
+	)
+	=>
+	(up-research 0 c: ri-loom)
+;	(up-modify-goal 43 c:= 0)
+	)
+
+;(defrule
+;	(up-compare-goal 43 c:= 1)
+;	(current-age == dark-age)
+;	=>
+;	(up-drop-resources food g: 42)
+;	)
+
+(defrule
+	(up-object-type-count-total c: villager g:< 41)
+	(up-can-train 0 c: villager)
+	=>
+	(up-train 0 c: villager)
+	)
+
+(defrule
+	(housing-headroom < 10)
+	(up-can-build 0 c: house)
+	=>
+	(up-build 0 0 c: house)
+	)
+
+(defrule
+	(up-gaia-type-count-total c: 907 > 0)
+	(up-object-type-count-total c: mill < 1)
+	(up-can-build 0 c: mill)
+	=>
+	(up-build 0 0 c: mill)
+	)
+
+(defrule
+	(up-object-type-count-total c: lumber-camp < 1)
+	(up-can-build 0 c: lumber-camp)
+	=>
+	(up-build 0 0 c: lumber-camp)
+	)
+
+
+(defrule
+	(up-gaia-type-count-total c: gold > 0)
+	(up-object-type-count-total c: mining-camp < 2)
+	(up-can-build 0 c: mining-camp)
+	=>
+	(up-build 0 0 c: mining-camp)
+	)
+
+(defrule
+	(up-gaia-type-count-total c: stone > 0)
+	(up-object-type-count-total c: mining-camp < 4)
+	(up-can-build 0 c: mining-camp)
+	=>
+	(up-build 0 0 c: mining-camp)
+	)
+
+(defrule
+	(current-age == feudal-age)
+	=>
+	(up-modify-sn sn-wood-gatherer-percentage c:= 40)
+	(up-modify-sn sn-food-gatherer-percentage c:= 45)
+	(up-modify-sn sn-gold-gatherer-percentage c:= 15)
+	(up-modify-sn sn-cap-civilian-builders c:= 4)
+	(up-modify-sn sn-maximum-town-size c:+ 3)
+	(up-modify-goal 41 c:= 36)
+	(disable-self)
+	)
+
+(defrule
+;	(up-gaia-type-count-total c: 907 == 0)
+	(idle-farm-count < 10)
+	(or
+		(wood-amount > 400)
+		(and
+			(up-object-type-count-total c: blacksmith >= 1)
+			(up-object-type-count-total c: market >= 1)
+		)
+	)
+	(up-can-build 0 c: farm)
+	=>
+	(up-build 0 0 c: farm)
+	)
+
+(defrule
+	(current-age >= feudal-age)
+	(up-object-type-count-total c: market < 1)
+	(up-can-build 0 c: market)
+	=>
+	(up-build 0 0 c: market)
+	)
+
+(defrule
+	(current-age >= feudal-age)
+	(up-object-type-count-total c: blacksmith < 1)
+	(up-can-build 0 c: blacksmith)
+	=>
+	(up-build 0 0 c: blacksmith)
+	)
+
+(defrule
+	(current-age >= feudal-age)
+	(up-object-type-count-total c: barracks < 1)
+	(up-can-build 0 c: barracks)
+	=>
+	(up-build 0 0 c: barracks)
+	)
+
+(defrule
+	(current-age == castle-age)
+	=>
+	(up-modify-sn sn-wood-gatherer-percentage c:= 35)
+	(up-modify-sn sn-food-gatherer-percentage c:= 35)
+	(up-modify-sn sn-gold-gatherer-percentage c:= 20)
+	(up-modify-sn sn-stone-gatherer-percentage c:= 10)
+	(up-modify-sn sn-cap-civilian-builders c:= 7)
+	(up-modify-sn sn-maximum-town-size c:+ 3)
+	(up-modify-goal 41 c:= 70)
+	(disable-self)
+	)
+
+(defrule
+	(current-age >= castle-age)
+	(up-object-type-count-total c: stable < 3)
+	(up-can-build 0 c: stable)
+	=>
+	(up-build 0 0 c: stable)
+	)
+
+(defrule
+	(current-age >= castle-age)
+	(up-object-type-count-total c: siege-workshop < 3)
+	(up-can-build 0 c: siege-workshop)
+	=>
+	(up-build 0 0 c: siege-workshop)
+	)
+
+(defrule
+	(current-age >= castle-age)
+	(up-object-type-count-total c: university < 1)
+	(up-can-build 0 c: university)
+	=>
+	(up-build 0 0 c: university)
+	)
+
+(defrule
+	(current-age >= castle-age)
+	(up-can-build 0 c: castle)
+	=>
+	(up-set-placement-data my-player-number -1 c: 20)
+	(up-build 2 0 c: castle)
+	)
+
+(defrule
+	(current-age == castle-age)
+	(up-object-type-count-total c: town-center < 3)
+	(up-can-build 0 c: town-center)
+	=>
+	(up-build 0 0 c: town-center)
+	)
+
+(defrule
+	(current-age >= castle-age)
+	(up-object-type-count-total c: villager g:< 41)
+;	(up-can-train 0 c: knight-line)
+;	(up-can-train 0 c: scorpion-line)
+;	(up-can-train 0 c: my-unique-unit)
+	=>
+	(up-train 0 c: knight-line)
+	(up-train 0 c: scorpion-line)
+	(up-train 0 c: my-unique-unit)
+	)
+
+(defrule
+	(current-age >= castle-age)
+	(up-object-type-count-total c: villager g:>= 41)
+	=>
+	(up-full-reset-search)
+	(up-find-local c: knight-line c: 40)
+	(up-find-remote c: 903 c: 1)
+	(up-target-objects 0 0 -1 -1)
+	(up-reset-search 1 1 1 1)
+	(up-find-local c: scorpion-line c: 40)
+	(up-find-remote c: 906 c: 1)
+	(up-find-remote c: 900 c: 1)
+	(up-target-objects 0 0 -1 -1)
+	(up-reset-search 1 1 1 1)
+	(up-find-local c: my-unique-unit-line c: 40)
+	(up-find-remote c: -1 c: 1)
+	(up-target-objects 0 0 -1 -1)
+	)
+
+(defrule
+	(current-age == imperial-age)
+	=>
+	(up-modify-sn sn-wood-gatherer-percentage c:= 40)
+	(up-modify-sn sn-food-gatherer-percentage c:= 30)
+	(up-modify-sn sn-gold-gatherer-percentage c:= 20)
+	(up-modify-sn sn-stone-gatherer-percentage c:= 10)
+	(up-modify-sn sn-maximum-town-size c:+ 3)
+	(up-modify-goal 41 c:= 130)
+	(disable-self)
+	)
+
+(defrule
+	(current-age == imperial-age)
+	=>
+	(up-research 0 c: ri-chemistry)
+	(up-research 0 c: ri-bombard-tower)
+	(up-research 0 c: ri-cavalier)
+	(up-research 0 c: ri-paladin)
+	(up-research 0 c: ri-capped-ram)
+	(up-research 0 c: ri-heavy-scorpion)
+	(up-research 0 c: my-unique-unit-upgrade)
+	)
+
+(defrule
+	(current-age >= imperial-age)
+	(up-object-type-count-total c: villager g:< 41)
+;	(up-can-train 0 c: knight-line)
+;	(up-can-train 0 c: scorpion-line)
+;	(up-can-train 0 c: hand-cannoneer)
+;	(up-can-train 0 c: my-unique-unit-line)
+	=>
+	(up-train 0 c: knight-line)
+	(up-train 0 c: scorpion-line)
+	(up-train 0 c: hand-cannoneer)
+	(up-train 0 c: my-unique-unit-line)
+	(up-train 0 c: battering-ram-line)
+	(up-train 0 c: trebuchet)
+	)
+
+(defrule
+	(current-age == imperial-age)
+	(up-can-build 0 c: bombard-tower)
+	=>
+	(up-build 1 0 c: bombard-tower)
+	)
+
+(defrule
+	(current-age >= imperial-age)
+	(up-object-type-count-total c: villager g:>= 41)
+	=>
+	(up-full-reset-search)
+	(up-find-local c: knight-line c: 40)
+	(up-find-remote c: 903 c: 1)
+	(up-target-objects 0 0 -1 -1)
+	(up-reset-search 1 1 1 1)
+	(up-find-local c: scorpion-line c: 40)
+	(up-find-remote c: 906 c: 1)
+	(up-find-remote c: 900 c: 1)
+	(up-target-objects 0 0 -1 -1)
+	(up-reset-search 1 1 1 1)
+	(up-find-local c: my-unique-unit-line c: 20)
+	(up-find-local c: hand-cannoneer c: 20)
+	(up-find-remote c: -1 c: 1)
+	(up-target-objects 0 0 -1 -1)
+	)
+
+(defrule
+	(current-age >= imperial-age)
+	(up-object-type-count-total c: villager g:>= 41)
+	=>
+	(up-full-reset-search)
+	(up-find-local c: battering-ram-line c: 40)
+	(up-find-remote c: 903 c: 1)
+	(up-target-objects 0 0 -1 -1)
+	(up-reset-search 1 1 1 1)
+	(up-find-local c: trebuchet c: 40)
+	(up-find-remote c: 903 c: 1)
+	(up-target-objects 0 0 -1 -1)
+	(up-reset-search 1 1 1 1)
+	)
+
+; End MiniValk

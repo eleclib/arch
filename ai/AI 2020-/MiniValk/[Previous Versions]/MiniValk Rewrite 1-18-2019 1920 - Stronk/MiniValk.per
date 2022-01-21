@@ -1,0 +1,385 @@
+; MiniValk 
+
+; Strategy :  Monks
+    ; Sub Strategy, Counter Units - Trash
+; Fast Castle at 16
+  ; Monks + Trash
+; Monks ASAP
+  ; Imperial for Upgrades
+  ; Spam Trash
+
+
+; Dark Age
+    ; Basics
+    ; Wood, Food, Gold
+; Feudal Age
+    ; Wood/Farms
+
+; 
+
+
+; Goals
+;(defconst Strategy 1)
+(defconst HousingSpace 2) ; Housing Headroom
+(defconst HousingHeadroom 3)
+(defconst MillLocation 4)
+(defconst SaveForCastle 5) ; Food / Gold
+(defconst SaveForImperial 6) ; Food / Gold
+(defconst LumberCount 7) ; Max Lumber Mills
+(defconst VillagersTotal 8) ; Villagers
+(defconst VillagerSwitch 9) ; Villager Switch
+(defconst MillCount 10) ; Mills
+(defconst BarracksCount 11) ; Barracks
+(defconst LumberCampDistance 12)
+(defconst MonasteryCount 13)
+(defconst MarketCount 14)
+(defconst MiningCount 15)
+
+; Goals 41+
+(defconst TCPosX 41)
+(defconst TCPosY 42)
+
+(defconst LocalTotal1 43)
+(defconst LocalLastIndex1 44)
+(defconst RemoteTotal1 45)
+(defconst RemoteLastIndex1 46)
+
+(defconst LocalTotal2 47)
+(defconst LocalLastIndex2 48)
+(defconst RemoteTotal2 49)
+(defconst RemoteLastIndex2 50)
+
+; UserPatch 1.5
+(defconst housing-headroom 3)
+(defconst random-number 33)
+(defconst livestock-class 958)
+(defconst research-pending 2)
+(defconst research-complete 3)
+(defconst place-normal 0)
+(defconst place-control 2)
+(defconst search-local 1)
+;(defconst search-remote 2)
+(defconst object-data-point-x 8)
+(defconst object-data-point-y 9)
+
+
+(defrule ; 1 - Initialization
+    (true)
+    =>
+    (up-change-name "[MiniValk] 2-1 Alpha")
+    (up-modify-sn sn-number-explore-groups c:= 1) ; Tells our scout to scout
+    (up-modify-sn sn-enable-new-building-system c:= 1) ; More than one building type at a time
+    (up-modify-sn sn-enable-training-queue c:= 1)
+    (up-modify-sn sn-cap-civilian-explorers c:= 0) ; No Villager explorers
+    (up-modify-sn sn-food-gatherer-percentage c:= 100) ; All Food Gatherers; others default 0
+    ; Initial One Time Rules Here
+
+    ; Strategy
+    ;(generate-random-number 1) ; Duh
+    ;(up-get-fact random-number 0 Strategy) ; Store Number in Strategy
+    
+    ; HousingSpace
+    (up-modify-goal HousingSpace c:= 5)
+
+    ; Villagers in Dark Age
+    (up-modify-goal VillagersTotal c:= 27)
+    (up-modify-goal VillagerSwitch c:= 1)
+
+    ; Lumber Camps
+    (up-modify-goal LumberCount c:= 1)
+
+    ; Lumber Camp Distance
+    (up-modify-goal LumberCampDistance c:= 20)
+
+    ; Mills
+    (up-modify-goal MillCount c:= 1)
+
+    ; Barracks
+    (up-modify-goal BarracksCount c:= 1)
+
+    (disable-self)
+)
+
+(defrule ; 2 - Major Researches / Constant Triggers
+    (true)
+    =>
+    (up-research 0 c: feudal-age)
+    (up-research 0 c: castle-age)
+    (up-research 0 c: imperial-age)
+    ; Monk Researches
+    (up-research 0 c: ri-sanctity)
+    (up-research 0 c: ri-fervor)
+    (up-research 0 c: ri-atonement)
+    (up-research 0 c: ri-redemption)
+    (up-research 0 c: ri-theocracy)
+    (up-research 0 c: ri-illumination)
+    (up-research 0 c: ri-block-printing)
+
+    ;(up-research 0 c: ri-herbal-medicine) ; Find Appropriate Constant
+    
+    (up-research 0 c: ri-faith)
+    (up-research 0 c: ri-heresy)
+
+    ; Space for 2 more
+    
+    (up-research 0 c: ri-pikeman)
+    (up-research 0 c: ri-elite-skirmisher)
+)
+
+; Let us do Dark Age
+
+(defrule ; 3 - Housing
+    (up-get-fact housing-headroom 0 HousingHeadroom)
+    (up-compare-goal HousingHeadroom g:< HousingSpace)
+    (up-pending-objects c: house < 1)
+    =>
+    (up-build 0 place-normal c: house)
+)
+
+(defrule ; 4 - Farms
+    ; DUC search close forage and deer
+    (current-age <= feudal-age)
+    =>
+    (up-full-reset-search)
+    (up-find-local c: town-center c: 1)
+    (up-set-target-object search-local c: 0)
+    (up-get-object-data object-data-point-x TCPosX)
+    (up-get-object-data object-data-point-y TCPosY)
+    (up-set-target-point TCPosX)
+    (up-filter-distance c: -1 c: 20)
+    (up-modify-goal sn-focus-player-number c:= 0)
+    (up-find-remote c: 59 c: 240) ; Forage Bushes
+    (up-get-search-state LocalTotal1)
+    (up-reset-search 0 0 1 1)
+    (up-find-remote c: 65 c: 240) ; Deer
+    (up-get-search-state LocalTotal2)
+    ; Build farms
+)
+
+(defrule ; 5 - Calculate First Mill Placement
+    (up-compare-goal LocalTotal1 c:<= 3) ; Little Forage Bushes
+    (up-object-type-count-total c: house >= 2)
+    =>
+    (up-modify-goal MillLocation c:= 1) ; Deer
+    (up-modify-sn sn-enable-boar-hunting c:= 1)
+
+    ; Set Distances of Drops
+    (up-modify-sn sn-maximum-wood-drop-distance c:= 20)
+    (up-modify-sn sn-maximum-food-drop-distance c:= 20)
+    (up-modify-sn sn-maximum-hunt-drop-distance c:= 20)
+    (up-modify-sn sn-maximum-gold-drop-distance c:= 20)
+    (up-modify-sn sn-maximum-stone-drop-distance c:= 20)
+
+    ; Research Loom
+    (up-research 0 c: ri-loom)
+
+    ; Set Villager Training
+    (up-modify-goal VillagerSwitch c:= 1)
+)
+
+(defrule ; 6 - Villagers
+    (up-compare-goal VillagerSwitch c:== 1)
+    (up-object-type-count-total c: villager g:< VillagersTotal)
+    =>
+    (up-train 0 c: villager)
+)
+
+(defrule ; 7 - Build First/Second Mill (Deer)
+    (xor ; One and Not the Other
+        (and ; Forage
+            (up-gaia-type-count-total c: 59 > 0) ; Forage Bushes Exist
+            (up-object-type-count-total c: livestock-class <= 2) ; Less or Equal 2 Sheep/Turkey
+        )
+        (and ; Deer
+            (up-gaia-type-count-total c: 59 == 0) ; Forage Bushes do not Exist
+            (up-gaia-type-count-total c: 65 >= 3) ; More or Equal 3 Deer
+        )
+    )
+    (up-object-type-count-total c: villager >= 8) ; 8 or More Villagers
+    (up-object-type-count-total c: mill g:< MillCount) ; Less Than X Mills
+    (up-pending-objects c: mill c:< 1)
+    =>
+    (up-build place-normal 0 c: mill)
+    (up-modify-sn sn-preferred-mill-placement c:= 1)
+    (up-modify-sn sn-mill-max-distance c:= 30)
+)
+
+(defrule ; 8 - Lumber Camp
+    (up-object-type-count c: mill >= 1)
+    (up-object-type-count c: lumber-camp g:< LumberCount)
+    (up-pending-objects c: lumber-camp < 1)
+    =>
+    (up-modify-sn sn-wood-gatherer-percentage c:= 25)
+    (up-modify-sn sn-food-gatherer-percentage c:= 75)
+    (up-modify-sn sn-lumber-camp-max-distance g:= LumberCampDistance)
+    (up-build place-normal 0 c: lumber-camp)
+)
+
+(defrule ; 9 - Barracks
+    (up-object-type-count-total c: lumber-camp >= 1)
+    (up-object-type-count-total c: barracks g:< BarracksCount)
+    (up-pending-objects c: barracks < 1)
+    =>
+    (up-build place-normal 0 c: barracks)
+)
+
+(defrule ; 10 - Farms Continuation
+    (up-object-type-count-total c: lumber-camp >= 1)
+    (or
+        (and
+            (or
+                (up-object-type-count c: archery-range >= 1)
+                (up-object-type-count-total c: market >= 1)
+            )
+            (up-object-type-count-total c: blacksmith >= 1)
+        )
+        (current-age == dark-age)
+    )
+    (up-compare-goal RemoteTotal1 <= 3) ; Less than or Equal 3 Forage Bushes
+    (up-compare-goal RemoteTotal2 <= 3) ; Less than or Equal 3 Deer
+    (idle-farm-count <= 1) ; Less or Equal 2 Idle Farms
+    (up-pending-objects c: farm < 1)
+    =>
+    (up-build place-normal 0 c: farm)
+)
+
+(defrule ; 11 - Feudal - Blacksmith
+    (or
+        (up-can-build 0 c: blacksmith) ; We are in at least feudal age
+        (up-research-status c: feudal-age == research-pending) ; We are at least reseraching Feudal Age
+    )
+    (up-object-type-count c: blacksmith < 1)
+    (up-pending-objects c: blacksmith < 1)
+    =>
+    (up-modify-sn sn-wood-gatherer-percentage c:= 40)
+    (up-modify-sn sn-food-gatherer-percentage c:= 45)
+    (up-modify-sn sn-gold-gatherer-percentage c:= 15)
+    (up-modify-goal VillagersTotal c:= 29)
+    (up-modify-goal LumberCount c:= 2)
+    (up-modify-goal LumberCampDistance c:= 15)
+    ;(up-modify-goal MillCount c:= 2)
+    (up-research 0 c: ri-loom) ; Villagers are cleared for this to happen
+    (up-build place-normal 0 c: blacksmith)
+)
+
+; Below 2 Rules can both happen in one game
+(defrule ; 12 - Feudal - Archery Range ~ Rush
+    (up-can-build 0 c: archery-range)
+    (up-object-type-count c: blacksmith == 1)
+    (up-object-type-count-total c: archery-range < 1)
+;    (players-building-type-count any-enemy archery-range > 0) ; Will be a Rush
+    =>
+    (up-build place-normal 0 c: archery-range)
+)
+
+(defrule ; 13 - Feudal - Market ~ No Rush
+    (up-can-build 0 c: market)
+    (up-object-type-count c: blacksmith == 1)
+    (up-object-type-count-total c: market < 1)
+;    (players-building-type-count any-enemy archery-range == 0) ; No Rush
+    =>
+    (up-set-placement-data my-player-number -1 c: -30)
+    (up-build place-control 0 c: market)
+)
+
+(defrule ; 14 - We are now in Castle Age
+    (or
+        (up-research-status c: castle-age == research-pending)
+        (current-age == castle-age)
+    )
+    (up-object-type-count-total c: monastery g:< MonasteryCount)
+    ; No Pending - This is main building
+    =>
+    (up-modify-sn sn-wood-gatherer-percentage c:= 35)
+    (up-modify-sn sn-food-gatherer-percentage c:= 15)
+    (up-modify-sn sn-gold-gatherer-percentage c:= 40)
+    (up-modify-sn sn-stone-gatherer-percentage c:= 10)
+    (up-modify-goal VillagersTotal c:= 70)
+    (up-modify-goal MiningCount c:= 4)
+    (up-modify-goal HousingSpace c:= 10)
+    (up-build place-normal 0 c: monastery)
+)
+
+(defrule ; 15 - Mining Camps
+    (current-age >= castle-age)
+    (up-object-type-count-total c: mining-camp g:< MiningCount)
+    =>
+    (up-build place-normal 0 c: mining-camp)
+)
+
+(defrule ;16
+    (up-can-build 0 c: siege-workshop)
+    (up-object-type-count-total c: monastery >= 3)
+    (up-object-type-count-total c: siege-workshop < 3)
+    =>
+    (up-build place-normal 0 c: siege-workshop)
+)
+
+;(defrule ;17
+    ;(up-can-build 0 c: castle)
+    ;=>
+    ;(up-set-placement-data my-player-number -1 c: 25)
+    ;(up-build place-control 0 c: castle)
+;)
+
+(defrule ; 16/17 - Ally Markets
+    (player-in-game any-ally) ; Are there allies?
+    (up-can-build 0 c: market) ; Feudal Age at Minimum
+    (up-object-type-count c: monastery > 0) ; Castle Age Minimum
+    (up-object-type-count c: market < 3) ; Try 3 Markets
+    (up-pending-objects c: market < 1) ; One market at a time and spam if failed placement
+    =>
+    ;(up-modify-sn sn-placement-to-center c:= 1)
+    (up-set-placement-data my-player-number -1 c: -30) ; Try to place a market in the corner of the map
+    (up-build place-control 0 c: market)
+)
+
+(defrule ; 16/18
+    (player-in-game any-ally)
+    (current-age == castle-age)
+    ; Any extra team game facts go here
+    =>
+    (up-train 0 c: trade-cart)
+    ; Any extra team game actions go here
+)
+
+(defrule ; 17/19 - Train Monks and Trash
+    (up-research-status c: castle-age == research-complete)
+    (military-population < 50)
+    ;(up-research-status c: ri-sanctity == research-complete)
+    ;(up-research-status c: ri-fervor == research-complete)
+    ;(up-research-status c: ri-atonement == research-complete)
+    ;(up-research-status c: ri-redemption == research-complete)
+    ;(up-research-status c: ri-theocracy == research-complete)
+    ;(up-research-status c: ri-illumination == research-complete)
+    ;(up-research-status c: ri-block-printing == research-complete)
+    ;(up-research-status c: ri-faith == research-complete)
+    ;(up-research-status c: ri-heresy == research-complete)
+    =>
+    (up-modify-goal MonasteryCount c:= 7)
+    (up-modify-goal BarracksCount c:= 5)
+    (up-train 0 c: monk)
+    ;(up-train 0 c: eagle-warrior-line)
+    (up-train 0 c: battering-ram-line)
+    (up-train 0 c: spearman-line)
+    (up-modify-sn sn-maximum-town-size c:= 20)
+)
+
+(defrule ; 18/20 - Expand to Enemy
+    (up-research-status c: imperial-age == research-complete)
+    ;(up-object-type-count-total c: spearman-line > 25)
+    ;(up-object-type-count-total c: skirmisher-line > 25)
+    ;(up-object-type-count-total c: monk > 50)
+    (military-population > 50)
+    (up-enemy-buildings-in-town == 0)
+    =>
+    (up-modify-sn sn-maximum-town-size c:+ 3)
+)
+
+(defrule ; 19/21 - Resignation
+    (up-object-type-count-total c: town-center == 0)
+    (up-object-type-count-total c: villager == 0)
+    (military-population < 20)
+    =>
+    (resign)
+)

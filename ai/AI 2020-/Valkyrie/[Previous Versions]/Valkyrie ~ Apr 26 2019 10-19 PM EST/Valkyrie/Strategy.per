@@ -1,0 +1,43 @@
+
+(defconst flank-position 0)
+(defconst pocket-position 1)
+
+#load-if-defined UP-POCKET-POSITION
+    (defconst conditional-position pocket-position)
+#else
+    (defconst conditional-position flank-position)
+#end-if
+
+(defconst dark-fast-feudal 1)
+(defconst dark-fast-castle 2)
+(defconst dark-infantry-rush 3)
+
+(defconst feudal-infantry-rush 1)
+(defconst feudal-archery-rush 2)
+(defconst feudal-cavalry-rush 3)
+
+(defconst castle-push 1)
+
+(defconst imperial-mass 1)
+
+(defconst goal-dark-strategy 1)
+(defconst goal-feudal-strategy 2)
+(defconst goal-castle-strategy 3)
+(defconst goal-imperial-strategy 4)
+
+(defrule
+    (true)
+    =>
+    (generate-random-number 1)
+    (disable-self)
+)
+
+(defrule
+    (random-number == 1)
+    =>
+    (set-goal goal-dark-strategy dark-fast-feudal)
+    (set-goal goal-feudal-strategy feudal-archery-rush)
+    (set-goal goal-castle-strategy castle-push)
+    (set-goal goal-imperial-strategy imperial-mass)
+    (disable-self)
+)

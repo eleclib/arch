@@ -1,0 +1,60 @@
+
+(defrule
+    (goal goal-dark-strategy dark-fast-feudal)
+    =>
+    (set-strategic-number sn-enable-boar-hunting 2)
+    (disable-self)
+)
+
+(defrule
+    (goal goal-dark-strategy dark-fast-feudal)
+    (unit-type-count villager >= 11)
+    =>
+    (up-modify-sn sn-wood-gatherer-percentage c:+ 20)
+    (up-modify-sn sn-food-gatherer-percentage c:- 20)
+    (disable-self)
+)
+
+(defrule
+    (goal goal-dark-strategy dark-fast-feudal)
+    (unit-type-count villager >= 16)
+    =>
+    (up-modify-sn sn-wood-gatherer-percentage c:+ 27)
+    (up-modify-sn sn-food-gatherer-percentage c:- 27)
+    (disable-self)
+)
+
+(defrule
+    (goal goal-dark-strategy dark-fast-feudal)
+    (unit-type-count villager >= 21)
+    =>
+    (up-modify-sn sn-wood-gatherer-percentage c:- 5)
+    (up-modify-sn sn-food-gatherer-percentage c:- 15)
+    (up-modify-sn sn-gold-gatherer-percentage c:+ 20)
+    (disable-self)
+)
+
+(defrule
+    (goal goal-dark-strategy dark-fast-feudal)
+    (unit-type-count-total villager < 10)
+    (can-train villager)
+    =>
+    (train villager)
+)
+
+(defrule
+    (goal goal-dark-strategy dark-fast-feudal)
+    (up-research-status c: ri-loom == research-complete)
+    (unit-type-count-total villager < 23)
+    (can-train villager)
+    =>
+    (train villager)
+)
+
+(defrule
+    (unit-type-count villager >= 17)
+    (building-type-count-total barracks < 1)
+    (can-build barracks)
+    =>
+    (build barracks)
+)

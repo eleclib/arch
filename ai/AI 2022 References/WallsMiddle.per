@@ -1,0 +1,69 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+(defrule
+    (current-age <= feudal-age)
+    (unit-type-count villager >= cn-build-walls-at-vills-count)
+    (up-timer-status tm-full-wall-placement1 <= timer-triggered)
+    =>
+    (up-get-point position-opposite gl-temp3)
+    ; my-pos already gottens
+    (up-copy-point gl-temp gl-my-pos)
+    (up-lerp-percent gl-temp gl-temp3 c: 50)
+    (up-cross-tiles gl-temp gl-temp3 g: gl-map-size)
+    (up-copy-point gl-temp2 gl-temp)
+    (up-copy-point gl-temp gl-my-pos)
+    (up-lerp-percent gl-temp gl-temp3 c: 50)
+    (up-copy-point gl-temp4 gl-map-size)
+    (up-modify-goal gl-temp4 c:* -1)
+    (up-cross-tiles gl-temp gl-temp3 g: gl-temp4)
+    (up-build-line gl-temp2 gl-temp c: palisade-wall)
+    (enable-timer tm-full-wall-placement1 30)
+)
+
+
+
+
+(defrule
+    (current-age > dark-age)
+    (unit-type-count villager >= cn-build-walls-at-vills-count)
+    (up-timer-status tm-full-wall-placement2 <= timer-triggered)
+    =>
+    (up-get-point position-opposite gl-temp3)
+    ; my-pos already gottens
+    (up-copy-point gl-temp gl-my-pos)
+    (up-lerp-percent gl-temp gl-temp3 c: 50)
+    (up-cross-tiles gl-temp gl-temp3 g: gl-map-size)
+    (up-copy-point gl-temp2 gl-temp)
+    (up-copy-point gl-temp gl-my-pos)
+    (up-lerp-percent gl-temp gl-temp3 c: 50)
+    (up-lerp-tiles gl-temp gl-my-pos c: 1)
+    (up-copy-point gl-temp4 gl-map-size)
+    (up-modify-goal gl-temp4 c:* -1)
+    (up-cross-tiles gl-temp gl-temp3 g: gl-temp4)
+    (up-build-line gl-temp2 gl-temp c: stone-wall)
+    (enable-timer tm-full-wall-placement2 30)
+)
+
+
+

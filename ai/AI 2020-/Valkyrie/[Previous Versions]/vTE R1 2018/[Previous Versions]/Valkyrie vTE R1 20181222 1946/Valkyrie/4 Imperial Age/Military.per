@@ -1,0 +1,58 @@
+
+(defrule
+    (current-age == imperial-age)
+    =>
+    (up-train 0 c: eagle-warrior-line)
+)
+
+(defrule
+    (current-age == imperial-age)
+    =>
+    (up-train 0 c: knight-line)
+)
+
+(defrule
+    (current-age == imperial-age)
+    =>
+    (up-train 0 c: trebuchet)
+)
+
+(defrule
+    (current-age == imperial-age)
+    =>
+    (up-train 0 c: battering-ram-line)
+)
+
+(defrule
+    (current-age == imperial-age)
+    =>
+    (up-train 0 c: archer-line)
+)
+
+(defrule
+    (current-age == imperial-age)
+    =>
+    (up-train 0 c: skirmisher-line)
+)
+
+(defrule
+    (current-age == imperial-age)
+    =>
+    (up-train 0 c: spearman-line)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (military-population > 70)
+=>
+    (set-strategic-number sn-maximum-town-size 255)
+    (disable-self)
+)
+
+(defrule
+    (current-age == imperial-age)
+    (military-population < 15)
+=>
+    (set-strategic-number sn-maximum-town-size 30)
+    (disable-self)
+)
